@@ -534,12 +534,14 @@ export default function HomePage() {
               </h2>
               <div className="mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
               <p className="mt-6 max-w-lg text-base leading-relaxed text-ds-gray-400 sm:text-lg">
-                Dream Star Drivers Club was forged on the mountain roads of Japan
-                — where rotary engines scream to 9,000 RPM and every corner tells
-                a story. We're more than a brand; we're a tribute to the golden
-                era of JDM engineering. From the legendary 13B rotary to the
-                bulletproof 2JZ-GTE, we celebrate the machines and the culture
-                that raised us.
+                Dream Star Drivers Club was forged on the mountains of the
+                Tri-state area, inspired by the legendary mountain roads of
+                Japan, and now based in the Vegas Valley — where rotary engines
+                scream to 9,000 RPM, 2JZ engines test the limits, and every
+                corner tells a tale. We're more than a brand; we're a tribute
+                to the golden era of JDM engineering. From the legendary 13B
+                rotary to the bulletproof 2JZ-GTE, we celebrate the machines
+                and the culture that raised us.
               </p>
               <p className="mt-4 max-w-lg text-base leading-relaxed text-ds-gray-500">
                 Every product we make — from the stitching on our hoodies to the
