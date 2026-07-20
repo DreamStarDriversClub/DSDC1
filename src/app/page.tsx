@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND_NAME, TAGLINE, SOCIAL_LINKS } from "@/lib/constants";
+import { BRAND_NAME, TAGLINE } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/Badge";
 import { NewsletterForm } from "@/components/ui/NewsletterForm";
 import { OrganizationSchema, WebSiteSchema } from "@/components/ui/SchemaOrg";
 import { ProductHighlights } from "@/components/home/ProductHighlights";
+import { InstagramGrid } from "@/components/home/InstagramGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -615,128 +616,7 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════
           Section 6: Instagram / Social Proof
           ══════════════════════════════════════════════════════════════════ */}
-      <section className="bg-ds-black-deepest section-padding">
-        <Container>
-          <SectionHeading
-            eyebrow="Follow the Journey"
-            heading="@dreamstardriversclub"
-            description="Tag your build with #DreamStarDriversClub for a chance to be featured."
-            align="center"
-            className="mb-12"
-          />
-
-          {/* Instagram grid — 3x2 desktop, 3x2 mobile */}
-          <div className="mx-auto grid max-w-3xl grid-cols-3 gap-2 sm:gap-3">
-            {Array.from({ length: 6 }).map((_, i) => {
-              const post = instagramPosts[i];
-
-              if (post) {
-                const cell = (
-                  <div
-                    key={post.id}
-                    className="group relative aspect-square overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm"
-                  >
-                    {/* Actual image */}
-                    <img
-                      src={post.imageUrl}
-                      alt={post.caption || "Instagram post"}
-                      className="h-full w-full object-cover"
-                      loading={i < 3 ? "eager" : "lazy"}
-                    />
-
-                    {/* Hover overlay with caption */}
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ds-black/80 via-transparent to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {post.caption && (
-                        <p className="text-xs leading-relaxed text-ds-white">
-                          {post.caption}
-                        </p>
-                      )}
-                      <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-300">
-                        @dreamstardriversclub
-                      </span>
-                    </div>
-                  </div>
-                );
-
-                if (post.link) {
-                  return (
-                    <a
-                      key={post.id}
-                      href={post.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      {cell}
-                    </a>
-                  );
-                }
-                return cell;
-              }
-
-              // Placeholder fallback cell
-              return (
-                <div
-                  key={`placeholder-${i}`}
-                  className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm"
-                >
-                  {/* Placeholder gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-ds-black-charcoal to-ds-black-elevated" />
-                  {/* Grid pattern */}
-                  <div className="absolute inset-0 bg-grid opacity-20" />
-                  {/* Instagram-style icon */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-30 transition-opacity duration-300 group-hover:opacity-60">
-                    <svg
-                      className="h-8 w-8 text-ds-gray-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <rect
-                        x="2"
-                        y="2"
-                        width="20"
-                        height="20"
-                        rx="5"
-                        ry="5"
-                      />
-                      <circle cx="12" cy="12" r="5" />
-                      <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
-                    </svg>
-                  </div>
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-ds-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-white">
-                      @dreamstardriversclub
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Follow CTA */}
-          <div className="mt-10 text-center">
-            <a
-              href={SOCIAL_LINKS.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="outline" size="lg">
-                <svg
-                  className="h-5 w-5"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-                </svg>
-                Follow @dreamstardriversclub
-              </Button>
-            </a>
-          </div>
-        </Container>
-      </section>
+      <InstagramGrid posts={instagramPosts} />
 
       {/* ══════════════════════════════════════════════════════════════════
           Section 7: Newsletter CTA — Join the Club
