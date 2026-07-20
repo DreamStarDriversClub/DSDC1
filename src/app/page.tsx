@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BRAND_NAME, TAGLINE } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
+import { getPrintfulFeaturedProducts, hasPrintfulProducts } from "@/lib/shop-data";
 
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -16,7 +17,7 @@ export const dynamic = "force-dynamic";
 
 /* ── Sample Data ─────────────────────────────────────────────────────────── */
 
-const featuredProducts = [
+const fallbackFeaturedProducts = [
   {
     id: "rotary-spirit-tee",
     name: "Rotary Spirit Tee",
@@ -189,6 +190,21 @@ export default async function HomePage() {
     });
   } catch (error) {
     console.error("Failed to fetch Instagram posts:", error);
+  }
+
+  // Fetch Printful featured products for homepage — merge with fallbacks
+  let featuredProducts = fallbackFeaturedProducts;
+  try {
+    const hasPrintful = await hasPrintfulProducts();
+    if (hasPrintful) {
+      const pfFeatured = await getPrintfulFeaturedProducts();
+      if (pfFeatured.length > 0) {
+        // Prepend Printful products before fallback samples
+        featuredProducts = [...pfFeatured, ...fallbackFeaturedProducts];
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful featured products:", error);
   }
 
   return (

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getPrintfulProductsByCategory, hasPrintfulProducts } from "@/lib/shop-data";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
@@ -39,7 +40,6 @@ export default async function ApparelPage() {
   });
 
   // Fetch all products in this category or its subcategories
-  const childIds = subcategories.map((s) => s.slug);
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -66,6 +66,28 @@ export default async function ApparelPage() {
     isFeatured: p.isFeatured,
   }));
 
+  // Fetch Printful apparel (tees, hoodies, etc.)
+  let printfulProducts: typeof mappedProducts = [];
+  try {
+    const hasPrintful = await hasPrintfulProducts();
+    if (hasPrintful) {
+      const pfProducts = await getPrintfulProductsByCategory("apparel");
+      printfulProducts = pfProducts.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        salePrice: p.salePrice,
+        category: p.category,
+        isFeatured: p.isFeatured,
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful apparel:", error);
+  }
+
+  // Merge: Printful products first, then regular products
+  const allProducts = [...printfulProducts, ...mappedProducts];
+
   return (
     <>
       <CategoryHeader
@@ -86,7 +108,7 @@ export default async function ApparelPage() {
         </div>
 
         <ProductGrid
-          products={mappedProducts}
+          products={allProducts}
           badgeVariant="red"
           emptyMessage="No apparel products available right now. Check back soon for new drops!"
         />
