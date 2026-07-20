@@ -170,16 +170,26 @@ const sakuraPetals = [
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export default async function HomePage() {
-  const instagramPosts = await prisma.instagramPost.findMany({
-    orderBy: { order: "asc" },
-    take: 8,
-    select: {
-      id: true,
-      imageUrl: true,
-      caption: true,
-      link: true,
-    },
-  });
+  let instagramPosts: {
+    id: string;
+    imageUrl: string;
+    caption: string | null;
+    link: string | null;
+  }[] = [];
+  try {
+    instagramPosts = await prisma.instagramPost.findMany({
+      orderBy: { order: "asc" },
+      take: 8,
+      select: {
+        id: true,
+        imageUrl: true,
+        caption: true,
+        link: true,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to fetch Instagram posts:", error);
+  }
 
   return (
     <>
