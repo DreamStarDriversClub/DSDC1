@@ -110,7 +110,7 @@ const SECTIONS = [
         </p>
         <p>
           If you are unsure about fitment for your specific vehicle, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a> before
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a> before
           ordering. We&apos;re happy to help, but we cannot guarantee compatibility
           in all cases.
         </p>
@@ -184,7 +184,7 @@ const SECTIONS = [
       <>
         <p>
           If you have questions about this disclaimer or our products, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>.
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>.
         </p>
       </>
     ),

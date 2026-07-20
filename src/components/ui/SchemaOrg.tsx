@@ -17,7 +17,7 @@ export function OrganizationSchema() {
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      email: "support@dreamstardriversclub.com",
+      email: "dreamstardriversclub@yahoo.com",
     },
   };
 

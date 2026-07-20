@@ -113,10 +113,10 @@ export function LegalPage({
                   <p className="mt-1 text-xs text-ds-gray-600">
                     If you have questions about this policy, contact us at{" "}
                     <a
-                      href="mailto:hello@dreamstardc.com"
+                      href="mailto:dreamstardriversclub@yahoo.com"
                       className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
                     >
-                      hello@dreamstardc.com
+                      dreamstardriversclub@yahoo.com
                     </a>
                     .
                   </p>

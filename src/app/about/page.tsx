@@ -104,8 +104,19 @@ export default function AboutPage() {
     <>
       {/* ── Hero ───────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-ds-black-deepest">
-        <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
-        <div className="pointer-events-none absolute inset-0 bg-grid" />
+        {/* RX-7 hero banner background */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            opacity: 0.35,
+            backgroundImage: "url('/rx7-sakura.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="pointer-events-none absolute inset-0 z-[1] bg-ds-black/60" />
+        <div className="pointer-events-none absolute inset-0 z-[2] bg-hero-glow" />
+        <div className="pointer-events-none absolute inset-0 z-[3] bg-grid" />
         <Container className="relative py-20 sm:py-28 lg:py-36">
           <div className="mx-auto max-w-3xl text-center opacity-start animate-fade-in-up">
             <span className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-ds-red">

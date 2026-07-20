@@ -103,7 +103,7 @@ const SECTIONS = [
           Tracking information may take 24–48 hours to update after you receive the
           shipping confirmation. If your tracking hasn&apos;t updated within 3 business
           days of receiving the confirmation, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>.
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>.
         </p>
       </>
     ),
@@ -148,7 +148,7 @@ const SECTIONS = [
         <p>
           Please double-check your shipping address before placing your order. If
           you realize there&apos;s an error, contact us immediately at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a> with your
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a> with your
           order number and the correct address. We&apos;ll do our best to update it
           before the order ships.
         </p>
@@ -185,7 +185,7 @@ const SECTIONS = [
       <>
         <p>
           For any shipping-related questions, reach out to us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>. Include
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>. Include
           your order number for faster assistance.
         </p>
       </>

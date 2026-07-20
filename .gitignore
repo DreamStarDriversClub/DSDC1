@@ -18,3 +18,4 @@ node_modules
 # Generated Prisma client
 /node_modules/.prisma/
 .vercel
+.env*

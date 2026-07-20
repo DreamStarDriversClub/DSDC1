@@ -205,7 +205,7 @@ const SECTIONS = [
       <>
         <p>
           For questions about our use of cookies or this policy, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>.
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>.
         </p>
       </>
     ),

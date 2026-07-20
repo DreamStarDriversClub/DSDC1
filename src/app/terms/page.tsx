@@ -254,7 +254,7 @@ const SECTIONS = [
         <p>For questions about these Terms of Service, contact us at:</p>
         <p>
           <strong>Email:</strong>{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>
         </p>
         <p>
           Dream Star Drivers Club

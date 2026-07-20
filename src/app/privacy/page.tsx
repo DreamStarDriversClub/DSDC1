@@ -182,7 +182,7 @@ const SECTIONS = [
         </ul>
         <p>
           To exercise any of these rights, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>.
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>.
           We will respond to your request within 30 days.
         </p>
       </>
@@ -229,7 +229,7 @@ const SECTIONS = [
         </p>
         <p>
           <strong>Email:</strong>{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>
         </p>
         <p>
           Dream Star Drivers Club

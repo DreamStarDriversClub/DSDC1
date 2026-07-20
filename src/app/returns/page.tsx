@@ -106,7 +106,7 @@ const SECTIONS = [
         <p>
           If you need help with sizing or product selection before re-ordering,
           our team is happy to assist — contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>.
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>.
         </p>
         <p>
           For defective items, we handle exchanges directly. Contact us with photos

@@ -36,7 +36,7 @@ export const COLORS = {
 
 // ─── Social Links ──────────────────────────────────────────────────────────
 export const SOCIAL_LINKS = {
-  instagram: "https://instagram.com/Dream_Star_Drivers_Club",
+  instagram: "https://www.instagram.com/dreamstardriversclub/",
   youtube: "https://youtube.com/@dreamstardriversclub",
   twitter: "https://twitter.com/dreamstardc",
   tiktok: "https://tiktok.com/@dreamstardriversclub",

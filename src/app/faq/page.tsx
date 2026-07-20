@@ -49,7 +49,7 @@ const FAQ_DATA: FaqCategory[] = [
       {
         question: "How can I track my order?",
         answer:
-          "Once your order ships, you'll receive a confirmation email with a tracking number. You can track your package anytime using that number on our carrier's website. If you haven't received tracking info within 3 business days of placing your order, check your spam folder or contact us at hello@dreamstardc.com.",
+          "Once your order ships, you'll receive a confirmation email with a tracking number. You can track your package anytime using that number on our carrier's website. If you haven't received tracking info within 3 business days of placing your order, check your spam folder or contact us at dreamstardriversclub@yahoo.com.",
       },
     ],
   },
@@ -65,7 +65,7 @@ const FAQ_DATA: FaqCategory[] = [
       {
         question: "Can I change or cancel my order?",
         answer:
-          "Orders can be modified or cancelled within 1 hour of placement. After that, our fulfillment team may have already begun processing your order. Contact us immediately at hello@dreamstardc.com with your order number if you need to make changes. We'll do our best to accommodate, but we cannot guarantee modifications after the 1-hour window.",
+          "Orders can be modified or cancelled within 1 hour of placement. After that, our fulfillment team may have already begun processing your order. Contact us immediately at dreamstardriversclub@yahoo.com with your order number if you need to make changes. We'll do our best to accommodate, but we cannot guarantee modifications after the 1-hour window.",
       },
       {
         question: "An item I want is out of stock. When will it be back?",

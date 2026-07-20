@@ -136,7 +136,7 @@ const SECTIONS = [
         <p>
           If you receive a defective or damaged product, contact us within 7 days of
           delivery at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a> with:
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a> with:
         </p>
         <ul>
           <li>Your order number.</li>
@@ -158,7 +158,7 @@ const SECTIONS = [
       <>
         <p>
           For refund-related questions, contact us at{" "}
-          <a href="mailto:hello@dreamstardc.com">hello@dreamstardc.com</a>. Please
+          <a href="mailto:dreamstardriversclub@yahoo.com">dreamstardriversclub@yahoo.com</a>. Please
           include your order number for faster service.
         </p>
       </>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BRAND_NAME, TAGLINE } from "@/lib/constants";
+import { BRAND_NAME, TAGLINE, SOCIAL_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -699,7 +699,7 @@ export default function HomePage() {
           {/* Follow CTA */}
           <div className="mt-10 text-center">
             <a
-              href="https://instagram.com/Dream_Star_Drivers_Club"
+              href={SOCIAL_LINKS.instagram}
               target="_blank"
               rel="noopener noreferrer"
             >

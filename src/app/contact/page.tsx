@@ -85,10 +85,10 @@ export default function ContactPage() {
                       <div>
                         <p className="text-sm font-semibold text-ds-white">Email</p>
                         <a
-                          href="mailto:hello@dreamstardc.com"
+                          href="mailto:dreamstardriversclub@yahoo.com"
                           className="text-sm text-ds-gray-400 transition-colors hover:text-ds-red"
                         >
-                          hello@dreamstardc.com
+                          dreamstardriversclub@yahoo.com
                         </a>
                       </div>
                     </div>
@@ -128,8 +128,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-ds-white">Business Hours</p>
-                        <p className="text-sm text-ds-gray-400">Mon–Fri: 9 AM – 6 PM EST</p>
-                        <p className="text-sm text-ds-gray-500">Weekends: Limited support</p>
+                        <p className="text-sm text-ds-gray-400">9am–6pm PST</p>
                       </div>
                     </div>
                   </div>

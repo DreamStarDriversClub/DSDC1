@@ -54,6 +54,11 @@ export function Footer() {
                 </a>
               ))}
             </div>
+
+            {/* Business hours */}
+            <p className="mt-5 text-xs text-ds-gray-500">
+              Business Hours: 9am–6pm PST
+            </p>
           </div>
 
           {/* Link groups */}
