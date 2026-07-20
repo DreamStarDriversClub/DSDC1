@@ -1,0 +1,265 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Sprite Graffiti Font ─────────────────────────────────── */
+@font-face {
+  font-family: "Sprite Graffiti";
+  src: url("/Sprite Graffiti.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Base Layer
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ds-black text-ds-white antialiased;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  /* ── Selection ─────────────────────────────────────────────── */
+  ::selection {
+    @apply bg-ds-red/40 text-ds-white;
+  }
+
+  /* ── Scrollbar ─────────────────────────────────────────────── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-ds-black;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-ds-gray-700;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-ds-gray-500;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #333333 #0a0a0a;
+  }
+
+  /* ── Focus ring ────────────────────────────────────────────── */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ds-red/60 ring-offset-2 ring-offset-ds-black;
+  }
+
+  /* ── Image defaults ────────────────────────────────────────── */
+  img {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Components Layer
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Text Gradient ─────────────────────────────────────────── */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      #d4af37 0%,
+      #e5c158 25%,
+      #ffffff 50%,
+      #e5c158 75%,
+      #d4af37 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease-in-out infinite;
+  }
+
+  .text-gradient-static {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #d4af37 0%, #ffffff 60%);
+  }
+
+  /* ── Glass Effect ──────────────────────────────────────────── */
+  .glass {
+    @apply border backdrop-blur-xl;
+    background: rgba(10, 10, 10, 0.7);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .glass-light {
+    @apply border backdrop-blur-md;
+    background: rgba(26, 26, 26, 0.6);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Card Lift ─────────────────────────────────────────────── */
+  .card-lift {
+    @apply transition-all duration-400 ease-out;
+  }
+
+  .card-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(220, 38, 38, 0.08);
+  }
+
+  /* ── Section Padding ───────────────────────────────────────── */
+  .section-padding {
+    @apply px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28;
+  }
+
+  .section-padding-tight {
+    @apply px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-18;
+  }
+
+  /* ── Red Accent Line ───────────────────────────────────────── */
+  .accent-line {
+    @apply relative;
+  }
+
+  .accent-line::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-[3px] w-12 rounded-full bg-ds-red;
+  }
+
+  .accent-line-center::after {
+    content: "";
+    @apply absolute -bottom-1 left-1/2 h-[3px] w-12 -translate-x-1/2 rounded-full bg-ds-red;
+  }
+
+  /* ── Noise texture overlay ─────────────────────────────────── */
+  .bg-noise {
+    position: relative;
+  }
+
+  .bg-noise::before {
+    content: "";
+    @apply pointer-events-none fixed inset-0 z-50 opacity-[0.015];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Grid background ───────────────────────────────────────── */
+  .bg-grid {
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Utilities Layer — Custom Animations
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* ── Animation Delays ──────────────────────────────────────── */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+
+  /* ── Fill mode for staggered animations ────────────────────── */
+  .animate-fill-forwards {
+    animation-fill-mode: forwards;
+  }
+
+  /* ── Opacity start for staggered ───────────────────────────── */
+  .opacity-start {
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Keyframes (not in config for simpler management)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes drawLine {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.animate-draw-line {
+  animation: drawLine 1.2s ease-out forwards;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}

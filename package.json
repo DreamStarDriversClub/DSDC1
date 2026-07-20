@@ -1,0 +1,33 @@
+{
+  "name": "dream-star-drivers-club",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000 -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start -p 3000 -H 0.0.0.0",
+    "publish": "bash ./publish.sh",
+    "go-live": "bash ./go-live.sh",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "jose": "^6.2.3",
+    "next": "^14.2.29",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "prisma": {
+    "seed": "bun prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "prettier": "^3.8.1",
+    "prisma": "^6.5.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.3"
+  }
+}
