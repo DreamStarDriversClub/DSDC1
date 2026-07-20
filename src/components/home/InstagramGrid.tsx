@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -16,7 +15,7 @@ export interface InstagramPostData {
 }
 
 interface InstagramGridProps {
-  posts?: InstagramPostData[];
+  posts: InstagramPostData[];
 }
 
 /* ── Constants ─────────────────────────────────────────────────────────────── */
@@ -24,15 +23,9 @@ interface InstagramGridProps {
 const INSTAGRAM_HANDLE = "@dreamstardriversclub";
 const INSTAGRAM_HASHTAG = "#DreamStarDriversClub";
 
-// SnapWidget free embed — live Instagram grid, no API token needed
-const SNAPWIDGET_URL =
-  "https://snapwidget.com/in/?u=ZHJlYW1zdGFyZHJpdmVyc2NsdWJ8aW58MTAwfDJ8M3x8bm98NXxub25lfG9uU3RhcnR8eWVzfG5v";
-
 /* ── Component ─────────────────────────────────────────────────────────────── */
 
-export function InstagramGrid({ posts = [] }: InstagramGridProps) {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-
+export function InstagramGrid({ posts }: InstagramGridProps) {
   return (
     <section className="bg-ds-black-deepest section-padding">
       <Container>
@@ -44,43 +37,39 @@ export function InstagramGrid({ posts = [] }: InstagramGridProps) {
           className="mb-12"
         />
 
-        {/* ── Live SnapWidget Feed ──────────────────────────────────────── */}
-        <div className="mx-auto max-w-5xl">
-          <div className="relative min-h-[300px] rounded-2xl border border-white/[0.06] bg-ds-black-charcoal overflow-hidden">
-            {/* Loading shimmer */}
-            {!iframeLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex flex-col items-center gap-3">
-                  <Spinner />
-                  <span className="text-sm text-ds-gray-500">
-                    Loading Instagram feed…
-                  </span>
-                </div>
-              </div>
-            )}
-
-            <iframe
-              src={SNAPWIDGET_URL}
-              title="Dream Star Drivers Club Instagram Feed"
-              className="w-full border-0"
-              style={{ height: iframeLoaded ? "auto" : "0", minHeight: iframeLoaded ? "600px" : "0" }}
-              onLoad={() => setIframeLoaded(true)}
-              loading="lazy"
-            />
+        {/* ── Posts Grid ─────────────────────────────────────────────────── */}
+        {posts.length > 0 ? (
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+            {posts.slice(0, 8).map((post, i) => (
+              <InstagramCell key={post.id} post={post} index={i} />
+            ))}
           </div>
-        </div>
-
-        {/* ── Fallback: admin-uploaded posts (shown below iframe if any) ─── */}
-        {posts.length > 0 && (
-          <div className="mt-8">
-            <p className="mb-4 text-center text-xs uppercase tracking-wider text-ds-gray-600">
-              Featured Posts
+        ) : (
+          /* Empty state when no posts are uploaded yet */
+          <div className="mx-auto max-w-2xl rounded-2xl border border-dashed border-white/[0.08] bg-ds-black-charcoal p-10 text-center">
+            <svg
+              className="mx-auto h-12 w-12 text-ds-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1}
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="5" />
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+            </svg>
+            <p className="mt-4 text-sm text-ds-gray-500">
+              Follow us on Instagram{" "}
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
+              >
+                {INSTAGRAM_HANDLE}
+              </a>{" "}
+              for the latest builds and drops.
             </p>
-            <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-              {posts.slice(0, 8).map((post, i) => (
-                <InstagramCell key={post.id} post={post} index={i} />
-              ))}
-            </div>
           </div>
         )}
 
@@ -150,32 +139,6 @@ function InstagramCell({
     );
   }
   return cell;
-}
-
-/* ── Spinner ───────────────────────────────────────────────────────────────── */
-
-function Spinner() {
-  return (
-    <svg
-      className="h-6 w-6 animate-spin text-ds-red"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-      />
-    </svg>
-  );
 }
 
 /* ── Instagram Icon ────────────────────────────────────────────────────────── */
