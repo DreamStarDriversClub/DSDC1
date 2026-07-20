@@ -248,6 +248,36 @@ model ContactSubmission {
   isRead    Boolean  @default(false)
 }
 
+// ── PrintfulProduct ─────────────────────────────────────
+
+model PrintfulProduct {
+  id           Int      @id
+  printfulId   String   @unique
+  name         String
+  thumbnailUrl String?
+  variantCount Int      @default(0)
+  syncedAt     DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  variants PrintfulVariant[]
+}
+
+// ── PrintfulVariant ────────────────────────────────────
+
+model PrintfulVariant {
+  id         Int      @id @default(autoincrement())
+  printfulId String   @unique
+  productId  String
+  name       String
+  size       String?
+  color      String?
+  price      Float
+  currency   String   @default("USD")
+  syncedAt   DateTime @default(now())
+
+  product PrintfulProduct @relation(fields: [productId], references: [printfulId])
+}
+
 // ── Review ─────────────────────────────────────────────
 
 model Review {

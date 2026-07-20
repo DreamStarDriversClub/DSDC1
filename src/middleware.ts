@@ -6,7 +6,7 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || "dream-star-drivers-club-jwt-secret-key-2026"
 );
 
-const protectedPaths = ["/account"];
+const protectedPaths = ["/account", "/admin"];
 
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
