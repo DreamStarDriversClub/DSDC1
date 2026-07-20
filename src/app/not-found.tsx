@@ -7,7 +7,7 @@ export default function NotFound() {
         <h1 className="font-display text-4xl font-black text-ds-white">
           Wrong Turn on the Touge
         </h1>
-        <p className="mt-4 text-ds-gray-400">
+        <p className="mt-4 text-ds-gray-300">
           This page doesn&apos;t exist. The road goes on.
         </p>
         <a

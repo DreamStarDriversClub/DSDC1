@@ -66,12 +66,14 @@ const CREW = [
     role: "Founder & Lead Designer",
     bio: "FC owner and GS300 owner. Pure automotive enthusiast. He started street racing at the age of 13 and 27 years later still has the same drive and passion to build unique and interesting cars and bikes. He is the goto guy for figuring out how to make things work in any scenario.",
     initials: "AA",
+    photo: "/Team member AA.png",
   },
   {
     name: 'Siyu "Lucy" Lu',
     role: "Head of Operations",
     bio: "From educational powerhouse to freshly discovered passion. Married to Angel and inherited his never ending excess passion for Rotary and 2JZ love.",
     initials: "SL",
+    photo: "/Team member SL.png",
   },
   {
     name: "David B.",
@@ -84,6 +86,7 @@ const CREW = [
     role: "Shop Director",
     bio: "Wes has been a part of the car community for over two decades and his experience ranges from Automotive Detailing to full car curating and building. A wizard with a wrench and never scared to take on a job. He focuses on functionality with a SMALL touch of detail. OCD is one way we can describe it.",
     initials: "WS",
+    photo: "/Team member WS.png",
   },
   {
     name: "Kevin A.",
@@ -128,12 +131,16 @@ export default function AboutPage() {
               <span className="text-ds-red">Built for the Drive.</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
-              Dream Star Drivers Club was forged on the mountains of the Tri-state area,
-              based on the love of all the mountain roads in Japan, and now based in the Vegas Valley.
-              This is where rotary engines scream to 9,000 RPM, 2JZ engines test the limits, and every
-              corner tells a tale. We&apos;re more than a brand; we&apos;re a tribute to the
-              golden era of JDM engineering.
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
+              It started with a half-disassembled FD RX-7 in a cramped New Jersey garage.
+              Angel, our founder, had been wrenching since he was thirteen — street racing,
+              building, breaking things, fixing them again. The rotary engine had him from
+              the first bridge-ported scream he heard echoing off a warehouse wall. Late
+              nights blurred into early mornings. Busted knuckles, 10mm sockets that vanished
+              into thin air, the permanent scent of premix soaked into everything. You know
+              this garage. It&apos;s the same one you&apos;ve spent weekends in — where
+              friendships get forged over coolant flushes and timing-light debates, and nobody
+              leaves until the engine fires clean.
             </p>
           </div>
         </Container>
@@ -147,24 +154,32 @@ export default function AboutPage() {
               <SectionHeading
                 eyebrow="The Origin"
                 heading="Where It All Began"
-                description="It started in a garage with a half-disassembled RX-7 and a dream. Late nights, busted knuckles, and the unmistakable smell of premix — that was university."
+                description="Quality parts for rotaries were scarce — and too much of what existed felt like it was made by people who'd never actually built an engine."
               />
-              <p className="mt-6 text-base leading-relaxed text-ds-gray-400">
-                We learned the hard way that parts for rotaries weren&apos;t just hard to find
-                — they were often underwhelming. Generic designs, questionable quality, and
-                zero connection to the culture they claimed to serve. So we started making our own.
+              <p className="mt-6 text-base leading-relaxed text-ds-gray-300">
+                The turning point came from frustration. Quality parts for rotaries were
+                scarce — and too much of what existed felt like it was made by people
+                who&apos;d never actually built an engine. Generic designs. Questionable
+                tolerances. Parts that treated the 13B like an afterthought. So Angel started
+                machining his own: a small batch of rebuild components built to standards
+                that honored the engineering, not just the aftermarket catalog. What happened
+                next wasn&apos;t a business plan — it was enthusiasts showing up at the
+                garage door. Not just for parts. For the conversation. For the canyon runs at
+                dawn. For the first Cars &amp; Coffee where that rotary idle drew a crowd
+                before anyone had touched their coffee. The club wasn&apos;t launched. It
+                coalesced.
               </p>
-              <p className="mt-4 text-base leading-relaxed text-ds-gray-500">
-                What began as a small batch of rotary rebuild components grew into something
-                bigger. Enthusiasts started asking for apparel. Then accessories. Then they
-                wanted to be part of a club — not just customers, but crew. Dream Star
-                Drivers Club was born from that demand: a brand that speaks the language
-                of car culture fluently.
-              </p>
-              <p className="mt-4 text-base leading-relaxed text-ds-gray-500">
-                Every product we make — from the stitching on our hoodies to the tolerances
-                in our performance kits — is a love letter to Japanese automotive culture.
-                This isn&apos;t just merch. This is membership.
+              <p className="mt-4 text-base leading-relaxed text-ds-gray-400">
+                The name came late one night in the Vegas Valley — the desert city we now
+                call home. After a meet, standing around a parking lot long after the last
+                car should have left, someone said every build starts as a dream, and every
+                driver chasing that dream is reaching for a star. It wasn&apos;t marketing.
+                It was just true. Today, Dream Star Drivers Club ships premium apparel,
+                accessories, and rotary and 2JZ performance parts worldwide — but the garage
+                is still where everything gets tested first. Every stitch, every tolerance,
+                every design decision still runs through the same question: would we run this
+                on our own cars? If the answer isn&apos;t yes, it doesn&apos;t ship. Because
+                this isn&apos;t just merch. This is membership.
               </p>
             </div>
 
@@ -181,7 +196,7 @@ export default function AboutPage() {
                     loading="lazy"
                   />
                 </div>
-                <p className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.3em] text-ds-gray-500">
+                <p className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.3em] text-ds-gray-400">
                   Est. 2020
                 </p>
               </div>
@@ -205,7 +220,7 @@ export default function AboutPage() {
               To build the most trusted brand in JDM lifestyle — period.
             </h2>
             <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               We exist to celebrate Japanese car culture through premium products
               that honor its legacy. From the rotary faithful to the 2JZ loyalists,
               we create gear and parts that match the quality of the machines
@@ -236,7 +251,7 @@ export default function AboutPage() {
                 <h3 className="font-display text-lg font-bold text-ds-white">
                   {value.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ds-gray-500">
+                <p className="mt-2 text-sm leading-relaxed text-ds-gray-400">
                   {value.description}
                 </p>
               </Card>
@@ -259,10 +274,19 @@ export default function AboutPage() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {CREW.map((member) => (
               <Card key={member.name} padding="lg" className="flex flex-col items-center text-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-ds-red/30 bg-ds-black-elevated shadow-brand-glow-sm">
-                  <span className="font-display text-xl font-bold text-ds-red">
-                    {member.initials}
-                  </span>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-ds-red/30 bg-ds-black-elevated shadow-brand-glow-sm overflow-hidden">
+                  {"photo" in member && member.photo ? (
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="font-display text-xl font-bold text-ds-red">
+                      {member.initials}
+                    </span>
+                  )}
                 </div>
                 <h3 className="mt-4 font-display text-base font-bold text-ds-white">
                   {member.name}
@@ -270,7 +294,7 @@ export default function AboutPage() {
                 <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-ds-red">
                   {member.role}
                 </p>
-                <p className="mt-3 text-sm leading-relaxed text-ds-gray-500">
+                <p className="mt-3 text-sm leading-relaxed text-ds-gray-400">
                   {member.bio}
                 </p>
               </Card>
@@ -287,7 +311,7 @@ export default function AboutPage() {
             <h2 className="font-display text-3xl font-black tracking-tight text-ds-white sm:text-4xl">
               Ready to Join the Club?
             </h2>
-            <p className="mt-4 text-lg leading-relaxed text-ds-gray-400">
+            <p className="mt-4 text-lg leading-relaxed text-ds-gray-300">
               Sign up for early access to drops, exclusive content, and a
               community of enthusiasts who get it.
             </p>

@@ -69,7 +69,7 @@ function AddressForm({
           name="line1"
           required
           defaultValue={address?.line1 || ""}
-          className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+          className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
           placeholder="123 Mountain Pass Road"
         />
       </div>
@@ -82,7 +82,7 @@ function AddressForm({
           type="text"
           name="line2"
           defaultValue={address?.line2 || ""}
-          className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+          className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
           placeholder="Apt, Suite, Unit"
         />
       </div>
@@ -97,7 +97,7 @@ function AddressForm({
             name="city"
             required
             defaultValue={address?.city || ""}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="Los Angeles"
           />
         </div>
@@ -110,7 +110,7 @@ function AddressForm({
             name="state"
             required
             defaultValue={address?.state || ""}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="CA"
           />
         </div>
@@ -126,7 +126,7 @@ function AddressForm({
             name="zip"
             required
             defaultValue={address?.zip || ""}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="90001"
           />
         </div>
@@ -138,12 +138,12 @@ function AddressForm({
             type="text"
             name="country"
             defaultValue={address?.country || "US"}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
           />
         </div>
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-ds-gray-400 cursor-pointer">
+      <label className="flex items-center gap-2 text-sm text-ds-gray-300 cursor-pointer">
         <input
           type="checkbox"
           name="isDefault"
@@ -184,7 +184,7 @@ export default function AddressesPage({
           <h1 className="font-display text-2xl text-ds-white sm:text-3xl">
             Addresses
           </h1>
-          <p className="mt-1 text-ds-gray-400">Manage your shipping addresses.</p>
+          <p className="mt-1 text-ds-gray-300">Manage your shipping addresses.</p>
         </div>
         {!showForm && (
           <Button
@@ -219,7 +219,7 @@ export default function AddressesPage({
         <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-10 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-ds-black-darkgray">
             <svg
-              className="h-8 w-8 text-ds-gray-500"
+              className="h-8 w-8 text-ds-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -237,7 +237,7 @@ export default function AddressesPage({
               />
             </svg>
           </div>
-          <p className="text-ds-gray-500">No saved addresses.</p>
+          <p className="text-ds-gray-400">No saved addresses.</p>
           <p className="text-sm text-ds-gray-600 mt-1">
             Add one now for faster checkout.
           </p>
@@ -255,12 +255,12 @@ export default function AddressesPage({
                     {addr.line1}
                   </p>
                   {addr.line2 && (
-                    <p className="text-sm text-ds-gray-400">{addr.line2}</p>
+                    <p className="text-sm text-ds-gray-300">{addr.line2}</p>
                   )}
-                  <p className="mt-1 text-sm text-ds-gray-400">
+                  <p className="mt-1 text-sm text-ds-gray-300">
                     {addr.city}, {addr.state} {addr.zip}
                   </p>
-                  <p className="text-xs text-ds-gray-500">{addr.country}</p>
+                  <p className="text-xs text-ds-gray-400">{addr.country}</p>
                 </div>
                 {addr.isDefault && (
                   <span className="shrink-0 rounded-full bg-ds-red/10 px-2.5 py-0.5 text-xs font-medium text-ds-red">
@@ -274,7 +274,7 @@ export default function AddressesPage({
                     setEditingAddress(addr);
                     setShowForm("edit");
                   }}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
                 >
                   Edit
                 </button>
@@ -285,7 +285,7 @@ export default function AddressesPage({
                       window.location.reload();
                     }
                   }}
-                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-ds-gray-500 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
+                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-ds-gray-400 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
                 >
                   Delete
                 </button>

@@ -254,7 +254,7 @@ export default async function HomePage() {
             </p>
 
             {/* Subheadline */}
-            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ds-gray-400 sm:text-lg">
+            <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-ds-gray-300 sm:text-lg">
               Premium apparel, accessories, and Mazda rotary performance parts
               inspired by Japanese automotive culture.
             </p>
@@ -334,24 +334,12 @@ export default async function HomePage() {
             {/* Apparel Card */}
             <Link href="/shop/apparel" className="group block">
               <Card hover padding="none" className="overflow-hidden">
-                <div className="relative flex h-52 items-center justify-center bg-ds-black-elevated overflow-hidden">
-                  {/* Image zoom overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-ds-red-900/20 to-transparent transition-transform duration-700 ease-out group-hover:scale-110" />
-                  <div className="relative z-10 text-center">
-                    <svg
-                      className="mx-auto h-14 w-14 text-ds-red/50 transition-transform duration-500 group-hover:scale-110 group-hover:text-ds-red/70"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                      />
-                    </svg>
-                  </div>
+                <div
+                  className="relative flex h-52 items-center justify-center overflow-hidden bg-cover bg-center"
+                  style={{ backgroundImage: "url('/category-apparel.jpg')" }}
+                >
+                  {/* Dark overlay for readability */}
+                  <div className="absolute inset-0 bg-ds-black/50 transition-all duration-700 ease-out group-hover:bg-ds-black/35" />
                   {/* Red glow on hover */}
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-t from-ds-red/5 to-transparent" />
                 </div>
@@ -362,7 +350,7 @@ export default async function HomePage() {
                   <h3 className="font-display text-lg font-bold text-ds-white transition-colors group-hover:text-ds-red">
                     Apparel
                   </h3>
-                  <p className="mt-1 text-sm text-ds-gray-500">
+                  <p className="mt-1 text-sm text-ds-gray-400">
                     Premium streetwear with authentic JDM styling.
                   </p>
                 </div>
@@ -372,28 +360,13 @@ export default async function HomePage() {
             {/* Accessories Card */}
             <Link href="/shop/accessories" className="group block">
               <Card hover padding="none" className="overflow-hidden">
-                <div className="relative flex h-52 items-center justify-center bg-ds-black-elevated overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-ds-gold-dark/15 to-transparent transition-transform duration-700 ease-out group-hover:scale-110" />
-                  <div className="relative z-10 text-center">
-                    <svg
-                      className="mx-auto h-14 w-14 text-ds-gold/40 transition-transform duration-500 group-hover:scale-110 group-hover:text-ds-gold/60"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 6h.008v.008H6V6z"
-                      />
-                    </svg>
-                  </div>
+                <div
+                  className="relative flex h-52 items-center justify-center overflow-hidden bg-cover bg-center"
+                  style={{ backgroundImage: "url('/category-accessories.jpg')" }}
+                >
+                  {/* Dark overlay for readability */}
+                  <div className="absolute inset-0 bg-ds-black/50 transition-all duration-700 ease-out group-hover:bg-ds-black/35" />
+                  {/* Gold glow on hover */}
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-t from-ds-gold/5 to-transparent" />
                 </div>
                 <div className="p-6">
@@ -403,7 +376,7 @@ export default async function HomePage() {
                   <h3 className="font-display text-lg font-bold text-ds-white transition-colors group-hover:text-ds-red">
                     Accessories
                   </h3>
-                  <p className="mt-1 text-sm text-ds-gray-500">
+                  <p className="mt-1 text-sm text-ds-gray-400">
                     Stickers, keychains, lanyards, and club gear.
                   </p>
                 </div>
@@ -413,23 +386,13 @@ export default async function HomePage() {
             {/* Performance Card */}
             <Link href="/shop/performance" className="group block">
               <Card hover padding="none" className="overflow-hidden">
-                <div className="relative flex h-52 items-center justify-center bg-ds-black-elevated overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-ds-red-900/20 to-transparent transition-transform duration-700 ease-out group-hover:scale-110" />
-                  <div className="relative z-10 text-center">
-                    <svg
-                      className="mx-auto h-14 w-14 text-ds-red/50 transition-transform duration-500 group-hover:scale-110 group-hover:text-ds-red/70"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z"
-                      />
-                    </svg>
-                  </div>
+                <div
+                  className="relative flex h-52 items-center justify-center overflow-hidden bg-cover bg-center"
+                  style={{ backgroundImage: "url('/category-performance.jpg')" }}
+                >
+                  {/* Dark overlay for readability */}
+                  <div className="absolute inset-0 bg-ds-black/50 transition-all duration-700 ease-out group-hover:bg-ds-black/35" />
+                  {/* Red glow on hover */}
                   <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-t from-ds-red/5 to-transparent" />
                 </div>
                 <div className="p-6">
@@ -439,7 +402,7 @@ export default async function HomePage() {
                   <h3 className="font-display text-lg font-bold text-ds-white transition-colors group-hover:text-ds-red">
                     DS Performance
                   </h3>
-                  <p className="mt-1 text-sm text-ds-gray-500">
+                  <p className="mt-1 text-sm text-ds-gray-400">
                     Rotary &amp; 2JZ performance parts — built by enthusiasts.
                   </p>
                 </div>
@@ -478,11 +441,11 @@ export default async function HomePage() {
                     <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
                       {product.icon}
                     </div>
-                    {/* Quick View overlay */}
+                    {/* View Details overlay */}
                     <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
                       <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
                         <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
-                          Quick View
+                          View Details
                         </span>
                       </div>
                     </div>
@@ -547,25 +510,17 @@ export default async function HomePage() {
                 Built for the Drive.
               </h2>
               <div className="mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
-              <p className="mt-6 max-w-lg text-base leading-relaxed text-ds-gray-400 sm:text-lg">
-                Dream Star Drivers Club was forged on the mountains of the
-                Tri-state area, inspired by the legendary mountain roads of
-                Japan, and now based in the Vegas Valley — where rotary engines
-                scream to 9,000 RPM, 2JZ engines test the limits, and every
-                corner tells a tale. We're more than a brand; we're a tribute
-                to the golden era of JDM engineering. From the legendary 13B
-                rotary to the bulletproof 2JZ-GTE, we celebrate the machines
-                and the culture that raised us.
-              </p>
-              <p className="mt-4 max-w-lg text-base leading-relaxed text-ds-gray-500">
-                Every product we make — from the stitching on our hoodies to the
-                tolerances in our performance kits — is a love letter to
-                Japanese car culture. This isn't just merch. This is membership.
+              <p className="mt-6 max-w-lg text-base leading-relaxed text-ds-gray-300 sm:text-lg">
+                Some brands are built in boardrooms. Ours was built on the
+                mountain roads of the Tri-state, refined on the touge passes of
+                Japan, and now runs deep in the Vegas Valley. It started with an
+                RX-7, a garage, and an obsession with the golden era of JDM.
+                What came next was never part of the plan.
               </p>
               <div className="mt-8">
                 <Link href="/about">
                   <Button variant="outline" size="lg">
-                    Our Story
+                    Read the full story
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -597,7 +552,7 @@ export default async function HomePage() {
                     DS
                   </span>
                 </div>
-                <p className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.3em] text-ds-gray-500">
+                <p className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.3em] text-ds-gray-400">
                   Est. 2020
                 </p>
               </div>
@@ -648,7 +603,7 @@ export default async function HomePage() {
                     <p className="text-sm font-semibold text-ds-white">
                       {t.name}
                     </p>
-                    <p className="text-xs text-ds-gray-500">{t.car}</p>
+                    <p className="text-xs text-ds-gray-400">{t.car}</p>
                   </div>
                 </div>
               </Card>
@@ -792,21 +747,20 @@ export default async function HomePage() {
 
         <Container className="relative section-padding">
           <div className="mx-auto max-w-2xl text-center">
-            {/* Hoshi mascot placeholder */}
+            {/* Hoshi mascot */}
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-ds-red/20 bg-ds-black-charcoal shadow-brand-glow-sm">
-              <span
-                className="text-3xl"
-                role="img"
-                aria-label="Hoshi mascot star"
-              >
-                ⭐
-              </span>
+              <img
+                src="/hoshi-waving.png"
+                alt="Hoshi mascot waving"
+                className="h-12 w-12 object-contain"
+                loading="lazy"
+              />
             </div>
 
             <h2 className="font-display text-2xl font-black tracking-tight text-ds-white sm:text-3xl">
               Join the Club
             </h2>
-            <p className="mt-3 text-ds-gray-400">
+            <p className="mt-3 text-ds-gray-300">
               Be the first to know about new drops, restocks, and exclusive club
               content. No spam — just the good stuff.
             </p>
@@ -819,7 +773,7 @@ export default async function HomePage() {
               By signing up, you agree to our{" "}
               <Link
                 href="/privacy"
-                className="underline underline-offset-2 transition-colors hover:text-ds-gray-400"
+                className="underline underline-offset-2 transition-colors hover:text-ds-gray-300"
               >
                 Privacy Policy
               </Link>

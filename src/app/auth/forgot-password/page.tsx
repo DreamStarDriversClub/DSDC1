@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
             <h1 className="font-display text-3xl text-ds-white">
               Reset Password
             </h1>
-            <p className="mt-2 text-ds-gray-400">
+            <p className="mt-2 text-ds-gray-300">
               {sent
                 ? "Check your inbox for reset instructions."
                 : "Enter your email and we'll send you a reset link."}
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                   placeholder="you@email.com"
                 />
               </div>
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
                   />
                 </svg>
               </div>
-              <p className="text-sm text-ds-gray-400">
+              <p className="text-sm text-ds-gray-300">
                 If an account exists for <strong className="text-ds-white">{email}</strong>, you&apos;ll receive a reset link shortly.
               </p>
               <Link href="/auth/login">

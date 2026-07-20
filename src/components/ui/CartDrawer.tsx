@@ -65,14 +65,14 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <h2 className="font-display text-lg font-bold tracking-tight text-ds-white">
             Your Cart{" "}
             {itemCount > 0 && (
-              <span className="ml-1 text-sm font-normal text-ds-gray-500">
+              <span className="ml-1 text-sm font-normal text-ds-gray-400">
                 ({itemCount})
               </span>
             )}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+            className="rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
             aria-label="Close cart"
           >
             <svg
@@ -99,7 +99,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {/* Free shipping progress */}
             {!isFreeShipping && (
               <div className="border-b border-white/[0.06] px-6 py-3">
-                <p className="mb-2 text-xs text-ds-gray-400">
+                <p className="mb-2 text-xs text-ds-gray-300">
                   You&apos;re{" "}
                   <span className="font-semibold text-ds-red">
                     {formatPrice(freeShippingRemaining)}
@@ -171,11 +171,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                           {item.name}
                         </Link>
                         {item.variantName && (
-                          <p className="mt-0.5 text-xs text-ds-gray-500">
+                          <p className="mt-0.5 text-xs text-ds-gray-400">
                             {item.variantName}
                           </p>
                         )}
-                        <p className="mt-0.5 text-xs text-ds-gray-500">
+                        <p className="mt-0.5 text-xs text-ds-gray-400">
                           {item.sku}
                         </p>
                       </div>
@@ -187,7 +187,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className="px-2.5 py-1 text-xs text-ds-gray-400 transition-colors hover:text-ds-white"
+                            className="px-2.5 py-1 text-xs text-ds-gray-300 transition-colors hover:text-ds-white"
                             aria-label="Decrease quantity"
                           >
                             −
@@ -199,7 +199,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="px-2.5 py-1 text-xs text-ds-gray-400 transition-colors hover:text-ds-white"
+                            className="px-2.5 py-1 text-xs text-ds-gray-300 transition-colors hover:text-ds-white"
                             aria-label="Increase quantity"
                           >
                             +
@@ -241,7 +241,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {/* ── Footer ──────────────────────────────── */}
             <div className="border-t border-white/[0.06] px-6 py-4">
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-sm text-ds-gray-400">Subtotal</span>
+                <span className="text-sm text-ds-gray-300">Subtotal</span>
                 <span className="text-lg font-bold text-ds-white">
                   {formatPrice(subtotal)}
                 </span>
@@ -307,7 +307,7 @@ function EmptyCart({ onClose }: { onClose: () => void }) {
         <p className="text-lg font-display font-bold text-ds-white">
           Your cart is empty
         </p>
-        <p className="mt-1 text-sm text-ds-gray-500">
+        <p className="mt-1 text-sm text-ds-gray-400">
           Hoshi&apos;s waiting for you to add something cool.
         </p>
       </div>

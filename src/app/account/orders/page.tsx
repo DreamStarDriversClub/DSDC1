@@ -36,7 +36,7 @@ export default async function OrdersPage() {
       <h1 className="mb-2 font-display text-2xl text-ds-white sm:text-3xl">
         Order History
       </h1>
-      <p className="mb-8 text-ds-gray-400">
+      <p className="mb-8 text-ds-gray-300">
         Track and review your past orders.
       </p>
 
@@ -44,7 +44,7 @@ export default async function OrdersPage() {
         <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-10 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-ds-black-darkgray">
             <svg
-              className="h-8 w-8 text-ds-gray-500"
+              className="h-8 w-8 text-ds-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -57,7 +57,7 @@ export default async function OrdersPage() {
               />
             </svg>
           </div>
-          <p className="text-ds-gray-500">No orders placed yet.</p>
+          <p className="text-ds-gray-400">No orders placed yet.</p>
           <Link
             href="/shop"
             className="mt-3 inline-block text-sm font-medium text-ds-red hover:text-ds-red-400 transition-colors"
@@ -78,7 +78,7 @@ export default async function OrdersPage() {
                   <p className="text-sm font-semibold text-ds-white">
                     Order #{order.id.slice(-8).toUpperCase()}
                   </p>
-                  <p className="mt-1 text-xs text-ds-gray-500">
+                  <p className="mt-1 text-xs text-ds-gray-400">
                     {new Date(order.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -113,7 +113,7 @@ export default async function OrdersPage() {
 
               {/* Item preview */}
               <div className="mt-3 border-t border-white/[0.06] pt-3">
-                <p className="text-xs text-ds-gray-500">
+                <p className="text-xs text-ds-gray-400">
                   {order.items.slice(0, 3).map((i) => i.name).join(", ")}
                   {order.items.length > 3 && ` +${order.items.length - 3} more`}
                 </p>

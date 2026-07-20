@@ -41,7 +41,7 @@ export function ProductFilters({
           className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
             !currentCategory
               ? "border-ds-red bg-ds-red/10 text-ds-red"
-              : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-400 hover:border-ds-red/30 hover:text-ds-white"
+              : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
           }`}
         >
           All
@@ -53,7 +53,7 @@ export function ProductFilters({
             className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
               currentCategory === cat.slug
                 ? "border-ds-red bg-ds-red/10 text-ds-red"
-                : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-400 hover:border-ds-red/30 hover:text-ds-white"
+                : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
             }`}
           >
             {cat.slug === "ds-performance" ? "DS Performance" : cat.name}
@@ -63,7 +63,7 @@ export function ProductFilters({
 
       {/* Sort dropdown */}
       <div className="flex items-center gap-2">
-        <label htmlFor="all-sort" className="text-sm text-ds-gray-500 whitespace-nowrap">
+        <label htmlFor="all-sort" className="text-sm text-ds-gray-400 whitespace-nowrap">
           Sort:
         </label>
         <select

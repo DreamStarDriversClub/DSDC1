@@ -156,7 +156,7 @@ export default function FaqPage() {
               <span className="text-ds-red">Questions</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               Everything you need to know about orders, shipping, returns, and
               the club. Can&apos;t find what you&apos;re looking for?{" "}
               <a
@@ -187,7 +187,7 @@ export default function FaqPage() {
           <h2 className="font-display text-2xl font-black tracking-tight text-ds-white sm:text-3xl">
             Still Have Questions?
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-ds-gray-400">
+          <p className="mx-auto mt-3 max-w-md text-ds-gray-300">
             Our crew is standing by. Drop us a message and we&apos;ll get back
             to you within 24 hours.
           </p>

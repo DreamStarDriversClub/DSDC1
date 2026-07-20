@@ -57,11 +57,11 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
               </svg>
             )}
           </div>
-          {/* Quick View overlay */}
+          {/* View Details overlay */}
           <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
             <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
               <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
-                Quick View
+                View Details
               </span>
             </div>
           </div>
@@ -91,7 +91,7 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
             {salePrice ? (
               <>
                 <p className="text-lg font-bold text-ds-red">{formatPrice(salePrice)}</p>
-                <p className="text-sm text-ds-gray-500 line-through">{formatPrice(price)}</p>
+                <p className="text-sm text-ds-gray-400 line-through">{formatPrice(price)}</p>
               </>
             ) : (
               <p className="text-lg font-bold text-ds-white">{formatPrice(price)}</p>

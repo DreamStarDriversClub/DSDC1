@@ -63,7 +63,7 @@ export function SearchInput({ initialQuery = "" }: SearchInputProps) {
         <button
           type="button"
           onClick={() => handleChange("")}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-ds-gray-500 hover:text-ds-gray-300 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 text-ds-gray-400 hover:text-ds-gray-300 transition-colors"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

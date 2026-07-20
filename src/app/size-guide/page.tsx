@@ -30,7 +30,7 @@ export default function SizeGuidePage() {
               Size <span className="text-ds-red">Guide</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               Every body is different, and so is every build. Our detailed size
               charts are being dialed in — precise measurements for every piece
               in the collection, so you can order with confidence.
@@ -70,7 +70,7 @@ export default function SizeGuidePage() {
                 <h2 className="mt-6 font-display text-2xl font-bold text-ds-white">
                   Size Charts Coming Soon
                 </h2>
-                <p className="mt-4 text-sm leading-relaxed text-ds-gray-400">
+                <p className="mt-4 text-sm leading-relaxed text-ds-gray-300">
                   We&apos;re putting together detailed measurement guides for
                   every apparel piece in the Dream Star collection — from tee
                   chest widths to hoodie sleeve lengths. In the meantime, our
@@ -81,7 +81,7 @@ export default function SizeGuidePage() {
 
             {/* Quick help */}
             <div className="mt-8 text-center">
-              <p className="text-sm text-ds-gray-500">
+              <p className="text-sm text-ds-gray-400">
                 Need sizing help right now?{" "}
                 <Link
                   href="/faq#sizing"

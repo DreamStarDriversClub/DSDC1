@@ -74,7 +74,7 @@ export default async function AccountPage() {
         <h1 className="font-display text-2xl text-ds-white sm:text-3xl">
           Welcome back, {user.firstName}
         </h1>
-        <p className="mt-1 text-ds-gray-400">
+        <p className="mt-1 text-ds-gray-300">
           Here&apos;s what&apos;s happening with your account.
         </p>
       </div>
@@ -91,7 +91,7 @@ export default async function AccountPage() {
             <p className="text-2xl font-bold text-ds-white">
               {card.value ?? "—"}
             </p>
-            <p className="text-sm text-ds-gray-500">{card.label}</p>
+            <p className="text-sm text-ds-gray-400">{card.label}</p>
           </Link>
         ))}
       </div>
@@ -113,7 +113,7 @@ export default async function AccountPage() {
           <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-10 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-ds-black-darkgray">
               <svg
-                className="h-8 w-8 text-ds-gray-500"
+                className="h-8 w-8 text-ds-gray-400"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -126,7 +126,7 @@ export default async function AccountPage() {
                 />
               </svg>
             </div>
-            <p className="text-ds-gray-500">No orders yet.</p>
+            <p className="text-ds-gray-400">No orders yet.</p>
             <Link
               href="/shop"
               className="mt-3 inline-block text-sm font-medium text-ds-red hover:text-ds-red-400 transition-colors"
@@ -146,7 +146,7 @@ export default async function AccountPage() {
                   <p className="text-sm font-semibold text-ds-white">
                     Order #{order.id.slice(-8).toUpperCase()}
                   </p>
-                  <p className="mt-1 text-xs text-ds-gray-500">
+                  <p className="mt-1 text-xs text-ds-gray-400">
                     {new Date(order.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",

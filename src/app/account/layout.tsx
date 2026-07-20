@@ -93,7 +93,7 @@ export default async function AccountLayout({
                   <p className="truncate text-sm font-semibold text-ds-white">
                     {user.firstName} {user.lastName}
                   </p>
-                  <p className="truncate text-xs text-ds-gray-500">{user.email}</p>
+                  <p className="truncate text-xs text-ds-gray-400">{user.email}</p>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ export default async function AccountLayout({
                   href={link.href}
                   className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
                 >
-                  <span className="shrink-0 text-ds-gray-500">{link.icon}</span>
+                  <span className="shrink-0 text-ds-gray-400">{link.icon}</span>
                   {link.label}
                 </Link>
               ))}
@@ -113,7 +113,7 @@ export default async function AccountLayout({
               <form action={logoutAction}>
                 <button
                   type="submit"
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ds-gray-500 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-ds-gray-400 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
                 >
                   <svg
                     className="h-5 w-5 shrink-0"

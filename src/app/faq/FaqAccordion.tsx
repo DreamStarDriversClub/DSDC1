@@ -40,7 +40,7 @@ function FaqItemRow({
           className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
             isOpen
               ? "rotate-180 border-ds-red/40 bg-ds-red/10 text-ds-red"
-              : "border-ds-gray-700 text-ds-gray-500"
+              : "border-ds-gray-700 text-ds-gray-400"
           }`}
         >
           <svg
@@ -63,7 +63,7 @@ function FaqItemRow({
           isOpen ? "max-h-96 pb-5" : "max-h-0"
         }`}
       >
-        <p className="text-sm leading-relaxed text-ds-gray-400">
+        <p className="text-sm leading-relaxed text-ds-gray-300">
           {item.answer}
         </p>
       </div>

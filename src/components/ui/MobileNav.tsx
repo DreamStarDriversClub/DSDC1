@@ -52,7 +52,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
           </span>
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+            className="rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
             aria-label="Close menu"
           >
             <svg
@@ -81,7 +81,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             >
               {shopLink.label}
               <svg
-                className={`h-4 w-4 text-ds-gray-500 transition-transform ${
+                className={`h-4 w-4 text-ds-gray-400 transition-transform ${
                   expandedShop ? "rotate-180" : ""
                 }`}
                 fill="none"
@@ -102,7 +102,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
                   key={child.label}
                   href={child.href}
                   onClick={onClose}
-                  className="flex flex-col px-10 py-2 text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
+                  className="flex flex-col px-10 py-2 text-sm text-ds-gray-300 transition-colors hover:text-ds-white"
                 >
                   <span className="font-medium">{child.label}</span>
                   <span className="text-xs text-ds-gray-600">
@@ -130,7 +130,7 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
           <a
             href="/contact"
             onClick={onClose}
-            className="text-sm text-ds-gray-500 transition-colors hover:text-ds-white"
+            className="text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
           >
             Need help? Contact us →
           </a>

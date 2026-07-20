@@ -80,7 +80,7 @@ export default function CartPage() {
               <h1 className="mt-8 font-display text-3xl font-bold text-ds-white">
                 Your cart is empty
               </h1>
-              <p className="mt-3 text-ds-gray-400">
+              <p className="mt-3 text-ds-gray-300">
                 Looks like you haven&apos;t added anything yet. Browse our
                 collection and find something awesome.
               </p>
@@ -114,13 +114,13 @@ export default function CartPage() {
           <div className="mb-8 flex items-center justify-between">
             <h1 className="font-display text-3xl font-bold text-ds-white">
               Shopping Cart{" "}
-              <span className="text-lg font-normal text-ds-gray-500">
+              <span className="text-lg font-normal text-ds-gray-400">
                 ({itemCount} {itemCount === 1 ? "item" : "items"})
               </span>
             </h1>
             <button
               onClick={clearCart}
-              className="text-sm text-ds-gray-500 transition-colors hover:text-ds-red"
+              className="text-sm text-ds-gray-400 transition-colors hover:text-ds-red"
             >
               Clear Cart
             </button>
@@ -133,14 +133,14 @@ export default function CartPage() {
               {!isFreeShipping && (
                 <div className="mb-6 rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-ds-gray-400">
+                    <p className="text-sm text-ds-gray-300">
                       Add{" "}
                       <span className="font-semibold text-ds-red">
                         {formatPrice(FREE_SHIPPING_THRESHOLD - subtotal + discount)}
                       </span>{" "}
                       more for <span className="font-semibold text-green-400">free shipping</span>
                     </p>
-                    <span className="text-xs text-ds-gray-500">
+                    <span className="text-xs text-ds-gray-400">
                       {formatPrice(subtotal - discount)} / {formatPrice(FREE_SHIPPING_THRESHOLD)}
                     </span>
                   </div>
@@ -204,7 +204,7 @@ export default function CartPage() {
                           </Link>
                         </div>
                         {item.variantName && (
-                          <p className="mt-0.5 text-xs text-ds-gray-500">
+                          <p className="mt-0.5 text-xs text-ds-gray-400">
                             {item.variantName}
                           </p>
                         )}
@@ -220,7 +220,7 @@ export default function CartPage() {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className="px-3 py-1.5 text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
+                            className="px-3 py-1.5 text-sm text-ds-gray-300 transition-colors hover:text-ds-white"
                             aria-label="Decrease"
                           >
                             −
@@ -232,7 +232,7 @@ export default function CartPage() {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="px-3 py-1.5 text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
+                            className="px-3 py-1.5 text-sm text-ds-gray-300 transition-colors hover:text-ds-white"
                             aria-label="Increase"
                           >
                             +
@@ -273,7 +273,7 @@ export default function CartPage() {
               <div className="mt-6">
                 <Link
                   href="/shop"
-                  className="inline-flex items-center gap-1 text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
+                  className="inline-flex items-center gap-1 text-sm text-ds-gray-300 transition-colors hover:text-ds-white"
                 >
                   <svg
                     className="h-4 w-4"
@@ -303,7 +303,7 @@ export default function CartPage() {
                 {/* Coupon */}
                 {!coupon ? (
                   <div className="mb-6">
-                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                       Promo Code
                     </label>
                     <div className="flex gap-2">
@@ -332,7 +332,7 @@ export default function CartPage() {
                         onClick={() => {
                           setCouponInput("WELCOME10");
                         }}
-                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-400"
+                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-300"
                       >
                         WELCOME10
                       </button>
@@ -340,7 +340,7 @@ export default function CartPage() {
                         onClick={() => {
                           setCouponInput("FREESHIP");
                         }}
-                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-400"
+                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-300"
                       >
                         FREESHIP
                       </button>
@@ -348,7 +348,7 @@ export default function CartPage() {
                   </div>
                 ) : (
                   <div className="mb-6">
-                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                    <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                       Applied Coupon
                     </label>
                     <div className="flex items-center justify-between rounded-lg border border-green-500/20 bg-green-500/5 px-3 py-2">
@@ -372,7 +372,7 @@ export default function CartPage() {
                       </div>
                       <button
                         onClick={handleRemoveCoupon}
-                        className="text-xs text-ds-gray-500 transition-colors hover:text-ds-red"
+                        className="text-xs text-ds-gray-400 transition-colors hover:text-ds-red"
                       >
                         Remove
                       </button>
@@ -383,7 +383,7 @@ export default function CartPage() {
                 {/* Totals */}
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Subtotal</span>
+                    <span className="text-ds-gray-300">Subtotal</span>
                     <span className="text-ds-white font-medium">
                       {formatPrice(subtotal)}
                     </span>
@@ -397,7 +397,7 @@ export default function CartPage() {
                   )}
 
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Shipping</span>
+                    <span className="text-ds-gray-300">Shipping</span>
                     <span
                       className={`font-medium ${shipping === 0 ? "text-green-400" : "text-ds-white"}`}
                     >
@@ -406,7 +406,7 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Tax (est.)</span>
+                    <span className="text-ds-gray-300">Tax (est.)</span>
                     <span className="text-ds-white font-medium">
                       {formatPrice(tax)}
                     </span>
@@ -425,7 +425,7 @@ export default function CartPage() {
                 </div>
 
                 {/* Shipping info */}
-                <div className="mt-4 flex items-center gap-2 text-xs text-ds-gray-500">
+                <div className="mt-4 flex items-center gap-2 text-xs text-ds-gray-400">
                   <svg
                     className="h-4 w-4 flex-shrink-0"
                     fill="none"

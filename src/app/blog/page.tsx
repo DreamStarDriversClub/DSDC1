@@ -56,7 +56,7 @@ export default function BlogPage() {
               <span className="text-ds-red">Blog</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               Build stories, technical deep dives, event coverage, and
               everything in between. Welcome to the heart of Dream Star Drivers
               Club — where the culture lives between the words.
@@ -96,7 +96,7 @@ export default function BlogPage() {
                   <h2 className="mt-4 font-display text-xl font-bold text-ds-white transition-colors group-hover:text-ds-red-400">
                     {post.title}
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-ds-gray-500">
+                  <p className="mt-3 text-sm leading-relaxed text-ds-gray-400">
                     {post.excerpt}
                   </p>
                   <div className="mt-4 flex items-center gap-3">
@@ -119,7 +119,7 @@ export default function BlogPage() {
           <h2 className="font-display text-2xl font-black tracking-tight text-ds-white sm:text-3xl">
             Don&apos;t Miss a Story
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-ds-gray-400">
+          <p className="mx-auto mt-3 max-w-md text-ds-gray-300">
             Sign up for our newsletter and be the first to know when we drop new
             articles, build diaries, and event coverage.
           </p>

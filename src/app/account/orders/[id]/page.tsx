@@ -70,14 +70,14 @@ export default async function OrderDetailPage({
         <div>
           <Link
             href="/account/orders"
-            className="mb-2 inline-flex items-center gap-1 text-sm text-ds-gray-500 hover:text-ds-white transition-colors"
+            className="mb-2 inline-flex items-center gap-1 text-sm text-ds-gray-400 hover:text-ds-white transition-colors"
           >
             ← Back to Orders
           </Link>
           <h1 className="font-display text-2xl text-ds-white sm:text-3xl">
             Order #{order.id.slice(-8).toUpperCase()}
           </h1>
-          <p className="mt-1 text-sm text-ds-gray-400">
+          <p className="mt-1 text-sm text-ds-gray-300">
             Placed on{" "}
             {new Date(order.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
@@ -116,14 +116,14 @@ export default async function OrderDetailPage({
                     className={`flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-bold transition-all ${
                       isComplete
                         ? "border-ds-red bg-ds-red text-white"
-                        : "border-white/10 bg-ds-black-darkgray text-ds-gray-500"
+                        : "border-white/10 bg-ds-black-darkgray text-ds-gray-400"
                     } ${isCurrent ? "ring-4 ring-ds-red/20" : ""}`}
                   >
                     {isComplete ? "✓" : i + 1}
                   </div>
                   <span
                     className={`mt-2 text-xs font-medium ${
-                      isComplete ? "text-ds-white" : "text-ds-gray-500"
+                      isComplete ? "text-ds-white" : "text-ds-gray-400"
                     }`}
                   >
                     {step.label}
@@ -179,7 +179,7 @@ export default async function OrderDetailPage({
                   <p className="text-sm font-medium text-ds-white truncate">
                     {item.name}
                   </p>
-                  <p className="text-xs text-ds-gray-500">
+                  <p className="text-xs text-ds-gray-400">
                     SKU: {item.sku} · Qty: {item.quantity}
                   </p>
                 </div>
@@ -188,7 +188,7 @@ export default async function OrderDetailPage({
                     ${Number(item.price).toFixed(2)}
                   </p>
                   {item.quantity > 1 && (
-                    <p className="text-xs text-ds-gray-500">
+                    <p className="text-xs text-ds-gray-400">
                       ${Number(item.price).toFixed(2)} × {item.quantity}
                     </p>
                   )}
@@ -207,13 +207,13 @@ export default async function OrderDetailPage({
             </h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-ds-gray-500">Subtotal</span>
+                <span className="text-ds-gray-400">Subtotal</span>
                 <span className="text-ds-white">
                   ${Number(order.subtotal).toFixed(2)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ds-gray-500">Shipping</span>
+                <span className="text-ds-gray-400">Shipping</span>
                 <span className="text-ds-white">
                   {Number(order.shipping) === 0
                     ? "Free"
@@ -221,7 +221,7 @@ export default async function OrderDetailPage({
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-ds-gray-500">Tax</span>
+                <span className="text-ds-gray-400">Tax</span>
                 <span className="text-ds-white">
                   ${Number(order.tax).toFixed(2)}
                 </span>
@@ -256,7 +256,7 @@ export default async function OrderDetailPage({
               <h2 className="mb-2 text-sm font-semibold text-ds-gray-300 uppercase tracking-wider">
                 Shipping Address
               </h2>
-              <div className="text-sm text-ds-gray-400 space-y-0.5">
+              <div className="text-sm text-ds-gray-300 space-y-0.5">
                 <p className="text-ds-white font-medium">
                   {order.shippingAddress.line1}
                 </p>
@@ -278,7 +278,7 @@ export default async function OrderDetailPage({
               <h2 className="mb-2 text-sm font-semibold text-ds-gray-300 uppercase tracking-wider">
                 Billing Address
               </h2>
-              <div className="text-sm text-ds-gray-400 space-y-0.5">
+              <div className="text-sm text-ds-gray-300 space-y-0.5">
                 <p className="text-ds-white font-medium">
                   {order.billingAddress.line1}
                 </p>
@@ -306,7 +306,7 @@ export default async function OrderDetailPage({
               <h2 className="mb-2 text-sm font-semibold text-ds-gray-300 uppercase tracking-wider">
                 Notes
               </h2>
-              <p className="text-sm text-ds-gray-400">{order.notes}</p>
+              <p className="text-sm text-ds-gray-300">{order.notes}</p>
             </div>
           )}
         </div>

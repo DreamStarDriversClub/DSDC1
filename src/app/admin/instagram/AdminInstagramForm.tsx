@@ -64,7 +64,7 @@ export function AdminInstagramForm() {
           onChange={handleFileChange}
           required
           className="block w-full cursor-pointer rounded-xl border border-white/[0.08] bg-ds-black
-            text-sm text-ds-gray-400
+            text-sm text-ds-gray-300
             file:mr-4 file:cursor-pointer file:border-0 file:bg-ds-red file:px-4 file:py-2.5
             file:text-sm file:font-semibold file:text-white
             hover:file:bg-ds-red-700

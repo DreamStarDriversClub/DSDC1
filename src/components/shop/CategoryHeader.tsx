@@ -34,7 +34,7 @@ export function CategoryHeader({
           </h1>
           <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
           {description && (
-            <p className="mt-6 text-lg leading-relaxed text-ds-gray-400">
+            <p className="mt-6 text-lg leading-relaxed text-ds-gray-300">
               {description}
             </p>
           )}

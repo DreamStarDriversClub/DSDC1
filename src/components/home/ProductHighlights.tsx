@@ -143,7 +143,7 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
           {/* Left Arrow */}
           <button
             onClick={goPrev}
-            className="absolute -left-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 p-2 text-ds-gray-400 backdrop-blur-sm transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red sm:-left-3 sm:flex"
+            className="absolute -left-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 p-2 text-ds-gray-300 backdrop-blur-sm transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red sm:-left-3 sm:flex"
             aria-label="Previous products"
           >
             <svg
@@ -164,7 +164,7 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
           {/* Right Arrow */}
           <button
             onClick={goNext}
-            className="absolute -right-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 p-2 text-ds-gray-400 backdrop-blur-sm transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red sm:-right-3 sm:flex"
+            className="absolute -right-1 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 p-2 text-ds-gray-300 backdrop-blur-sm transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red sm:-right-3 sm:flex"
             aria-label="Next products"
           >
             <svg
@@ -260,7 +260,7 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
           <div className="mt-4 flex items-center justify-center gap-4 sm:hidden">
             <button
               onClick={goPrev}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 text-ds-gray-400 transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 text-ds-gray-300 transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red"
               aria-label="Previous products"
             >
               <svg
@@ -277,12 +277,12 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
                 />
               </svg>
             </button>
-            <span className="text-xs text-ds-gray-500">
+            <span className="text-xs text-ds-gray-400">
               {activeDotIndex + 1} / {totalRealGroups}
             </span>
             <button
               onClick={goNext}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 text-ds-gray-400 transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red"
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-ds-black-charcoal/80 text-ds-gray-300 transition-all duration-300 hover:border-ds-red/40 hover:text-ds-red"
               aria-label="Next products"
             >
               <svg

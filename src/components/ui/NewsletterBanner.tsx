@@ -13,7 +13,7 @@ export function NewsletterBanner() {
           <h2 className="font-display text-2xl font-black tracking-tight text-ds-white sm:text-3xl">
             {NEWSLETTER.heading}
           </h2>
-          <p className="mt-3 text-ds-gray-400">{NEWSLETTER.description}</p>
+          <p className="mt-3 text-ds-gray-300">{NEWSLETTER.description}</p>
           <div className="mx-auto mt-6 max-w-md">
             <NewsletterForm variant="default" />
           </div>

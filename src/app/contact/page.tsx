@@ -42,7 +42,7 @@ export default function ContactPage() {
               Contact <span className="text-ds-red">the Crew</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               Whether you have a question about an order, want to explore
               wholesale opportunities, or just want to talk cars — we&apos;re
               here for it.
@@ -86,7 +86,7 @@ export default function ContactPage() {
                         <p className="text-sm font-semibold text-ds-white">Email</p>
                         <a
                           href="mailto:dreamstardriversclub@yahoo.com"
-                          className="text-sm text-ds-gray-400 transition-colors hover:text-ds-red"
+                          className="text-sm text-ds-gray-300 transition-colors hover:text-ds-red"
                         >
                           dreamstardriversclub@yahoo.com
                         </a>
@@ -110,7 +110,7 @@ export default function ContactPage() {
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-xs font-medium capitalize text-ds-gray-400 transition-colors hover:text-ds-red"
+                              className="text-xs font-medium capitalize text-ds-gray-300 transition-colors hover:text-ds-red"
                             >
                               {platform}
                             </a>
@@ -128,7 +128,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-ds-white">Business Hours</p>
-                        <p className="text-sm text-ds-gray-400">9am–6pm PST</p>
+                        <p className="text-sm text-ds-gray-300">9am–6pm PST</p>
                       </div>
                     </div>
                   </div>
@@ -161,7 +161,7 @@ export default function ContactPage() {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="flex items-center gap-2 text-sm text-ds-gray-400 transition-colors hover:text-ds-red"
+                          className="flex items-center gap-2 text-sm text-ds-gray-300 transition-colors hover:text-ds-red"
                         >
                           <svg className="h-3 w-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

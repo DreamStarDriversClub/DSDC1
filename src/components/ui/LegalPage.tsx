@@ -48,7 +48,7 @@ export function LegalPage({
               {title}
             </h1>
             <div className="mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mt-4 text-base leading-relaxed text-ds-gray-400 sm:text-lg">
+            <p className="mt-4 text-base leading-relaxed text-ds-gray-300 sm:text-lg">
               {description}
             </p>
             <p className="mt-4 text-xs text-ds-gray-600">Last Updated: {lastUpdated}</p>
@@ -64,7 +64,7 @@ export function LegalPage({
               {/* Sidebar Navigation */}
               <aside className="hidden lg:block">
                 <nav className="sticky top-28 space-y-1">
-                  <h4 className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.15em] text-ds-gray-400">
+                  <h4 className="mb-3 font-display text-xs font-semibold uppercase tracking-[0.15em] text-ds-gray-300">
                     On This Page
                   </h4>
                   {sections.map((section) => (
@@ -75,7 +75,7 @@ export function LegalPage({
                       className={`block w-full rounded-lg px-3 py-2 text-left text-sm transition-colors ${
                         activeSection === section.id
                           ? "bg-ds-red/10 text-ds-red"
-                          : "text-ds-gray-500 hover:bg-ds-black-charcoal hover:text-ds-gray-300"
+                          : "text-ds-gray-400 hover:bg-ds-black-charcoal hover:text-ds-gray-300"
                       }`}
                     >
                       {section.title}
@@ -97,7 +97,7 @@ export function LegalPage({
                         heading={`${idx + 1}. ${section.title}`}
                         className="mb-4"
                       />
-                      <div className="prose-custom text-sm leading-relaxed text-ds-gray-400 [&_p]:mb-3 [&_strong]:text-ds-white [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_a]:text-ds-red [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-ds-red-400">
+                      <div className="prose-custom text-sm leading-relaxed text-ds-gray-300 [&_p]:mb-3 [&_strong]:text-ds-white [&_ul]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-1 [&_a]:text-ds-red [&_a]:underline [&_a]:underline-offset-2 hover:[&_a]:text-ds-red-400">
                         {section.content}
                       </div>
                     </div>
@@ -107,7 +107,7 @@ export function LegalPage({
                 {/* Last Updated Footer */}
                 <div className="mt-16 rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-6">
                   <p className="text-xs text-ds-gray-600">
-                    <strong className="text-ds-gray-500">Last Updated:</strong>{" "}
+                    <strong className="text-ds-gray-400">Last Updated:</strong>{" "}
                     {lastUpdated}
                   </p>
                   <p className="mt-1 text-xs text-ds-gray-600">
