@@ -4,6 +4,8 @@ import { verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getStoreProducts, getProductVariants } from "@/lib/printful";
 
+export const dynamic = "force-dynamic";
+
 /**
  * POST /api/admin/printful/sync
  *

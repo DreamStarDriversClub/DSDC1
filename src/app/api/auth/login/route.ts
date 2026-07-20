@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { verifyPassword, createToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 const SESSION_COOKIE = "dsdc_session";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
