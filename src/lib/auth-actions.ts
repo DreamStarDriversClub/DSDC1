@@ -77,28 +77,40 @@ export async function loginAction(
   prev: LoginResult,
   formData: FormData
 ): Promise<LoginResult> {
-  const email = (formData.get("email") as string)?.trim().toLowerCase();
-  const password = formData.get("password") as string;
-  const rememberMe = formData.get("rememberMe") === "on";
+  try {
+    console.log("[loginAction] ENV CHECK:", process.env.DATABASE_URL ? "DB URL EXISTS" : "NO DB URL");
 
-  if (!email || !password) {
-    return { success: false, error: "Email and password are required." };
+    const email = (formData.get("email") as string)?.trim().toLowerCase();
+    const password = formData.get("password") as string;
+    const rememberMe = formData.get("rememberMe") === "on";
+
+    if (!email || !password) {
+      return { success: false, error: "Email and password are required." };
+    }
+
+    console.log("[loginAction] Looking up user:", email);
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user || !verifyPassword(password, user.passwordHash)) {
+      return { success: false, error: "Invalid email or password." };
+    }
+
+    console.log("[loginAction] User found, setting cookie");
+    await setSessionCookie({
+      userId: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+    });
+
+    console.log("[loginAction] Success");
+    return { success: true };
+  } catch (error: any) {
+    console.error("[loginAction] CRASH:", error?.message || error, error?.stack);
+    console.error("[loginAction] Full error object:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
+    return { success: false, error: "Server error: " + (error?.message || "unknown") };
   }
-
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !verifyPassword(password, user.passwordHash)) {
-    return { success: false, error: "Invalid email or password." };
-  }
-
-  await setSessionCookie({
-    userId: user.id,
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    role: user.role,
-  });
-
-  return { success: true };
 }
 
 // ── Logout ──
