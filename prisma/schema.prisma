@@ -225,6 +225,17 @@ model Coupon {
   isActive       Boolean      @default(true)
 }
 
+// ── InstagramPost ──────────────────────────────────────
+
+model InstagramPost {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  caption   String?
+  link      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
 // ── Review ─────────────────────────────────────────────
 
 model Review {

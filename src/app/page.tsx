@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BRAND_NAME, TAGLINE, SOCIAL_LINKS } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -8,6 +9,8 @@ import { Badge } from "@/components/ui/Badge";
 import { NewsletterForm } from "@/components/ui/NewsletterForm";
 import { OrganizationSchema, WebSiteSchema } from "@/components/ui/SchemaOrg";
 import { ProductHighlights } from "@/components/home/ProductHighlights";
+
+export const dynamic = "force-dynamic";
 
 /* ── Sample Data ─────────────────────────────────────────────────────────── */
 
@@ -164,7 +167,12 @@ const sakuraPetals = [
    HomePage Component
    ═══════════════════════════════════════════════════════════════════════════ */
 
-export default function HomePage() {
+export default async function HomePage() {
+  const instagramPosts = await prisma.instagramPost.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 6,
+  });
+
   return (
     <>
       <OrganizationSchema />
@@ -664,44 +672,93 @@ export default function HomePage() {
 
           {/* Instagram grid — 3x2 desktop, 3x2 mobile */}
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-2 sm:gap-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm"
-              >
-                {/* Placeholder gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-ds-black-charcoal to-ds-black-elevated" />
-                {/* Grid pattern */}
-                <div className="absolute inset-0 bg-grid opacity-20" />
-                {/* Instagram-style icon */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-30 transition-opacity duration-300 group-hover:opacity-60">
-                  <svg
-                    className="h-8 w-8 text-ds-gray-600"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
+            {Array.from({ length: 6 }).map((_, i) => {
+              const post = instagramPosts[i];
+
+              if (post) {
+                const cell = (
+                  <div
+                    key={post.id}
+                    className="group relative aspect-square overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm"
                   >
-                    <rect
-                      x="2"
-                      y="2"
-                      width="20"
-                      height="20"
-                      rx="5"
-                      ry="5"
+                    {/* Actual image */}
+                    <img
+                      src={post.imageUrl}
+                      alt={post.caption || "Instagram post"}
+                      className="h-full w-full object-cover"
+                      loading={i < 3 ? "eager" : "lazy"}
                     />
-                    <circle cx="12" cy="12" r="5" />
-                    <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
-                  </svg>
+
+                    {/* Hover overlay with caption */}
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ds-black/80 via-transparent to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      {post.caption && (
+                        <p className="text-xs leading-relaxed text-ds-white">
+                          {post.caption}
+                        </p>
+                      )}
+                      <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-300">
+                        @dreamstardriversclub
+                      </span>
+                    </div>
+                  </div>
+                );
+
+                if (post.link) {
+                  return (
+                    <a
+                      key={post.id}
+                      href={post.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      {cell}
+                    </a>
+                  );
+                }
+                return cell;
+              }
+
+              // Placeholder fallback cell
+              return (
+                <div
+                  key={`placeholder-${i}`}
+                  className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm"
+                >
+                  {/* Placeholder gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-ds-black-charcoal to-ds-black-elevated" />
+                  {/* Grid pattern */}
+                  <div className="absolute inset-0 bg-grid opacity-20" />
+                  {/* Instagram-style icon */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-30 transition-opacity duration-300 group-hover:opacity-60">
+                    <svg
+                      className="h-8 w-8 text-ds-gray-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <rect
+                        x="2"
+                        y="2"
+                        width="20"
+                        height="20"
+                        rx="5"
+                        ry="5"
+                      />
+                      <circle cx="12" cy="12" r="5" />
+                      <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+                    </svg>
+                  </div>
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-ds-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-white">
+                      @dreamstardriversclub
+                    </span>
+                  </div>
                 </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-ds-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-white">
-                    @dreamstardriversclub
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Follow CTA */}
