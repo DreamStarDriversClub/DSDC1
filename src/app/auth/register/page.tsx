@@ -3,7 +3,6 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { registerWithCredentials } from "@/lib/auth-actions";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -30,12 +29,12 @@ export default function RegisterPage() {
     }
 
     startTransition(async () => {
-      const result = await registerWithCredentials({
-        email,
-        password,
-        firstName,
-        lastName,
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, firstName, lastName }),
       });
+      const result = await res.json();
       if (result.success) {
         router.push("/account");
       } else {

@@ -3,7 +3,6 @@
 import { Suspense, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginWithCredentials } from "@/lib/auth-actions";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -23,7 +22,12 @@ function LoginForm() {
     const password = (formData.get("password") as string) ?? "";
 
     startTransition(async () => {
-      const result = await loginWithCredentials(email, password);
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const result = await res.json();
       if (result.success) {
         router.push(redirect);
       } else {
