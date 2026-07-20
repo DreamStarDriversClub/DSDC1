@@ -60,18 +60,32 @@ export function ContactForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setStatus("submitting");
 
-    // Simulate submission — wire to API later
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Submission failed.");
+      }
+
       setStatus("success");
       setFormData({ name: "", email: "", subject: "General", message: "" });
       setTimeout(() => setStatus("idle"), 5000);
-    }, 800);
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   const inputClasses =
@@ -185,6 +199,15 @@ export function ContactForm() {
         <div className="rounded-xl border border-ds-gold/20 bg-ds-gold-muted px-4 py-3">
           <p className="text-sm text-ds-gold-light">
             Thanks for reaching out! We&apos;ll get back to you within 24 hours.
+          </p>
+        </div>
+      )}
+
+      {/* Error message */}
+      {status === "error" && (
+        <div className="rounded-xl border border-ds-red/20 bg-ds-red/10 px-4 py-3">
+          <p className="text-sm text-ds-red-400">
+            Something went wrong. Please try again or email us directly.
           </p>
         </div>
       )}
