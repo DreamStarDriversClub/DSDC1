@@ -258,8 +258,6 @@ model PrintfulProduct {
   variantCount Int      @default(0)
   syncedAt     DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  variants PrintfulVariant[]
 }
 
 // ── PrintfulVariant ────────────────────────────────────
@@ -274,8 +272,6 @@ model PrintfulVariant {
   price      Float
   currency   String   @default("USD")
   syncedAt   DateTime @default(now())
-
-  product PrintfulProduct @relation(fields: [productId], references: [printfulId])
 }
 
 // ── Review ─────────────────────────────────────────────
