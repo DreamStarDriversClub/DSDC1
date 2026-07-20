@@ -22,6 +22,7 @@ const fallbackFeaturedProducts = [
     id: "rotary-spirit-tee",
     name: "Rotary Spirit Tee",
     price: 34.99,
+    description: "The rotary engine isn't just a powerplant. It's a philosophy — lightweight, high-revving, and unlike anything else on the road. The Rotary Spirit Tee pays tribute to that legacy. Printed on heavyweight 220 GSM ring-spun cotton, this tee features a subtle rotary triangle motif across the chest — clean enough to wear anywhere, detailed enough that real enthusiasts will stop you at the pump to ask about it. The fit is modern and slightly relaxed, cut for shoulder room without looking boxy. Pre-shrunk so your medium stays a medium after the first wash. Whether you're wrenching on a 13B rebuild or just repping the culture, this is the shirt that says you understand something most people never will. Because the triangle isn't just a shape. It's a heartbeat.",
     category: "Apparel",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/40 to-ds-red-950/20",
@@ -35,6 +36,7 @@ const fallbackFeaturedProducts = [
     id: "touge-runner-hoodie",
     name: "Touge Runner Hoodie",
     price: 74.99,
+    description: "Named for the mountain passes where legends are made, the Touge Runner Hoodie is built for cold starts and late-night runs. This is the layer you reach for when the garage door is open at 2 AM and the temperature's dropping. We started with a 400 GSM heavyweight French terry fleece — substantial enough to block the wind, soft enough to live in. The hood is double-lined with a structured drawcord. Kangaroo pocket with hidden media channel keeps your phone secure through every corner. Across the back, a stylized touge elevation graphic runs shoulder to shoulder like the mountain roads that inspired it. Oversized fit with dropped shoulders — layer it over a tee or wear it solo. The Touge Runner doesn't just keep you warm. It reminds you why you fell in love with driving in the first place.",
     category: "Apparel",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-950/50 to-ds-black-charcoal",
@@ -49,6 +51,7 @@ const fallbackFeaturedProducts = [
     id: "13b-heartbeat-decal",
     name: "13B Heartbeat Decal",
     price: 8.99,
+    description: "The sound of a 13B at full chat is unmistakable — a rising, spinning crescendo that no piston engine can replicate. The 13B Heartbeat Decal captures that rhythm in a single, clean graphic: a rotary-shaped heartbeat pulse that reads instantly to anyone who knows. Die-cut from premium 3M automotive-grade vinyl, this decal is rated for exterior use — rain, sun, and highway speeds won't fade or peel it. Available in gloss white, matte black, and Dream Star red. Sized at 6 inches wide, it fits perfectly on a quarter window, rear windshield, or toolbox lid. One decal, infinite conversations. Because when another rotary guy sees that heartbeat, they'll know exactly what's up.",
     category: "Accessories",
     categoryBadge: "gold" as const,
     gradient: "from-ds-gold-dark/30 to-ds-gold-muted/10",
@@ -63,6 +66,7 @@ const fallbackFeaturedProducts = [
     id: "dream-star-lanyard",
     name: "Dream Star Lanyard",
     price: 14.99,
+    description: "Your keys are sacred. They unlock the machine you've poured your soul into. The Dream Star Lanyard treats them with the respect they deserve. Woven from heavyweight polyester with reinforced stitching at every stress point, this lanyard is built to outlast the cheap promo gear. The Dream Star wordmark runs the full length in a subtle tonal jacquard weave — visible but never loud. A machined metal clip (not plastic) secures your keys with confidence, and the detachable quick-release buckle lets you separate your car key in seconds. Black with red accent stitching. Hang it from your mirror. Clip it to your belt loop. Carry the club wherever you go.",
     category: "Accessories",
     categoryBadge: "gold" as const,
     gradient: "from-ds-gold-dark/30 to-ds-gold-muted/10",
@@ -76,6 +80,7 @@ const fallbackFeaturedProducts = [
     id: "rx7-fd-street-port-kit",
     name: "RX-7 FD Street Port Kit",
     price: 2499.99,
+    description: "The FD RX-7 is a masterpiece of engineering — and with the right port work, it becomes something transcendent. The DS Performance RX-7 FD Street Port Kit is designed for the enthusiast who wants more power without sacrificing the street manners that make the FD drivable every day. This comprehensive kit includes ported intake and exhaust housings machined to our club-spec template — developed and tested on actual touge runs, not just flow benches. You get a matched set of apex seals (two-piece, high-carbon), all required gaskets and O-rings, solid corner seals, and upgraded tension bolts. Every component is inspected before it leaves our hands. Expect 320–380 WHP on a properly tuned setup with supporting mods. The idle has that unmistakable rotary lope — choppy enough to turn heads, smooth enough to live with. This is the kit we run. Now it's yours.",
     category: "DS Performance",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/50 to-ds-black-charcoal",
@@ -89,6 +94,7 @@ const fallbackFeaturedProducts = [
     id: "2jz-timing-belt-kit",
     name: "2JZ-GTE Timing Belt Kit",
     price: 189.99,
+    description: "The 2JZ-GTE is legendary for a reason — but even legends need maintenance. The DS Performance 2JZ-GTE Timing Belt Kit gives you everything required for a complete timing system refresh, sourced to the same standards we demand for our own cars. Kit includes a high-strength timing belt (Kevlar-reinforced), OEM-spec hydraulic tensioner, idler pulley, and tensioner pulley — all pre-inspected and kitted for a straightforward install. We don't cut corners on bearings or belt compounds because we know what's at stake when your 2JZ is singing at full boost. Whether you're doing preventive maintenance at 60K or building a fresh long block, this kit ensures your timing stays dead-on through every pull. Because when the turbo spools and the horizon opens up, the last thing you should be thinking about is your belt.",
     category: "DS Performance",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/40 to-ds-red-950/20",
@@ -200,7 +206,7 @@ export default async function HomePage() {
       const pfFeatured = await getPrintfulFeaturedProducts();
       if (pfFeatured.length > 0) {
         // Prepend Printful products before fallback samples
-        featuredProducts = [...pfFeatured, ...fallbackFeaturedProducts];
+        featuredProducts = [...pfFeatured, ...fallbackFeaturedProducts] as typeof fallbackFeaturedProducts;
       }
     }
   } catch (error) {

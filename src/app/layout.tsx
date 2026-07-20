@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: `${BRAND_NAME} — ${TAGLINE}`,
   },
   description:
-    "Premium automotive lifestyle brand rooted in Japanese car culture — Mazda rotary and Toyota 2JZ heritage. High-quality apparel, accessories, and performance parts.",
+    "Dream Star Drivers Club — premium JDM lifestyle brand. Apparel, accessories, and performance parts for rotary and 2JZ enthusiasts. Chase the Horizon.",
   keywords: [
     "JDM",
     "Mazda rotary",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: BRAND_NAME,
     title: `${BRAND_NAME} — ${TAGLINE}`,
     description:
-      "Premium automotive lifestyle brand rooted in Japanese car culture. High-quality apparel, accessories, and performance parts.",
+      "Dream Star Drivers Club — premium JDM lifestyle brand. Apparel, accessories, and performance parts for rotary and 2JZ enthusiasts. Chase the Horizon.",
     images: [
       {
         url: "/og-image.png",

@@ -9,11 +9,11 @@ import { SubcategoryFilter } from "@/components/shop/SubcategoryFilter";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 
 export const metadata: Metadata = {
-  title: "DS Performance",
-  description: "High-performance Mazda rotary and Toyota 2JZ parts — engine components, turbos, suspension, electronics, and more.",
+  title: "DS Performance — Rotary & 2JZ Performance Parts",
+  description: "High-performance Mazda rotary and Toyota 2JZ-GTE parts — street port kits, timing belts, apex seals, gaskets. Built by enthusiasts, proven on the touge. Chase the Horizon.",
   openGraph: {
     title: `DS Performance | ${BRAND_NAME}`,
-    description: "Rotary & 2JZ performance parts — built by enthusiasts for enthusiasts.",
+    description: "High-performance Mazda rotary and Toyota 2JZ-GTE parts — street port kits, timing belts, apex seals, gaskets. Built by enthusiasts, proven on the touge.",
   },
 };
 
@@ -57,8 +57,8 @@ export default async function PerformancePage() {
   return (
     <>
       <CategoryHeader
-        title="DS Performance"
-        description="Rotary and 2JZ performance parts — built by enthusiasts, proven on the touge. From apex seals to turbo kits, everything you need for your build."
+        title="Built by Enthusiasts. Proven on the Touge."
+        description="This is where the catalog gets serious. DS Performance is our in-house line of Mazda rotary and Toyota 2JZ components — engineered for the driver who refuses to compromise. We don't sell parts we wouldn't run on our own cars. Every seal, every belt, every ported housing carries the weight of that promise. Our rotary lineup covers everything from apex seals and street port kits to full gasket sets — the kind of hardware that keeps the 13B heart beating strong at 9,000 RPM. On the 2JZ side, we stock timing belt kits, head gaskets, and essential maintenance components for the engine that defined a generation. We know these engines because we've torn them down and built them back up. In garages in the Tri-state. On the winding roads of Japan. In the Vegas Valley, where the heat tests everything. DS Performance parts are sourced from trusted manufacturers and vetted by the club — because when you're chasing the horizon at full boost, 'good enough' doesn't cut it."
         image="/category-performance.jpg"
       />
 
