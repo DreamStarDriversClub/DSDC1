@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getPrintfulProductsByCategory, hasPrintfulProducts } from "@/lib/shop-data";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
@@ -36,6 +37,7 @@ export default async function AccessoriesPage() {
     select: { name: true, slug: true },
   });
 
+  // Fetch regular products from Product table
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -58,6 +60,28 @@ export default async function AccessoriesPage() {
     isFeatured: p.isFeatured,
   }));
 
+  // Fetch Printful accessories (hats, caps, etc.)
+  let printfulProducts: typeof mappedProducts = [];
+  try {
+    const hasPrintful = await hasPrintfulProducts();
+    if (hasPrintful) {
+      const pfProducts = await getPrintfulProductsByCategory("accessories");
+      printfulProducts = pfProducts.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        salePrice: p.salePrice,
+        category: p.category,
+        isFeatured: p.isFeatured,
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful accessories:", error);
+  }
+
+  // Merge: Printful products first, then regular products
+  const allProducts = [...printfulProducts, ...mappedProducts];
+
   return (
     <>
       <CategoryHeader
@@ -77,7 +101,7 @@ export default async function AccessoriesPage() {
         </div>
 
         <ProductGrid
-          products={mappedProducts}
+          products={allProducts}
           badgeVariant="gold"
           emptyMessage="No accessories available right now. Check back soon!"
         />

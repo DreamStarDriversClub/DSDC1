@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getAllPrintfulProducts, hasPrintfulProducts } from "@/lib/shop-data";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
@@ -53,7 +54,7 @@ export default async function AllProductsPage({
     select: { name: true, slug: true },
   });
 
-  // Fetch products
+  // Fetch products from Product table
   const products = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -73,6 +74,39 @@ export default async function AllProductsPage({
     category: p.category,
     isFeatured: p.isFeatured,
   }));
+
+  // Fetch Printful products
+  let printfulProducts: typeof mappedProducts = [];
+  try {
+    const hasPrintful = await hasPrintfulProducts();
+    if (hasPrintful) {
+      let pfProducts = await getAllPrintfulProducts();
+      if (categoryFilter) {
+        pfProducts = pfProducts.filter(
+          (p) => p.category.slug === categoryFilter,
+        );
+      }
+      // Sort Printful products if needed (they come sorted by name from the query)
+      if (sort === "price-asc") {
+        pfProducts.sort((a, b) => a.price - b.price);
+      } else if (sort === "price-desc") {
+        pfProducts.sort((a, b) => b.price - a.price);
+      }
+      printfulProducts = pfProducts.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        salePrice: p.salePrice,
+        category: p.category,
+        isFeatured: p.isFeatured,
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful products for all:", error);
+  }
+
+  // Merge: Printful products first
+  const allProducts = [...printfulProducts, ...mappedProducts];
 
   // Get the current category name for display
   let currentCategoryName: string | undefined;
@@ -114,7 +148,7 @@ export default async function AllProductsPage({
         </div>
 
         <ProductGrid
-          products={mappedProducts}
+          products={allProducts}
           badgeVariant="red"
           emptyMessage="No products match your filters. Try adjusting your selection."
         />

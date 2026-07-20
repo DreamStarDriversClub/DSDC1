@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getAllPrintfulProducts, hasPrintfulProducts } from "@/lib/shop-data";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
@@ -25,13 +26,35 @@ export default async function ShopPage() {
     orderBy: { name: "asc" },
   });
 
-  // Fetch featured products
+  // Fetch featured products from Product table
   const featured = await prisma.product.findMany({
     where: { isFeatured: true, isActive: true },
     include: { category: { select: { name: true, slug: true } } },
     take: 8,
     orderBy: { createdAt: "desc" },
   });
+
+  // Fetch Printful products for the featured section
+  let printfulProducts: typeof featured = [];
+  try {
+    const hasPrintful = await hasPrintfulProducts();
+    if (hasPrintful) {
+      const pfProducts = await getAllPrintfulProducts();
+      printfulProducts = pfProducts.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        salePrice: p.salePrice,
+        category: p.category,
+        isFeatured: false,
+      })) as unknown as typeof featured;
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful products for shop:", error);
+  }
+
+  // Merge featured products
+  const allFeatured = [...printfulProducts, ...featured];
 
   const categoryBadges: Record<string, "red" | "gold"> = {
     apparel: "red",
@@ -109,7 +132,7 @@ export default async function ShopPage() {
       </section>
 
       {/* Featured Products */}
-      {featured.length > 0 && (
+      {allFeatured.length > 0 && (
         <section className="bg-ds-black section-padding">
           <Container>
             <SectionHeading
@@ -121,9 +144,9 @@ export default async function ShopPage() {
             />
 
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {featured.map((product) => (
+              {allFeatured.map((product, i) => (
                 <ProductCard
-                  key={product.id}
+                  key={i}
                   product={{
                     slug: product.slug,
                     name: product.name,
