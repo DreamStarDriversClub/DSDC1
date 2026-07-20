@@ -62,37 +62,37 @@ const VALUES = [
 
 const CREW = [
   {
-    name: "Angel Alicea",
+    name: "Angel A.",
     role: "Founder & Lead Designer",
     bio: "FC owner and GS300 owner. Pure automotive enthusiast. He started street racing at the age of 13 and 27 years later still has the same drive and passion to build unique and interesting cars and bikes. He is the goto guy for figuring out how to make things work in any scenario.",
     initials: "AA",
   },
   {
-    name: "Siyu Lu",
+    name: 'Siyu "Lucy" Lu',
     role: "Head of Operations",
     bio: "From educational powerhouse to freshly discovered passion. Married to Angel and inherited his never ending excess passion for Rotary and 2JZ love.",
     initials: "SL",
   },
   {
-    name: "David Blackman",
+    name: "David B.",
     role: "Community Director",
     bio: "Track day organizer and RX-7 aficionado. The bridge between the brand and the culture.",
     initials: "DB",
   },
   {
-    name: "Wesley Stramer",
+    name: "Wesley S.",
     role: "Shop Director",
     bio: "Wes has been a part of the car community for over two decades and his experience ranges from Automotive Detailing to full car curating and building. A wizard with a wrench and never scared to take on a job. He focuses on functionality with a SMALL touch of detail. OCD is one way we can describe it.",
     initials: "WS",
   },
   {
-    name: "Kevin Alicea",
+    name: "Kevin A.",
     role: "Shop Apprentice",
     bio: "Born into the passion of gasoline and drift cars. The next generation of enthusiast.",
     initials: "KA",
   },
   {
-    name: "Penelope Alicea",
+    name: "Penelope A.",
     role: "Dream Star Mascot",
     bio: "Small and cute, but mighty. Lots of sass and a future leader but for now she's here to brighten everyone's day.",
     initials: "PA",
