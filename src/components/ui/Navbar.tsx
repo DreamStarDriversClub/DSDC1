@@ -52,8 +52,8 @@ export function Navbar({ session }: { session: SessionUser }) {
       <header
         className={`fixed inset-x-0 top-0 z-70 transition-all duration-400 ${
           scrolled
-            ? "glass py-3"
-            : "bg-transparent py-5"
+            ? "glass py-4"
+            : "bg-transparent py-6"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -65,10 +65,10 @@ export function Navbar({ session }: { session: SessionUser }) {
             <img
               src="/logo%20-%20white.png"
               alt="Dream Star Drivers Club"
-              className="h-9 w-auto object-contain"
+              className="h-11 w-auto object-contain"
               loading="eager"
             />
-            <span className="hidden font-display text-sm font-bold tracking-[0.15em] sm:inline">
+            <span className="hidden font-display text-base font-bold tracking-[0.15em] sm:inline">
               DREAM STAR
             </span>
           </Link>
@@ -83,7 +83,7 @@ export function Navbar({ session }: { session: SessionUser }) {
             >
               <button
                 onClick={() => setShopDropdownOpen(!shopDropdownOpen)}
-                className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-ds-gray-300 transition-colors hover:text-ds-white"
+                className="flex items-center gap-1 rounded-lg px-4 py-2.5 text-base font-medium text-ds-gray-300 transition-colors hover:text-ds-white"
               >
                 {shopLink.label}
                 <svg
@@ -105,13 +105,13 @@ export function Navbar({ session }: { session: SessionUser }) {
 
               {/* Dropdown */}
               {shopDropdownOpen && (
-                <div className="absolute left-0 top-full mt-1 w-56 animate-fade-in overflow-hidden rounded-xl border border-white/[0.08] bg-ds-black-charcoal shadow-2xl">
+                <div className="absolute left-0 top-full mt-1 w-64 animate-fade-in overflow-hidden rounded-xl border border-white/[0.08] bg-ds-black-charcoal shadow-2xl">
                   {shopLink.children?.map((child) => (
                     <Link
                       key={child.label}
                       href={child.href}
                       onClick={() => setShopDropdownOpen(false)}
-                      className="flex flex-col px-4 py-3 transition-colors hover:bg-ds-white/5"
+                      className="flex flex-col px-4 py-3.5 transition-colors hover:bg-ds-white/5"
                     >
                       <span className="text-sm font-medium text-ds-white">
                         {child.label}
@@ -130,7 +130,7 @@ export function Navbar({ session }: { session: SessionUser }) {
               <Link
                 key={link.label}
                 href={link.href}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-ds-gray-300 transition-colors hover:text-ds-white"
+                className="rounded-lg px-4 py-2.5 text-base font-medium text-ds-gray-300 transition-colors hover:text-ds-white"
               >
                 {link.label}
               </Link>
