@@ -22,7 +22,8 @@ bun run build
 
 # Start the production server in the background
 # Load DATABASE_URL from .env for Prisma runtime
-export $(grep DATABASE_URL .env | xargs) 2>/dev/null || true
+DATABASE_URL=$(grep DATABASE_URL .env | cut -d= -f2-)
+export DATABASE_URL
 setsid nohup env DATABASE_URL="$DATABASE_URL" bun run start > .run/server.log 2>&1 < /dev/null &
 
 # Wait for the new server to actually answer before reporting success, so a
