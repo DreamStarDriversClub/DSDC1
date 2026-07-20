@@ -9,8 +9,11 @@ umask 002
 echo "[1/3] Installing dependencies"
 bun install
 
-echo "[2/3] Building Next.js (standalone output)"
+echo "[2/3] Building Next.js (standalone output with Vercel config)"
+cp next.config.js next.config.bak.js
+cp next.config.vercel.js next.config.js
 bun run build
+mv next.config.bak.js next.config.js
 
 echo "[3/3] Assembling .vercel/output (Build Output API v3)"
 

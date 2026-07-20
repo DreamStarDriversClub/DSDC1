@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Standalone disabled for sandbox; build-vercel.sh uses next.config.vercel.js
+  // output: 'standalone',
   // Limit static generation to prevent OOM in sandbox
   staticPageGenerationTimeout: 120,
   experimental: {

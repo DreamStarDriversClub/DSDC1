@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { NewsletterForm } from "@/components/ui/NewsletterForm";
 import { OrganizationSchema, WebSiteSchema } from "@/components/ui/SchemaOrg";
+import { ProductHighlights } from "@/components/home/ProductHighlights";
 
 /* ── Sample Data ─────────────────────────────────────────────────────────── */
 
@@ -222,6 +223,16 @@ export default function HomePage() {
 
         <Container className="relative z-10 py-20">
           <div className="mx-auto max-w-3xl text-center opacity-start animate-fade-in-up">
+            {/* Brand mark — animated slow zoom */}
+            <div className="mx-auto mb-6 flex items-center justify-center">
+              <img
+                src="/logo%20-%20white.png"
+                alt="Dream Star Drivers Club"
+                className="h-14 w-auto object-contain animate-pulse-glow"
+                loading="eager"
+              />
+            </div>
+
             {/* Headline */}
             <h1 className="font-display text-display-xl text-ds-white">
               <span className="text-gradient-static">Dream Star</span>
@@ -292,6 +303,11 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          Section 1.5: Product Highlights Carousel
+          ══════════════════════════════════════════════════════════════════ */}
+      <ProductHighlights products={featuredProducts} />
 
       {/* ══════════════════════════════════════════════════════════════════
           Section 2: Featured Collections
