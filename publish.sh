@@ -24,6 +24,8 @@ bun run build
 # Load DATABASE_URL from .env for Prisma runtime
 DATABASE_URL=$(grep DATABASE_URL .env | cut -d= -f2-)
 export DATABASE_URL
+# Write .env.local so Prisma fallback reads it even if env var is stripped
+echo "DATABASE_URL=$DATABASE_URL" > .env.local
 setsid nohup env DATABASE_URL="$DATABASE_URL" bun run start > .run/server.log 2>&1 < /dev/null &
 
 # Wait for the new server to actually answer before reporting success, so a
