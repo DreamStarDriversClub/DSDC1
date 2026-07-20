@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -19,14 +18,14 @@ interface InstagramGridProps {
   posts: InstagramPostData[];
 }
 
-/* ── Component ─────────────────────────────────────────────────────────────── */
+/* ── Constants ─────────────────────────────────────────────────────────────── */
 
 const INSTAGRAM_HANDLE = "@dreamstardriversclub";
 const INSTAGRAM_HASHTAG = "#DreamStarDriversClub";
 
-export function InstagramGrid({ posts }: InstagramGridProps) {
-  const displayPosts = posts.slice(0, 8);
+/* ── Component ─────────────────────────────────────────────────────────────── */
 
+export function InstagramGrid({ posts }: InstagramGridProps) {
   return (
     <section className="bg-ds-black-deepest section-padding">
       <Container>
@@ -38,20 +37,41 @@ export function InstagramGrid({ posts }: InstagramGridProps) {
           className="mb-12"
         />
 
-        {/* ── Responsive Grid ──────────────────────────────────────────── */}
-        {/* 2 cols mobile, 3 cols md, 4 cols xl */}
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-          {displayPosts.map((post, i) => (
-            <InstagramCell key={post.id} post={post} index={i} />
-          ))}
-
-          {/* Fill remaining slots with placeholders if fewer than 8 */}
-          {Array.from({ length: Math.max(0, 8 - displayPosts.length) }).map(
-            (_, i) => (
-              <InstagramPlaceholder key={`ph-${i}`} />
-            )
-          )}
-        </div>
+        {/* ── Posts Grid ─────────────────────────────────────────────────── */}
+        {posts.length > 0 ? (
+          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+            {posts.slice(0, 8).map((post, i) => (
+              <InstagramCell key={post.id} post={post} index={i} />
+            ))}
+          </div>
+        ) : (
+          /* Empty state when no posts are uploaded yet */
+          <div className="mx-auto max-w-2xl rounded-2xl border border-dashed border-white/[0.08] bg-ds-black-charcoal p-10 text-center">
+            <svg
+              className="mx-auto h-12 w-12 text-ds-gray-700"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1}
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="5" />
+              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+            </svg>
+            <p className="mt-4 text-sm text-ds-gray-500">
+              Follow us on Instagram{" "}
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
+              >
+                {INSTAGRAM_HANDLE}
+              </a>{" "}
+              for the latest builds and drops.
+            </p>
+          </div>
+        )}
 
         {/* ── Follow CTA ───────────────────────────────────────────────── */}
         <div className="mt-10 text-center">
@@ -82,23 +102,16 @@ function InstagramCell({
 }) {
   const cell = (
     <div className="group relative aspect-square overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-500 hover:border-ds-red/30 hover:shadow-brand-glow-sm hover:z-10">
-      {/* ── Image ─────────────────────────────────────────────────────── */}
       <img
         src={post.imageUrl}
         alt={post.caption || "Instagram post from Dream Star Drivers Club"}
         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         loading={index < 4 ? "eager" : "lazy"}
       />
-
-      {/* ── Subtle permanent gradient at bottom for Instagram icon ────── */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ds-black/60 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-0" />
-
-      {/* ── Instagram icon (top-right) ────────────────────────────────── */}
       <div className="absolute right-2.5 top-2.5 opacity-60 transition-all duration-300 group-hover:opacity-90 group-hover:scale-110">
         <InstagramIcon className="h-4 w-4 text-ds-white drop-shadow-lg" />
       </div>
-
-      {/* ── Hover overlay with caption ────────────────────────────────── */}
       <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ds-black/90 via-ds-black/40 to-transparent p-4 opacity-0 transition-all duration-400 group-hover:opacity-100">
         {post.caption && (
           <p className="line-clamp-3 text-xs leading-relaxed text-ds-white sm:text-sm">
@@ -109,8 +122,6 @@ function InstagramCell({
           {INSTAGRAM_HANDLE}
         </span>
       </div>
-
-      {/* ── Bottom accent line (visible on hover) ─────────────────────── */}
       <div className="absolute inset-x-3 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-ds-red/60 via-ds-red/30 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
     </div>
   );
@@ -128,36 +139,6 @@ function InstagramCell({
     );
   }
   return cell;
-}
-
-/* ── Placeholder Cell ──────────────────────────────────────────────────────── */
-
-function InstagramPlaceholder() {
-  return (
-    <div className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-300 hover:border-ds-red/30 hover:shadow-brand-glow-sm">
-      {/* Dark gradient backdrop */}
-      <div className="absolute inset-0 bg-gradient-to-br from-ds-black-charcoal via-ds-black-elevated to-ds-black-charcoal" />
-
-      {/* Subtle grid texture */}
-      <div className="absolute inset-0 bg-grid opacity-15" />
-
-      {/* Center Instagram icon */}
-      <div className="absolute inset-0 flex items-center justify-center opacity-25 transition-all duration-300 group-hover:opacity-50 group-hover:scale-110">
-        <InstagramIcon className="h-10 w-10 text-ds-gray-500" />
-      </div>
-
-      {/* Hover reveal */}
-      <div className="absolute inset-0 flex items-center justify-center bg-ds-black/60 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ds-white">
-          {INSTAGRAM_HANDLE}
-        </span>
-      </div>
-
-      {/* Corner accent */}
-      <div className="absolute bottom-3 right-3 h-4 w-[1px] bg-ds-red/20" />
-      <div className="absolute bottom-3 right-3 h-[1px] w-4 bg-ds-red/20" />
-    </div>
-  );
 }
 
 /* ── Instagram Icon ────────────────────────────────────────────────────────── */

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BRAND_NAME, TAGLINE } from "@/lib/constants";
 import { prisma } from "@/lib/prisma";
+
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -170,8 +171,14 @@ const sakuraPetals = [
 
 export default async function HomePage() {
   const instagramPosts = await prisma.instagramPost.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 6,
+    orderBy: { order: "asc" },
+    take: 8,
+    select: {
+      id: true,
+      imageUrl: true,
+      caption: true,
+      link: true,
+    },
   });
 
   return (
