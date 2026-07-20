@@ -222,7 +222,7 @@ export default async function ProductDetailPage({ params }: Props) {
                     <span className="text-3xl font-bold text-ds-red">
                       {formatPrice(product.salePrice)}
                     </span>
-                    <span className="text-xl text-ds-gray-500 line-through">
+                    <span className="text-xl text-ds-gray-400 line-through">
                       {formatPrice(product.price)}
                     </span>
                   </>
@@ -248,7 +248,7 @@ export default async function ProductDetailPage({ params }: Props) {
                       </svg>
                     ))}
                   </div>
-                  <span className="text-sm text-ds-gray-500">
+                  <span className="text-sm text-ds-gray-400">
                     {avgRating.toFixed(1)} ({baseReviewCount} review{baseReviewCount !== 1 ? "s" : ""})
                   </span>
                 </div>
@@ -334,7 +334,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
 
               {/* SKU / Inventory */}
-              <div className="mt-6 text-sm text-ds-gray-500 space-y-1">
+              <div className="mt-6 text-sm text-ds-gray-400 space-y-1">
                 <p>SKU: {product.sku}</p>
                 {product.inventory > 0 ? (
                   <p className="text-green-400">In Stock ({product.inventory} available)</p>
@@ -357,7 +357,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 Description
               </h2>
               <div className="h-[3px] w-8 rounded-full bg-ds-red mb-6" />
-              <div className="prose prose-invert max-w-none text-ds-gray-400 leading-relaxed">
+              <div className="prose prose-invert max-w-none text-ds-gray-300 leading-relaxed">
                 {product.description.split("\n").map((line, i) => (
                   <p key={i}>{line}</p>
                 ))}
@@ -382,7 +382,7 @@ export default async function ProductDetailPage({ params }: Props) {
                           <td className="px-6 py-3 text-sm font-semibold text-ds-gray-300 w-1/3">
                             {spec.label}
                           </td>
-                          <td className="px-6 py-3 text-sm text-ds-gray-400">
+                          <td className="px-6 py-3 text-sm text-ds-gray-300">
                             {spec.value}
                           </td>
                         </tr>
@@ -418,7 +418,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <h2 className="font-display text-2xl font-bold text-ds-white mb-4">
                 Reviews
                 {baseReviewCount > 0 && (
-                  <span className="ml-2 text-lg text-ds-gray-500">
+                  <span className="ml-2 text-lg text-ds-gray-400">
                     ({baseReviewCount})
                   </span>
                 )}
@@ -457,7 +457,7 @@ export default async function ProductDetailPage({ params }: Props) {
                         </p>
                       )}
                       {review.body && (
-                        <p className="mt-1 text-sm text-ds-gray-400">
+                        <p className="mt-1 text-sm text-ds-gray-300">
                           {review.body}
                         </p>
                       )}
@@ -465,7 +465,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="text-ds-gray-500 text-sm">
+                <p className="text-ds-gray-400 text-sm">
                   No reviews yet. Be the first to review this product!
                 </p>
               )}

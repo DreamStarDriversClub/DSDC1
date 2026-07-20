@@ -39,7 +39,7 @@ function LoginForm() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="font-display text-3xl text-ds-white">Welcome Back</h1>
-            <p className="mt-2 text-ds-gray-400">
+            <p className="mt-2 text-ds-gray-300">
               Sign in to your Dream Star account
             </p>
           </div>
@@ -64,7 +64,7 @@ function LoginForm() {
                 id="email"
                 name="email"
                 required
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                 placeholder="admin@dreamstardc.com"
               />
             </div>
@@ -81,13 +81,13 @@ function LoginForm() {
                 id="password"
                 name="password"
                 required
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                 placeholder="Enter your password"
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-ds-gray-400 cursor-pointer">
+              <label className="flex items-center gap-2 text-sm text-ds-gray-300 cursor-pointer">
                 <input
                   type="checkbox"
                   name="rememberMe"
@@ -114,7 +114,7 @@ function LoginForm() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-ds-gray-500">
+          <p className="mt-6 text-center text-sm text-ds-gray-400">
             Not a member yet?{" "}
             <Link
               href="/auth/register"

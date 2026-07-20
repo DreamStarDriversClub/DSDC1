@@ -33,7 +33,7 @@ export function SectionHeading({
         }`}
       />
       {description && (
-        <p className="max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+        <p className="max-w-2xl text-lg leading-relaxed text-ds-gray-300">
           {description}
         </p>
       )}

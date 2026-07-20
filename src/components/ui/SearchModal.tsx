@@ -60,7 +60,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           {/* Search input */}
           <div className="flex items-center gap-3 border-b border-white/[0.06] px-4 py-3">
             <svg
-              className="h-5 w-5 shrink-0 text-ds-gray-500"
+              className="h-5 w-5 shrink-0 text-ds-gray-400"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -78,14 +78,14 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
               autoFocus
               className="w-full bg-transparent text-sm text-ds-white placeholder-ds-gray-500 focus:outline-none"
             />
-            <kbd className="hidden rounded-md border border-ds-gray-700 px-2 py-0.5 text-xs text-ds-gray-500 sm:inline-block">
+            <kbd className="hidden rounded-md border border-ds-gray-700 px-2 py-0.5 text-xs text-ds-gray-400 sm:inline-block">
               ESC
             </kbd>
           </div>
 
           {/* Results area (placeholder) */}
           <div className="px-4 py-8 text-center">
-            <p className="text-sm text-ds-gray-500">
+            <p className="text-sm text-ds-gray-400">
               Start typing to search products and content.
             </p>
           </div>

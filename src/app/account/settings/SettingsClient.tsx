@@ -26,7 +26,7 @@ export default function SettingsClient({ user }: { user: UserData }) {
       <h1 className="mb-2 font-display text-2xl text-ds-white sm:text-3xl">
         Settings
       </h1>
-      <p className="mb-8 text-ds-gray-400">
+      <p className="mb-8 text-ds-gray-300">
         Manage your account settings and preferences.
       </p>
 
@@ -39,7 +39,7 @@ export default function SettingsClient({ user }: { user: UserData }) {
             className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
               activeTab === tab
                 ? "bg-ds-black-charcoal text-ds-white shadow-sm"
-                : "text-ds-gray-500 hover:text-ds-gray-300"
+                : "text-ds-gray-400 hover:text-ds-gray-300"
             }`}
           >
             {tab === "profile"
@@ -109,7 +109,7 @@ function ProfileForm({ user }: { user: UserData }) {
               name="firstName"
               required
               defaultValue={user.firstName}
-              className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+              className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             />
           </div>
           <div>
@@ -121,7 +121,7 @@ function ProfileForm({ user }: { user: UserData }) {
               name="lastName"
               required
               defaultValue={user.lastName}
-              className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+              className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             />
           </div>
         </div>
@@ -135,7 +135,7 @@ function ProfileForm({ user }: { user: UserData }) {
             name="email"
             required
             defaultValue={user.email}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
           />
         </div>
 
@@ -186,7 +186,7 @@ function PasswordForm() {
             type="password"
             name="currentPassword"
             required
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="Enter current password"
           />
         </div>
@@ -200,7 +200,7 @@ function PasswordForm() {
             name="newPassword"
             required
             minLength={8}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="Min. 8 characters"
           />
         </div>
@@ -214,7 +214,7 @@ function PasswordForm() {
             name="confirmPassword"
             required
             minLength={8}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="Re-enter new password"
           />
         </div>
@@ -244,7 +244,7 @@ function DangerZone({
       <h2 className="mb-2 text-sm font-semibold text-ds-red uppercase tracking-wider">
         Danger Zone
       </h2>
-      <p className="mb-4 text-sm text-ds-gray-400">
+      <p className="mb-4 text-sm text-ds-gray-300">
         Once you delete your account, there is no going back. Please be certain.
       </p>
 
@@ -278,7 +278,7 @@ function DangerZone({
             type="password"
             name="password"
             required
-            className="w-full rounded-xl border border-ds-red/30 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            className="w-full rounded-xl border border-ds-red/30 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red focus:outline-none focus:ring-1 focus:ring-ds-red/30"
             placeholder="Your password"
           />
 

@@ -66,7 +66,7 @@ export default function WishlistClient({
       <h1 className="mb-2 font-display text-2xl text-ds-white sm:text-3xl">
         Wishlist
       </h1>
-      <p className="mb-8 text-ds-gray-400">
+      <p className="mb-8 text-ds-gray-300">
         {items.length > 0
           ? `${items.length} item${items.length !== 1 ? "s" : ""} saved for later.`
           : "Save your favorite items for later."}
@@ -90,7 +90,7 @@ export default function WishlistClient({
               />
             </svg>
           </div>
-          <p className="text-ds-gray-500">Your wishlist is empty.</p>
+          <p className="text-ds-gray-400">Your wishlist is empty.</p>
           <p className="mt-1 text-sm text-ds-gray-600">
             Hoshi is waiting for you to find something you love!
           </p>
@@ -154,7 +154,7 @@ export default function WishlistClient({
                       ${price.toFixed(2)}
                     </span>
                     {hasSale && (
-                      <span className="text-xs text-ds-gray-500 line-through">
+                      <span className="text-xs text-ds-gray-400 line-through">
                         ${Number(item.product.price).toFixed(2)}
                       </span>
                     )}
@@ -186,7 +186,7 @@ export default function WishlistClient({
                     <button
                       onClick={() => handleRemove(item.productId)}
                       disabled={removing.has(item.productId)}
-                      className="rounded-xl px-3 text-ds-gray-500 transition-colors hover:bg-ds-red/10 hover:text-ds-red disabled:opacity-50"
+                      className="rounded-xl px-3 text-ds-gray-400 transition-colors hover:bg-ds-red/10 hover:text-ds-red disabled:opacity-50"
                       title="Remove from wishlist"
                     >
                       <svg

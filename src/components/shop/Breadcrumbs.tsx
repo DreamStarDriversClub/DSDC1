@@ -18,7 +18,7 @@ export function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
     >
       <Link
         href="/"
-        className="text-ds-gray-500 transition-colors hover:text-ds-gray-300"
+        className="text-ds-gray-400 transition-colors hover:text-ds-gray-300"
       >
         Home
       </Link>
@@ -41,7 +41,7 @@ export function Breadcrumbs({ items, className = "" }: BreadcrumbsProps) {
             ) : (
               <Link
                 href={item.href}
-                className="text-ds-gray-500 transition-colors hover:text-ds-gray-300"
+                className="text-ds-gray-400 transition-colors hover:text-ds-gray-300"
               >
                 {item.label}
               </Link>

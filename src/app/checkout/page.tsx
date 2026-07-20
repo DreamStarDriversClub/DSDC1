@@ -232,7 +232,7 @@ export default function CheckoutPage() {
               <h1 className="font-display text-3xl font-bold text-ds-white">
                 Your cart is empty
               </h1>
-              <p className="mt-3 text-ds-gray-400">
+              <p className="mt-3 text-ds-gray-300">
                 Add some items before checking out.
               </p>
               <div className="mt-8">
@@ -281,13 +281,13 @@ export default function CheckoutPage() {
               <h1 className="mt-6 font-display text-3xl font-bold text-ds-white">
                 Order Confirmed!
               </h1>
-              <p className="mt-3 text-ds-gray-400">
+              <p className="mt-3 text-ds-gray-300">
                 Thank you for your order. Your order number is{" "}
                 <span className="font-mono font-semibold text-ds-red">
                   #{orderSuccess.slice(-8).toUpperCase()}
                 </span>
               </p>
-              <p className="mt-1 text-sm text-ds-gray-500">
+              <p className="mt-1 text-sm text-ds-gray-400">
                 A confirmation email will be sent to {formData.email}.
               </p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -336,7 +336,7 @@ export default function CheckoutPage() {
                           ? "bg-green-500/20 text-green-400"
                           : step === "payment" && idx === 0
                             ? "bg-green-500/20 text-green-400"
-                            : "bg-ds-black-darkgray text-ds-gray-500"
+                            : "bg-ds-black-darkgray text-ds-gray-400"
                     }`}
                   >
                     {step === "review" && idx < 2 ? (
@@ -353,7 +353,7 @@ export default function CheckoutPage() {
                   </div>
                   <span
                     className={`text-xs font-medium capitalize hidden sm:inline ${
-                      step === s ? "text-ds-white" : "text-ds-gray-500"
+                      step === s ? "text-ds-white" : "text-ds-gray-400"
                     }`}
                   >
                     {s}
@@ -386,7 +386,7 @@ export default function CheckoutPage() {
                   <form onSubmit={handleShippingSubmit} className="space-y-5">
                     {/* Contact info */}
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                         Email *
                       </label>
                       <input
@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                     {/* Name */}
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                           First Name *
                         </label>
                         <input
@@ -430,7 +430,7 @@ export default function CheckoutPage() {
                         )}
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                           Last Name *
                         </label>
                         <input
@@ -453,7 +453,7 @@ export default function CheckoutPage() {
 
                     {/* Phone */}
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                         Phone (optional)
                       </label>
                       <input
@@ -467,7 +467,7 @@ export default function CheckoutPage() {
 
                     {/* Address */}
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                         Address *
                       </label>
                       <input
@@ -489,7 +489,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div>
-                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                         Apt, Suite, etc. (optional)
                       </label>
                       <input
@@ -504,7 +504,7 @@ export default function CheckoutPage() {
                     {/* City / State / ZIP */}
                     <div className="grid gap-4 sm:grid-cols-3">
                       <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                           City *
                         </label>
                         <input
@@ -524,7 +524,7 @@ export default function CheckoutPage() {
                         )}
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                           State *
                         </label>
                         <select
@@ -550,7 +550,7 @@ export default function CheckoutPage() {
                         )}
                       </div>
                       <div>
-                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-400">
+                        <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ds-gray-300">
                           ZIP Code *
                         </label>
                         <input
@@ -609,14 +609,14 @@ export default function CheckoutPage() {
                       </h2>
                       <button
                         onClick={() => setStep("shipping")}
-                        className="text-xs text-ds-gray-500 transition-colors hover:text-ds-white"
+                        className="text-xs text-ds-gray-400 transition-colors hover:text-ds-white"
                       >
                         Edit Address
                       </button>
                     </div>
 
                     {/* Address summary */}
-                    <div className="mb-6 rounded-lg border border-white/[0.06] bg-ds-black px-4 py-3 text-sm text-ds-gray-400">
+                    <div className="mb-6 rounded-lg border border-white/[0.06] bg-ds-black px-4 py-3 text-sm text-ds-gray-300">
                       <p className="font-medium text-ds-white">
                         {formData.firstName} {formData.lastName}
                       </p>
@@ -624,7 +624,7 @@ export default function CheckoutPage() {
                       <p>
                         {formData.city}, {formData.state} {formData.zip}
                       </p>
-                      <p className="mt-1 text-xs text-ds-gray-500">
+                      <p className="mt-1 text-xs text-ds-gray-400">
                         {formData.email}
                       </p>
                     </div>
@@ -643,7 +643,7 @@ export default function CheckoutPage() {
                           <p className="text-sm font-semibold text-ds-white">
                             Standard Shipping
                           </p>
-                          <p className="text-xs text-ds-gray-500">
+                          <p className="text-xs text-ds-gray-400">
                             5-7 business days
                           </p>
                         </div>
@@ -671,7 +671,7 @@ export default function CheckoutPage() {
                           <p className="text-sm font-semibold text-ds-white">
                             Express Shipping
                           </p>
-                          <p className="text-xs text-ds-gray-500">
+                          <p className="text-xs text-ds-gray-400">
                             2-3 business days
                           </p>
                         </div>
@@ -694,7 +694,7 @@ export default function CheckoutPage() {
                             <p className="text-sm font-semibold text-green-400">
                               Free Shipping
                             </p>
-                            <p className="text-xs text-ds-gray-500">
+                            <p className="text-xs text-ds-gray-400">
                               5-7 business days
                             </p>
                           </div>
@@ -713,7 +713,7 @@ export default function CheckoutPage() {
                     </h2>
 
                     <div className="rounded-xl border border-ds-gold/20 bg-ds-gold/5 p-6 text-center">
-                      <p className="text-sm text-ds-gray-400 mb-4">
+                      <p className="text-sm text-ds-gray-300 mb-4">
                         PayPal integration coming soon. For now, click below to
                         simulate.
                       </p>
@@ -729,7 +729,7 @@ export default function CheckoutPage() {
                           Pay with PayPal
                         </button>
                       </div>
-                      <p className="mt-3 text-xs text-ds-gray-500">
+                      <p className="mt-3 text-xs text-ds-gray-400">
                         No actual payment will be processed in this demo.
                       </p>
                     </div>
@@ -771,7 +771,7 @@ export default function CheckoutPage() {
                               {item.name}
                             </p>
                             {item.variantName && (
-                              <p className="text-xs text-ds-gray-500">
+                              <p className="text-xs text-ds-gray-400">
                                 {item.variantName}
                               </p>
                             )}
@@ -795,23 +795,23 @@ export default function CheckoutPage() {
 
                     <div className="space-y-4">
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-500 mb-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-1">
                           Ship To
                         </p>
                         <p className="text-sm text-ds-white">
                           {formData.firstName} {formData.lastName}
                         </p>
-                        <p className="text-sm text-ds-gray-400">
+                        <p className="text-sm text-ds-gray-300">
                           {formData.line1}
                           {formData.line2 ? `, ${formData.line2}` : ""}
                         </p>
-                        <p className="text-sm text-ds-gray-400">
+                        <p className="text-sm text-ds-gray-300">
                           {formData.city}, {formData.state} {formData.zip}
                         </p>
                       </div>
 
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-500 mb-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-1">
                           Shipping Method
                         </p>
                         <p className="text-sm text-ds-white">
@@ -824,7 +824,7 @@ export default function CheckoutPage() {
                       </div>
 
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-500 mb-1">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-1">
                           Payment
                         </p>
                         <p className="text-sm text-ds-white">PayPal</p>
@@ -899,7 +899,7 @@ export default function CheckoutPage() {
                 </h2>
 
                 {/* Item count */}
-                <p className="text-sm text-ds-gray-500 mb-4">
+                <p className="text-sm text-ds-gray-400 mb-4">
                   {itemCount} {itemCount === 1 ? "item" : "items"}
                 </p>
 
@@ -938,7 +938,7 @@ export default function CheckoutPage() {
                         applyCoupon(null, null);
                         setCouponInput("");
                       }}
-                      className="text-xs text-ds-gray-500 hover:text-ds-red"
+                      className="text-xs text-ds-gray-400 hover:text-ds-red"
                     >
                       Remove
                     </button>
@@ -948,7 +948,7 @@ export default function CheckoutPage() {
                 {/* Totals */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Subtotal</span>
+                    <span className="text-ds-gray-300">Subtotal</span>
                     <span className="text-ds-white">{formatPrice(subtotal)}</span>
                   </div>
                   {discount > 0 && (
@@ -958,13 +958,13 @@ export default function CheckoutPage() {
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Shipping</span>
+                    <span className="text-ds-gray-300">Shipping</span>
                     <span className={shipping === 0 ? "text-green-400" : "text-ds-white"}>
                       {shipping === 0 ? "Free" : formatPrice(shipping)}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-ds-gray-400">Tax (est.)</span>
+                    <span className="text-ds-gray-300">Tax (est.)</span>
                     <span className="text-ds-white">{formatPrice(tax)}</span>
                   </div>
                   <div className="border-t border-white/[0.06] pt-2 mt-2">

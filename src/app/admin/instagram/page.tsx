@@ -29,7 +29,7 @@ export default async function AdminInstagramPage() {
           <h1 className="mt-2 font-display text-3xl font-black tracking-tight text-ds-white sm:text-4xl">
             Instagram Grid
           </h1>
-          <p className="mt-2 text-ds-gray-500">
+          <p className="mt-2 text-ds-gray-400">
             Upload and manage images for the homepage Instagram feed.
           </p>
         </div>
@@ -61,7 +61,7 @@ export default async function AdminInstagramPage() {
                 <circle cx="12" cy="12" r="5" />
                 <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
               </svg>
-              <p className="mt-4 text-ds-gray-500">
+              <p className="mt-4 text-ds-gray-400">
                 No posts yet. Upload your first image above.
               </p>
             </div>
@@ -96,7 +96,7 @@ export default async function AdminInstagramPage() {
                   {post.link && (
                     <div className="absolute right-2 top-2 rounded-full bg-ds-black/70 p-1 backdrop-blur-sm">
                       <svg
-                        className="h-3 w-3 text-ds-gray-400"
+                        className="h-3 w-3 text-ds-gray-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -120,7 +120,7 @@ export default async function AdminInstagramPage() {
         <div className="mt-10 border-t border-white/[0.06] pt-8">
           <a
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-ds-gray-500 transition-colors hover:text-ds-gray-300"
+            className="inline-flex items-center gap-2 text-sm text-ds-gray-400 transition-colors hover:text-ds-gray-300"
           >
             <svg
               className="h-4 w-4"

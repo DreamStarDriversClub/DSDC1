@@ -71,7 +71,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               Search Products
             </h1>
             <div className="mx-auto mt-4 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mt-4 text-ds-gray-400">
+            <p className="mt-4 text-ds-gray-300">
               Find exactly what you&apos;re looking for in our catalog.
             </p>
 
@@ -112,14 +112,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <div className="flex flex-col items-center justify-center py-16 text-center">
               {/* Hoshi mascot */}
               <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full border-2 border-ds-red/20 bg-ds-black-charcoal shadow-brand-glow-sm">
-                <span className="text-4xl" role="img" aria-label="Hoshi mascot">
-                  ⭐
-                </span>
+                <img
+                  src="/hoshi-searching.png"
+                  alt="Hoshi mascot searching"
+                  className="h-14 w-14 object-contain"
+                  loading="lazy"
+                />
               </div>
               <h2 className="font-display text-2xl font-bold text-ds-white">
                 What Are You Looking For?
               </h2>
-              <p className="mt-3 max-w-md text-ds-gray-500">
+              <p className="mt-3 max-w-md text-ds-gray-400">
                 Type something in the search bar above — a product name, category, or even a part number. Hoshi&apos;s got your back!
               </p>
             </div>

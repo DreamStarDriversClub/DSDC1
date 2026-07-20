@@ -26,7 +26,7 @@ export function SubcategoryFilter({
         className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
           !currentSlug
             ? "border-ds-red bg-ds-red/10 text-ds-red"
-            : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-400 hover:border-ds-red/30 hover:text-ds-white"
+            : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
         }`}
       >
         All
@@ -41,7 +41,7 @@ export function SubcategoryFilter({
             className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
               isActive
                 ? "border-ds-red bg-ds-red/10 text-ds-red"
-                : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-400 hover:border-ds-red/30 hover:text-ds-white"
+                : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
             }`}
           >
             {sub.name}

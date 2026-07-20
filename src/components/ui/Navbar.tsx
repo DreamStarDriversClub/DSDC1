@@ -87,7 +87,7 @@ export function Navbar({ session }: { session: SessionUser }) {
               >
                 {shopLink.label}
                 <svg
-                  className={`h-3.5 w-3.5 text-ds-gray-500 transition-transform ${
+                  className={`h-3.5 w-3.5 text-ds-gray-400 transition-transform ${
                     shopDropdownOpen ? "rotate-180" : ""
                   }`}
                   fill="none"
@@ -116,7 +116,7 @@ export function Navbar({ session }: { session: SessionUser }) {
                       <span className="text-sm font-medium text-ds-white">
                         {child.label}
                       </span>
-                      <span className="text-xs text-ds-gray-500">
+                      <span className="text-xs text-ds-gray-400">
                         {child.description}
                       </span>
                     </Link>
@@ -142,7 +142,7 @@ export function Navbar({ session }: { session: SessionUser }) {
             {/* Search */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+              className="rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
               aria-label="Search (⌘K)"
             >
               <svg
@@ -163,7 +163,7 @@ export function Navbar({ session }: { session: SessionUser }) {
             {/* Cart */}
             <button
               onClick={() => setCartOpen(true)}
-              className="relative rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+              className="relative rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
               aria-label="Open cart"
             >
               <svg
@@ -191,7 +191,7 @@ export function Navbar({ session }: { session: SessionUser }) {
               <div className="relative">
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+                  className="flex items-center gap-2 rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
                   aria-label="User menu"
                 >
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-ds-red/20 text-xs font-bold text-ds-red">
@@ -211,7 +211,7 @@ export function Navbar({ session }: { session: SessionUser }) {
                         <p className="text-sm font-medium text-ds-white truncate">
                           {session.firstName} {session.lastName}
                         </p>
-                        <p className="text-xs text-ds-gray-500 truncate">
+                        <p className="text-xs text-ds-gray-400 truncate">
                           {session.email}
                         </p>
                       </div>
@@ -262,7 +262,7 @@ export function Navbar({ session }: { session: SessionUser }) {
                         <form action={logoutAction}>
                           <button
                             type="submit"
-                            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-ds-gray-500 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
+                            className="flex w-full items-center gap-2 px-4 py-2 text-sm text-ds-gray-400 transition-colors hover:bg-ds-red/10 hover:text-ds-red"
                           >
                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -300,7 +300,7 @@ export function Navbar({ session }: { session: SessionUser }) {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMobileOpen(true)}
-              className="rounded-lg p-2 text-ds-gray-400 transition-colors hover:bg-ds-white/5 hover:text-ds-white md:hidden"
+              className="rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white md:hidden"
               aria-label="Open menu"
             >
               <svg

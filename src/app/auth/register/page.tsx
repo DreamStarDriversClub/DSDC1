@@ -51,7 +51,7 @@ export default function RegisterPage() {
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="font-display text-3xl text-ds-white">Join the Club</h1>
-            <p className="mt-2 text-ds-gray-400">
+            <p className="mt-2 text-ds-gray-300">
               Create your Dream Star Drivers Club account
             </p>
           </div>
@@ -77,7 +77,7 @@ export default function RegisterPage() {
                   id="firstName"
                   name="firstName"
                   required
-                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                   placeholder="Keisuke"
                 />
               </div>
@@ -93,7 +93,7 @@ export default function RegisterPage() {
                   id="lastName"
                   name="lastName"
                   required
-                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                  className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                   placeholder="Takahashi"
                 />
               </div>
@@ -111,7 +111,7 @@ export default function RegisterPage() {
                 id="email"
                 name="email"
                 required
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                 placeholder="you@email.com"
               />
             </div>
@@ -129,7 +129,7 @@ export default function RegisterPage() {
                 name="password"
                 required
                 minLength={8}
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                 placeholder="Min. 8 characters"
               />
             </div>
@@ -147,7 +147,7 @@ export default function RegisterPage() {
                 name="confirmPassword"
                 required
                 minLength={8}
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-500 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
                 placeholder="Re-enter your password"
               />
             </div>
@@ -163,7 +163,7 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-ds-gray-500">
+          <p className="mt-6 text-center text-sm text-ds-gray-400">
             Already a member?{" "}
             <Link
               href="/auth/login"

@@ -98,7 +98,7 @@ export default async function ShopPage() {
                       {cat.slug === "ds-performance" ? "DS Performance" : cat.name}
                     </h3>
                     {cat.description && (
-                      <p className="mt-1 text-sm text-ds-gray-500">{cat.description}</p>
+                      <p className="mt-1 text-sm text-ds-gray-400">{cat.description}</p>
                     )}
                   </div>
                 </Link>

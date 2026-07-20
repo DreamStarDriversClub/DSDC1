@@ -29,7 +29,7 @@ export function Footer() {
                 DREAM STAR
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ds-gray-500">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ds-gray-400">
               {TAGLINE} — Premium automotive lifestyle brand rooted in Japanese
               car culture. Mazda rotary and Toyota 2JZ heritage.
             </p>
@@ -47,7 +47,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.06] text-xs font-bold text-ds-gray-500 transition-all hover:border-ds-red/30 hover:text-ds-white"
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.06] text-xs font-bold text-ds-gray-400 transition-all hover:border-ds-red/30 hover:text-ds-white"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -56,7 +56,7 @@ export function Footer() {
             </div>
 
             {/* Business hours */}
-            <p className="mt-5 text-xs text-ds-gray-500">
+            <p className="mt-5 text-xs text-ds-gray-400">
               Business Hours: 9am–6pm PST
             </p>
           </div>
@@ -72,7 +72,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-ds-gray-500 transition-colors hover:text-ds-white"
+                      className="text-sm text-ds-gray-400 transition-colors hover:text-ds-white"
                     >
                       {link.label}
                     </Link>
@@ -90,7 +90,7 @@ export function Footer() {
               <h4 className="font-display text-lg font-bold text-ds-white">
                 Join the Club
               </h4>
-              <p className="mt-1 text-sm text-ds-gray-500">
+              <p className="mt-1 text-sm text-ds-gray-400">
                 New drops, restocks, and exclusive content — straight to your
                 inbox.
               </p>
@@ -107,13 +107,13 @@ export function Footer() {
           <div className="flex gap-4">
             <Link
               href="/privacy"
-              className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-400"
+              className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-300"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-400"
+              className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-300"
             >
               Terms
             </Link>

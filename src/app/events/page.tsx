@@ -101,7 +101,7 @@ export default function EventsPage() {
               <span className="text-ds-red">Meets</span>
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-400">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               Because the best builds aren&apos;t just seen online — they&apos;re
               heard echoing off canyon walls and felt in the paddock. Come hang
               with the crew at our next gathering.
@@ -126,7 +126,7 @@ export default function EventsPage() {
                 <h3 className="font-display text-lg font-bold text-ds-white">
                   {type.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ds-gray-500">
+                <p className="mt-2 text-sm leading-relaxed text-ds-gray-400">
                   {type.description}
                 </p>
               </Card>
@@ -164,7 +164,7 @@ export default function EventsPage() {
                 <h2 className="mt-6 font-display text-2xl font-bold text-ds-white">
                   Event Calendar Inbound
                 </h2>
-                <p className="mt-4 text-sm leading-relaxed text-ds-gray-400">
+                <p className="mt-4 text-sm leading-relaxed text-ds-gray-300">
                   We&apos;re lining up dates for the season. Track days, canyon
                   cruises, and Cars & Coffee meetups are being scheduled now.
                   The best way to stay in the loop is to follow us on Instagram
@@ -184,7 +184,7 @@ export default function EventsPage() {
           <h2 className="font-display text-2xl font-black tracking-tight text-ds-white sm:text-3xl">
             Want Us in Your City?
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-ds-gray-400">
+          <p className="mx-auto mt-3 max-w-md text-ds-gray-300">
             We&apos;re always scouting new locations. If you&apos;ve got a spot you
             think the crew needs to hit, let us know.
           </p>
