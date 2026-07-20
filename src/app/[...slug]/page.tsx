@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BRAND_NAME } from "@/lib/constants";
+import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -14,7 +14,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NotFoundPage() {
+/**
+ * Catch-all 404 page.
+ *
+ * Renders the custom "Wrong Turn on the Touge" UI and sets HTTP 404 status.
+ * This replaces the root not-found.tsx convention file, which was causing
+ * a route-resolution bug in Next.js 14.2.29 where pages sharing the same
+ * build commit as not-found.tsx would incorrectly resolve to /_not-found.
+ */
+export default function CatchAllNotFoundPage() {
   return (
     <div className="relative flex min-h-[80vh] items-center overflow-hidden bg-ds-black-deepest">
       {/* ── Background grid ─────────────────────────────────────── */}
