@@ -21,7 +21,9 @@ bun install
 bun run build
 
 # Start the production server in the background
-setsid nohup bun run start > .run/server.log 2>&1 < /dev/null &
+# Load DATABASE_URL from .env for Prisma runtime
+export $(grep DATABASE_URL .env | xargs) 2>/dev/null || true
+setsid nohup env DATABASE_URL="$DATABASE_URL" bun run start > .run/server.log 2>&1 < /dev/null &
 
 # Wait for the new server to actually answer before reporting success, so a
 # startup crash surfaces here instead of silently leaving the old page live.
