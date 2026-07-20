@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BRAND_NAME, TAGLINE } from "@/lib/constants";
-import { prisma } from "@/lib/prisma";
+
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -169,11 +169,6 @@ const sakuraPetals = [
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export default async function HomePage() {
-  const instagramPosts = await prisma.instagramPost.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 6,
-  });
-
   return (
     <>
       <OrganizationSchema />
@@ -616,7 +611,7 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════
           Section 6: Instagram / Social Proof
           ══════════════════════════════════════════════════════════════════ */}
-      <InstagramGrid posts={instagramPosts} />
+      <InstagramGrid />
 
       {/* ══════════════════════════════════════════════════════════════════
           Section 7: Newsletter CTA — Join the Club
