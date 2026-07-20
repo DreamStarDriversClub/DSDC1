@@ -113,6 +113,87 @@ export async function loginAction(
   }
 }
 
+// ── Login (plain values — useTransition-safe) ──
+
+export async function loginWithCredentials(
+  email: string,
+  password: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const normalizedEmail = (email ?? "").trim().toLowerCase();
+    const normalizedPassword = password ?? "";
+
+    if (!normalizedEmail || !normalizedPassword) {
+      return { success: false, error: "Email and password are required." };
+    }
+
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
+
+    if (!user || !verifyPassword(normalizedPassword, user.passwordHash)) {
+      return { success: false, error: "Invalid email or password." };
+    }
+
+    await setSessionCookie({
+      userId: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("[loginWithCredentials] CRASH:", error?.message || error);
+    return { success: false, error: "Server error: " + (error?.message || "unknown") };
+  }
+}
+
+// ── Register (plain values — useTransition-safe) ──
+
+export async function registerWithCredentials(data: {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+}): Promise<{ success: boolean; error?: string }> {
+  const email = (data.email ?? "").trim().toLowerCase();
+  const password = data.password ?? "";
+  const firstName = (data.firstName ?? "").trim();
+  const lastName = (data.lastName ?? "").trim();
+
+  if (!email || !password || !firstName || !lastName) {
+    return { success: false, error: "All fields are required." };
+  }
+
+  if (password.length < 8) {
+    return { success: false, error: "Password must be at least 8 characters." };
+  }
+
+  const exists = await prisma.user.findUnique({ where: { email } });
+  if (exists) {
+    return { success: false, error: "An account with this email already exists." };
+  }
+
+  const user = await prisma.user.create({
+    data: {
+      email,
+      passwordHash: hashPassword(password),
+      firstName,
+      lastName,
+    },
+  });
+
+  await setSessionCookie({
+    userId: user.id,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+  });
+
+  return { success: true };
+}
+
 // ── Logout ──
 
 export async function logoutAction() {

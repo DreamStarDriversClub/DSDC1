@@ -1,10 +1,9 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useFormState } from "react-dom";
+import { Suspense, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { loginAction } from "@/lib/auth-actions";
+import { loginWithCredentials } from "@/lib/auth-actions";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
@@ -12,12 +11,25 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/account";
-  const [state, dispatch] = useFormState(loginAction, { success: false });
-  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  if (state.success) {
-    router.push(redirect);
-    return null;
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const email = (formData.get("email") as string)?.trim().toLowerCase() ?? "";
+    const password = (formData.get("password") as string) ?? "";
+
+    startTransition(async () => {
+      const result = await loginWithCredentials(email, password);
+      if (result.success) {
+        router.push(redirect);
+      } else {
+        setError(result.error ?? "Login failed.");
+      }
+    });
   }
 
   return (
@@ -33,14 +45,10 @@ function LoginForm() {
           </div>
 
           {/* Form */}
-          <form
-            action={dispatch}
-            onSubmit={() => setSubmitting(true)}
-            className="space-y-5"
-          >
-            {state.error && (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
               <div className="rounded-xl border border-ds-red/30 bg-ds-red/10 px-4 py-3 text-sm text-ds-red">
-                {state.error}
+                {error}
               </div>
             )}
 
@@ -100,9 +108,9 @@ function LoginForm() {
               variant="primary"
               size="lg"
               className="w-full"
-              disabled={submitting}
+              disabled={isPending}
             >
-              {submitting ? "Signing In..." : "Sign In"}
+              {isPending ? "Signing In..." : "Sign In"}
             </Button>
           </form>
 

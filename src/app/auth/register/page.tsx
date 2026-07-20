@@ -1,21 +1,47 @@
 "use client";
 
-import { useState } from "react";
-import { useFormState } from "react-dom";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { registerAction } from "@/lib/auth-actions";
+import { registerWithCredentials } from "@/lib/auth-actions";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [state, dispatch] = useFormState(registerAction, { success: false });
-  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  if (state.success) {
-    router.push("/account");
-    return null;
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+
+    const formData = new FormData(e.currentTarget);
+    const email = (formData.get("email") as string)?.trim().toLowerCase() ?? "";
+    const password = (formData.get("password") as string) ?? "";
+    const confirmPassword = (formData.get("confirmPassword") as string) ?? "";
+    const firstName = (formData.get("firstName") as string)?.trim() ?? "";
+    const lastName = (formData.get("lastName") as string)?.trim() ?? "";
+
+    // Client-side password match check
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await registerWithCredentials({
+        email,
+        password,
+        firstName,
+        lastName,
+      });
+      if (result.success) {
+        router.push("/account");
+      } else {
+        setError(result.error ?? "Registration failed.");
+      }
+    });
   }
 
   return (
@@ -31,14 +57,10 @@ export default function RegisterPage() {
           </div>
 
           {/* Form */}
-          <form
-            action={dispatch}
-            onSubmit={() => setSubmitting(true)}
-            className="space-y-5"
-          >
-            {state.error && (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
               <div className="rounded-xl border border-ds-red/30 bg-ds-red/10 px-4 py-3 text-sm text-ds-red">
-                {state.error}
+                {error}
               </div>
             )}
 
@@ -135,9 +157,9 @@ export default function RegisterPage() {
               variant="primary"
               size="lg"
               className="w-full"
-              disabled={submitting}
+              disabled={isPending}
             >
-              {submitting ? "Creating Account..." : "Create Account"}
+              {isPending ? "Creating Account..." : "Create Account"}
             </Button>
           </form>
 
