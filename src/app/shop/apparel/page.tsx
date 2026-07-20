@@ -24,37 +24,33 @@ export default async function ApparelPage() {
     where: { slug: "apparel" },
   });
 
-  if (!category) {
-    return (
-      <Container className="py-20 text-center">
-        <h1 className="font-display text-3xl text-ds-white">Category not found</h1>
-      </Container>
-    );
-  }
-
   // Fetch subcategories
-  const subcategories = await prisma.category.findMany({
-    where: { parentId: category.id },
-    orderBy: { name: "asc" },
-    select: { name: true, slug: true },
-  });
+  const subcategories = category
+    ? await prisma.category.findMany({
+        where: { parentId: category.id },
+        orderBy: { name: "asc" },
+        select: { name: true, slug: true },
+      })
+    : [];
 
   // Fetch all products in this category or its subcategories
-  const products = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      category: {
-        OR: [
-          { id: category.id },
-          { parentId: category.id },
-        ],
-      },
-    },
-    include: {
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const products = category
+    ? await prisma.product.findMany({
+        where: {
+          isActive: true,
+          category: {
+            OR: [
+              { id: category.id },
+              { parentId: category.id },
+            ],
+          },
+        },
+        include: {
+          category: { select: { name: true, slug: true } },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    : [];
 
   // Map for display
   const mappedProducts = products.map((p) => ({

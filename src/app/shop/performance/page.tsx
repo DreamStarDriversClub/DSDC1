@@ -22,32 +22,28 @@ export default async function PerformancePage() {
     where: { slug: "ds-performance" },
   });
 
-  if (!category) {
-    return (
-      <Container className="py-20 text-center">
-        <h1 className="font-display text-3xl text-ds-white">Category not found</h1>
-      </Container>
-    );
-  }
+  const subcategories = category
+    ? await prisma.category.findMany({
+        where: { parentId: category.id },
+        orderBy: { name: "asc" },
+        select: { name: true, slug: true },
+      })
+    : [];
 
-  const subcategories = await prisma.category.findMany({
-    where: { parentId: category.id },
-    orderBy: { name: "asc" },
-    select: { name: true, slug: true },
-  });
-
-  const products = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      category: {
-        OR: [{ id: category.id }, { parentId: category.id }],
-      },
-    },
-    include: {
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const products = category
+    ? await prisma.product.findMany({
+        where: {
+          isActive: true,
+          category: {
+            OR: [{ id: category.id }, { parentId: category.id }],
+          },
+        },
+        include: {
+          category: { select: { name: true, slug: true } },
+        },
+        orderBy: { createdAt: "desc" },
+      })
+    : [];
 
   const mappedProducts = products.map((p) => ({
     slug: p.slug,
