@@ -56,8 +56,8 @@ export default async function ApparelPage() {
   const mappedProducts = products.map((p) => ({
     slug: p.slug,
     name: p.name,
-    price: p.price,
-    salePrice: p.salePrice,
+    price: parseFloat(p.price.toString()),
+    salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
     category: p.category,
     isFeatured: p.isFeatured,
   }));

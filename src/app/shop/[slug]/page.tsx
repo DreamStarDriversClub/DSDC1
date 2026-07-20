@@ -1,14 +1,13 @@
-import { prisma } from "@/lib/prisma";
+import { getProductBySlug, getRelatedProducts } from "@/lib/shop-data";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { ProductCard } from "@/components/shop/ProductCard";
-import { AddToCartButton } from "@/components/shop/AddToCartButton";
+import { ProductForm } from "@/components/shop/ProductForm";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
 import { formatPrice, productGradient } from "@/lib/utils";
@@ -23,18 +22,16 @@ interface Props {
 /* ── Metadata ──────────────────────────────────────────── */
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await prisma.product.findUnique({
-    where: { slug: params.slug },
-    select: { name: true, description: true },
-  });
+  const product = await getProductBySlug(params.slug);
   if (!product) return { title: "Product Not Found" };
 
   return {
-    title: product.name,
+    title: `${product.name} | ${BRAND_NAME}`,
     description: product.description.slice(0, 160),
     openGraph: {
       title: `${product.name} | ${BRAND_NAME}`,
       description: product.description.slice(0, 160),
+      images: product.images.length > 0 ? [product.images[0]] : [],
     },
   };
 }
@@ -42,31 +39,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /* ── Page ───────────────────────────────────────────────── */
 
 export default async function ProductDetailPage({ params }: Props) {
-  const product = await prisma.product.findUnique({
-    where: { slug: params.slug },
-    include: {
-      category: {
-        select: { name: true, slug: true, parentId: true, parent: { select: { name: true, slug: true } } },
-      },
-      variants: {
-        orderBy: { name: "asc" },
-      },
-      reviews: {
-        where: { isApproved: true },
-        include: { user: { select: { firstName: true } } },
-        orderBy: { createdAt: "desc" },
-      },
-    },
-  });
+  const product = await getProductBySlug(params.slug);
 
   if (!product || !product.isActive) {
     notFound();
   }
 
   const gradient = productGradient(product.slug);
-  const images = (product.images as string[]) || [];
-  const specifications = (product.specifications as { label: string; value: string }[]) || [];
-  const compatibleVehicles = (product.compatibleVehicles as string[]) || [];
+  const specifications = product.specifications;
+  const compatibleVehicles = product.compatibleVehicles;
 
   // Build breadcrumbs
   const breadcrumbItems: { label: string; href?: string }[] = [
@@ -91,35 +72,30 @@ export default async function ProductDetailPage({ params }: Props) {
   });
   breadcrumbItems.push({ label: product.name });
 
-  // Related products (same category)
-  const related = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      categoryId: product.categoryId,
-      id: { not: product.id },
-    },
-    include: {
-      category: { select: { name: true, slug: true } },
-    },
-    take: 4,
-    orderBy: { createdAt: "desc" },
-  });
+  // Related products
+  const related = await getRelatedProducts(
+    product.category.slug,
+    product.slug,
+    product.source,
+    4,
+  );
 
-  // Get unique sizes and colors from variants
-  const sizes = [...new Set(product.variants.map((v) => {
-    const parts = v.name.split(" / ");
-    return parts[0]?.trim();
-  }).filter(Boolean))];
-  const colors = [...new Set(product.variants.map((v) => {
-    const parts = v.name.split(" / ");
-    return parts[1]?.trim();
-  }).filter(Boolean))];
-
-  const hasVariants = product.variants.length > 0;
+  // Compute reviews
   const baseReviewCount = product.reviews.length;
-  const avgRating = baseReviewCount > 0
-    ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / baseReviewCount
-    : 0;
+  const avgRating =
+    baseReviewCount > 0
+      ? product.reviews.reduce((sum, r) => sum + r.rating, 0) /
+        baseReviewCount
+      : 0;
+
+  // Category badge variant
+  const badgeVariant = product.category.slug.startsWith("acc")
+    ? ("gold" as const)
+    : ("red" as const);
+
+  // Determine icon for placeholder
+  const isPerformance = product.category.slug.startsWith("perf");
+  const isAccessories = product.category.slug.startsWith("acc");
 
   return (
     <>
@@ -127,8 +103,8 @@ export default async function ProductDetailPage({ params }: Props) {
         name={product.name}
         description={product.description}
         sku={product.sku}
-        price={parseFloat((product.salePrice ?? product.price).toString())}
-        image={images.length > 0 ? images[0] : undefined}
+        price={product.salePrice ?? product.price}
+        image={product.images.length > 0 ? product.images[0] : undefined}
         slug={product.slug}
         category={product.category.name}
       />
@@ -140,57 +116,88 @@ export default async function ProductDetailPage({ params }: Props) {
       <section className="bg-ds-black section-padding-tight">
         <Container>
           <div className="grid gap-10 lg:grid-cols-2">
-            {/* Left: Image Gallery */}
+            {/* Left: Image */}
             <div className="space-y-4">
               <div
                 className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-white/[0.06] ${gradient}`}
               >
-                {/* Single large placeholder */}
-                <div className="flex flex-col items-center gap-4 text-center">
-                  <svg
-                    className="h-20 w-20 text-ds-red/30"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={0.5}
-                  >
-                    {product.category.slug.startsWith("perf") ? (
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
-                    ) : product.category.slug.startsWith("acc") ? (
-                      <>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-                      </>
-                    ) : (
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                    )}
-                  </svg>
-                  <span className="text-sm text-ds-gray-600">{product.sku}</span>
-                </div>
+                {/* Product image or placeholder */}
+                {product.images.length > 0 ? (
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="h-full w-full object-cover"
+                    loading="eager"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <svg
+                      className="h-20 w-20 text-ds-red/30"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={0.5}
+                    >
+                      {isPerformance ? (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z"
+                        />
+                      ) : isAccessories ? (
+                        <>
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 6h.008v.008H6V6z"
+                          />
+                        </>
+                      ) : (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                        />
+                      )}
+                    </svg>
+                    <span className="text-sm text-ds-gray-600">
+                      {product.sku}
+                    </span>
+                  </div>
+                )}
 
                 {/* Sale badge */}
                 {product.salePrice && (
                   <div className="absolute left-4 top-4">
                     <Badge variant="red" size="md">
                       {Math.round(
-                        (1 - parseFloat(product.salePrice.toString()) / parseFloat(product.price.toString())) * 100
-                      )}% OFF
+                        (1 - product.salePrice / product.price) * 100,
+                      )}
+                      % OFF
                     </Badge>
                   </div>
                 )}
               </div>
 
               {/* Thumbnail row */}
-              {images.length > 0 && (
+              {product.images.length > 1 && (
                 <div className="flex gap-3">
-                  {images.map((img: string, i: number) => (
+                  {product.images.map((img: string, i: number) => (
                     <div
                       key={i}
-                      className="h-20 w-20 rounded-lg border border-white/[0.06] bg-ds-black-charcoal overflow-hidden"
+                      className="h-20 w-20 overflow-hidden rounded-lg border border-white/[0.06] bg-ds-black-charcoal"
                     >
-                      <div className="flex h-full items-center justify-center text-[10px] text-ds-gray-600">
-                        {i + 1}
-                      </div>
+                      <img
+                        src={img}
+                        alt={`${product.name} ${i + 1}`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
                   ))}
                 </div>
@@ -201,12 +208,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div>
               {/* Category badge */}
               <div className="mb-3">
-                <Badge
-                  variant={
-                    product.category.slug.startsWith("acc") ? "gold" : "red"
-                  }
-                  size="sm"
-                >
+                <Badge variant={badgeVariant} size="sm">
                   {product.category.name}
                 </Badge>
               </div>
@@ -249,98 +251,27 @@ export default async function ProductDetailPage({ params }: Props) {
                     ))}
                   </div>
                   <span className="text-sm text-ds-gray-400">
-                    {avgRating.toFixed(1)} ({baseReviewCount} review{baseReviewCount !== 1 ? "s" : ""})
+                    {avgRating.toFixed(1)} ({baseReviewCount} review
+                    {baseReviewCount !== 1 ? "s" : ""})
                   </span>
                 </div>
               )}
 
               <div className="mt-6 h-px bg-white/[0.08]" />
 
-              {/* Variant Selectors */}
-              <div className="mt-6 space-y-5">
-                {sizes.length > 0 && (
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-ds-gray-300">
-                      Size
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {sizes.map((size) => (
-                        <button
-                          key={size}
-                          className="rounded-lg border border-white/[0.12] bg-ds-black-charcoal px-4 py-2.5 text-sm font-medium text-ds-white transition-all hover:border-ds-red/50 hover:bg-ds-red/10 focus:outline-none focus:ring-2 focus:ring-ds-red/40"
-                        >
-                          {size}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {colors.length > 0 && (
-                  <div>
-                    <label className="mb-2 block text-sm font-semibold text-ds-gray-300">
-                      Color
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {colors.map((color) => (
-                        <button
-                          key={color}
-                          className="rounded-lg border border-white/[0.12] bg-ds-black-charcoal px-4 py-2.5 text-sm font-medium text-ds-white transition-all hover:border-ds-red/50 hover:bg-ds-red/10 focus:outline-none focus:ring-2 focus:ring-ds-red/40"
-                        >
-                          {color}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Quantity */}
-                <div>
-                  <label className="mb-2 block text-sm font-semibold text-ds-gray-300">
-                    Quantity
-                  </label>
-                  <div className="flex items-center gap-0">
-                    <button className="rounded-l-lg border border-r-0 border-white/[0.12] bg-ds-black-charcoal px-4 py-2.5 text-sm text-ds-white transition-all hover:bg-ds-black-darkgray">
-                      −
-                    </button>
-                    <span className="border-y border-white/[0.12] bg-ds-black-charcoal px-6 py-2.5 text-sm text-ds-white font-medium">
-                      1
-                    </span>
-                    <button className="rounded-r-lg border border-l-0 border-white/[0.12] bg-ds-black-charcoal px-4 py-2.5 text-sm text-ds-white transition-all hover:bg-ds-black-darkgray">
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Add to Cart */}
-              <div className="mt-8 space-y-3">
-                <AddToCartButton
+              {/* Interactive Product Form */}
+              <div className="mt-6">
+                <ProductForm
                   productId={product.id}
-                  name={product.name}
-                  slug={product.slug}
-                  sku={product.sku}
-                  price={parseFloat(
-                    (product.salePrice ?? product.price).toString(),
-                  )}
-                  disabled={product.inventory <= 0}
+                  productName={product.name}
+                  productSlug={product.slug}
+                  productSku={product.sku}
+                  basePrice={product.price}
+                  salePrice={product.salePrice}
+                  variants={product.variants}
+                  images={product.images}
+                  inventory={product.inventory}
                 />
-                <Button variant="outline" size="lg" className="w-full">
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                  </svg>
-                  Add to Wishlist
-                </Button>
-              </div>
-
-              {/* SKU / Inventory */}
-              <div className="mt-6 text-sm text-ds-gray-400 space-y-1">
-                <p>SKU: {product.sku}</p>
-                {product.inventory > 0 ? (
-                  <p className="text-green-400">In Stock ({product.inventory} available)</p>
-                ) : (
-                  <p className="text-ds-red">Out of Stock</p>
-                )}
               </div>
             </div>
           </div>
@@ -377,9 +308,13 @@ export default async function ProductDetailPage({ params }: Props) {
                       {specifications.map((spec, i) => (
                         <tr
                           key={i}
-                          className={i % 2 === 0 ? "bg-ds-black" : "bg-ds-black-charcoal"}
+                          className={
+                            i % 2 === 0
+                              ? "bg-ds-black"
+                              : "bg-ds-black-charcoal"
+                          }
                         >
-                          <td className="px-6 py-3 text-sm font-semibold text-ds-gray-300 w-1/3">
+                          <td className="w-1/3 px-6 py-3 text-sm font-semibold text-ds-gray-300">
                             {spec.label}
                           </td>
                           <td className="px-6 py-3 text-sm text-ds-gray-300">
@@ -428,7 +363,11 @@ export default async function ProductDetailPage({ params }: Props) {
               {baseReviewCount > 0 ? (
                 <div className="space-y-4">
                   {product.reviews.map((review) => (
-                    <Card key={review.id} padding="md" className="flex flex-col">
+                    <Card
+                      key={review.id}
+                      padding="md"
+                      className="flex flex-col"
+                    >
                       <div className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ds-red/20 text-xs font-bold text-ds-red">
                           {review.user.firstName[0]}
@@ -437,7 +376,7 @@ export default async function ProductDetailPage({ params }: Props) {
                           <p className="text-sm font-semibold text-ds-white">
                             {review.user.firstName}
                           </p>
-                          <div className="flex gap-0.5 mt-0.5">
+                          <div className="mt-0.5 flex gap-0.5">
                             {Array.from({ length: 5 }).map((_, i) => (
                               <svg
                                 key={i}
@@ -465,7 +404,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   ))}
                 </div>
               ) : (
-                <p className="text-ds-gray-400 text-sm">
+                <p className="text-sm text-ds-gray-400">
                   No reviews yet. Be the first to review this product!
                 </p>
               )}
@@ -488,7 +427,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {related.map((p) => (
                 <ProductCard
-                  key={p.id}
+                  key={p.slug}
                   product={{
                     slug: p.slug,
                     name: p.name,
@@ -506,7 +445,6 @@ export default async function ProductDetailPage({ params }: Props) {
           </Container>
         </section>
       )}
-
 
       <NewsletterBanner />
     </>
