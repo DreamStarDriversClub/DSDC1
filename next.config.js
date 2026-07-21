@@ -1,17 +1,23 @@
+const isVercel = process.env.VERCEL === '1';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  // Limit static generation to prevent OOM
   staticPageGenerationTimeout: 120,
-  experimental: {
+};
+
+// Sandbox-specific memory/disk optimizations.
+// Skip on Vercel's build servers — they have more resources and benefit from
+// worker threads + filesystem caching.
+if (!isVercel) {
+  nextConfig.experimental = {
     workerThreads: false,
     cpus: 1,
-  },
-  webpack: (config, { dev }) => {
-    // Disable filesystem cache to save disk space in constrained environments
+  };
+  nextConfig.webpack = (config) => {
     config.cache = false;
     return config;
-  },
-};
+  };
+}
 
 module.exports = nextConfig;
