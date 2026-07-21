@@ -47,33 +47,43 @@ export default async function AllProductsPage({
     };
   }
 
-  // Fetch main categories for filter
-  const mainCategories = await prisma.category.findMany({
-    where: { parentId: null },
-    orderBy: { name: "asc" },
-    select: { name: true, slug: true },
-  });
+  // Fetch main categories for filter (wrap every DB call so a schema mismatch won't crash the page)
+  let mainCategories: { name: string; slug: string }[] = [];
+  try {
+    mainCategories = await prisma.category.findMany({
+      where: { parentId: null },
+      orderBy: { name: "asc" },
+      select: { name: true, slug: true },
+    });
+  } catch (error) {
+    console.error("Failed to fetch main categories for all-products page:", error);
+  }
 
   // Fetch products from Product table
-  const products = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      ...(categoryFilter ? { category: categoryWhere } : {}),
-    },
-    include: {
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy,
-  });
+  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        ...(categoryFilter ? { category: categoryWhere } : {}),
+      },
+      include: {
+        category: { select: { name: true, slug: true } },
+      },
+      orderBy,
+    });
 
-  const mappedProducts = products.map((p) => ({
-    slug: p.slug,
-    name: p.name,
-    price: parseFloat(p.price.toString()),
-    salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
-    category: p.category,
-    isFeatured: p.isFeatured,
-  }));
+    mappedProducts = products.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      price: parseFloat(p.price.toString()),
+      salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
+      category: p.category,
+      isFeatured: p.isFeatured,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch products for all-products page:", error);
+  }
 
   // Fetch Printful products
   let printfulProducts: typeof mappedProducts = [];

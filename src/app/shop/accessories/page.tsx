@@ -19,21 +19,35 @@ export const metadata: Metadata = {
 };
 
 export default async function AccessoriesPage() {
-  const category = await prisma.category.findUnique({
-    where: { slug: "accessories" },
-  });
+  // Fetch the accessories category (wrapped so a DB outage doesn't crash the page)
+  let category: { id: string } | null = null;
+  try {
+    category = await prisma.category.findUnique({
+      where: { slug: "accessories" },
+    });
+  } catch (error) {
+    console.error("Failed to fetch accessories category:", error);
+  }
 
-  const subcategories = category
-    ? await prisma.category.findMany({
+  // Fetch subcategories
+  let subcategories: { name: string; slug: string }[] = [];
+  if (category) {
+    try {
+      subcategories = await prisma.category.findMany({
         where: { parentId: category.id },
         orderBy: { name: "asc" },
         select: { name: true, slug: true },
-      })
-    : [];
+      });
+    } catch (error) {
+      console.error("Failed to fetch accessories subcategories:", error);
+    }
+  }
 
   // Fetch regular products from Product table
-  const products = category
-    ? await prisma.product.findMany({
+  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  if (category) {
+    try {
+      const products = await prisma.product.findMany({
         where: {
           isActive: true,
           category: {
@@ -44,17 +58,20 @@ export default async function AccessoriesPage() {
           category: { select: { name: true, slug: true } },
         },
         orderBy: { createdAt: "desc" },
-      })
-    : [];
+      });
 
-  const mappedProducts = products.map((p) => ({
-    slug: p.slug,
-    name: p.name,
-    price: parseFloat(p.price.toString()),
-    salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
-    category: p.category,
-    isFeatured: p.isFeatured,
-  }));
+      mappedProducts = products.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: parseFloat(p.price.toString()),
+        salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
+        category: p.category,
+        isFeatured: p.isFeatured,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch accessories products:", error);
+    }
+  }
 
   // Fetch Printful accessories (hats, caps, etc.)
   let printfulProducts: typeof mappedProducts = [];
