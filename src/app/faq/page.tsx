@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FaqAccordion } from "./FaqAccordion";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  title: "FAQ — Shipping, Returns & Sizing for JDM Apparel & Parts",
   description:
     "Find answers to frequently asked questions about Dream Star Drivers Club — shipping, returns, sizing, orders, and more.",
   openGraph: {

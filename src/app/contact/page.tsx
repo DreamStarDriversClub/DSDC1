@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/Card";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact Us — Dream Star Drivers Club | JDM Lifestyle Brand",
   description:
     "Get in touch with Dream Star Drivers Club — whether you have a question about an order, want to talk wholesale, or just want to say hi.",
   openGraph: {

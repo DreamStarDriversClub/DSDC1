@@ -11,7 +11,7 @@ import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Shop",
+  title: "Shop JDM Apparel, Accessories & Rotary Performance Parts",
   description: "Browse premium JDM-inspired apparel, accessories, and Mazda rotary performance parts at Dream Star Drivers Club.",
   openGraph: {
     title: `Shop | ${BRAND_NAME}`,

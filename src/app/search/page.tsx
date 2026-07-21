@@ -8,7 +8,7 @@ import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { SearchInput } from "./SearchInput";
 
 export const metadata: Metadata = {
-  title: "Search",
+  title: "Search JDM Apparel, Accessories & Performance Parts",
   description: "Search the Dream Star Drivers Club catalog for apparel, accessories, and performance parts.",
   openGraph: {
     title: `Search | ${BRAND_NAME}`,

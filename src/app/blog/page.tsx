@@ -5,9 +5,10 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Blog — Rotary Builds, 2JZ Projects & JDM Culture Deep Dives",
   description:
     "Stories from the garage, the mountains, and beyond. The Dream Star Drivers Club blog — rotary builds, 2JZ projects, event coverage, and JDM culture deep dives.",
+  robots: { index: false, follow: true },
   openGraph: {
     title: `Blog | ${BRAND_NAME}`,
     description:
