@@ -1,31 +1,76 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { SOCIAL_LINKS } from "@/lib/constants";
-
-/* ── Types ─────────────────────────────────────────────────────────────────── */
-
-export interface InstagramPostData {
-  id: string;
-  imageUrl: string;
-  caption: string | null;
-  link: string | null;
-}
-
-interface InstagramGridProps {
-  posts: InstagramPostData[];
-}
 
 /* ── Constants ─────────────────────────────────────────────────────────────── */
 
 const INSTAGRAM_HANDLE = "@dreamstardriversclub";
 const INSTAGRAM_HASHTAG = "#DreamStarDriversClub";
 
+/**
+ * Elfsight App ID for the Instagram Feed widget.
+ *
+ * SETUP INSTRUCTIONS (owner):
+ * 1. Go to https://elfsight.com/instagram-feed/
+ * 2. Click "Create Widget for Free" — no credit card needed
+ * 3. Sign up using the team email (or Continue with Google)
+ * 4. Connect @dreamstardriversclub Instagram account
+ * 5. Customize the widget:
+ *    - Layout: Grid
+ *    - Posts to show: 6–8
+ *    - Theme: Dark (black/charcoal background, white text, red accent)
+ *    - Hide header, show "Follow" button
+ * 6. Click "Save" then "Add to website"
+ * 7. Copy the App ID from the embed code (the UUID in `elfsight-app-XXXXXXXX`)
+ * 8. Set it in .env: NEXT_PUBLIC_ELFSIGHT_INSTAGRAM_APP_ID=XXXXXXXX
+ * 9. Redeploy
+ *
+ * The free tier includes:
+ * - Up to 200 views/month
+ * - Instagram Feed widget (photos, videos, reels)
+ * - Responsive grid layout
+ * - Custom colors/theming
+ * - "Follow on Instagram" button
+ */
+const ELFSIGHT_APP_ID =
+  process.env.NEXT_PUBLIC_ELFSIGHT_INSTAGRAM_APP_ID || "";
+
 /* ── Component ─────────────────────────────────────────────────────────────── */
 
-export function InstagramGrid({ posts }: InstagramGridProps) {
+export function InstagramGrid() {
+  const scriptLoaded = useRef(false);
+
+  useEffect(() => {
+    // Only load the Elfsight platform script once
+    if (!ELFSIGHT_APP_ID || scriptLoaded.current) return;
+
+    // Elfsight widgets self-initialize when the platform script loads.
+    // The script scans the DOM for .elfsight-app-* divs and mounts widgets.
+    const existingScript = document.querySelector(
+      'script[src*="elfsight.com/platform/platform.js"]'
+    );
+    if (existingScript) {
+      scriptLoaded.current = true;
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://static.elfsight.com/platform/platform.js";
+    script.async = true;
+    script.onload = () => {
+      scriptLoaded.current = true;
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // Script stays loaded; no cleanup needed
+    };
+  }, []);
+
   return (
     <section className="bg-ds-black-deepest section-padding">
       <Container>
@@ -37,18 +82,19 @@ export function InstagramGrid({ posts }: InstagramGridProps) {
           className="mb-12"
         />
 
-        {/* ── Posts Grid ─────────────────────────────────────────────────── */}
-        {posts.length > 0 ? (
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-            {posts.slice(0, 8).map((post, i) => (
-              <InstagramCell key={post.id} post={post} index={i} />
-            ))}
+        {/* ── Elfsight Instagram Feed Widget ──────────────────────────── */}
+        {ELFSIGHT_APP_ID ? (
+          <div className="mx-auto max-w-5xl">
+            <div
+              className={`elfsight-app-${ELFSIGHT_APP_ID}`}
+              data-elfsight-app-lazy
+            />
           </div>
         ) : (
-          /* Empty state when no posts are uploaded yet */
+          /* ── Fallback when Elfsight App ID is not configured ───────── */
           <div className="mx-auto max-w-2xl rounded-2xl border border-dashed border-white/[0.08] bg-ds-black-charcoal p-10 text-center">
             <svg
-              className="mx-auto h-12 w-12 text-ds-gray-700"
+              className="mx-auto h-12 w-12 text-ds-red/50"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -58,8 +104,8 @@ export function InstagramGrid({ posts }: InstagramGridProps) {
               <circle cx="12" cy="12" r="5" />
               <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
             </svg>
-            <p className="mt-4 text-sm text-ds-gray-500">
-              Follow us on Instagram{" "}
+            <p className="mt-4 text-sm text-ds-gray-400">
+              Real Instagram posts coming soon. Follow us{" "}
               <a
                 href={SOCIAL_LINKS.instagram}
                 target="_blank"
@@ -89,56 +135,6 @@ export function InstagramGrid({ posts }: InstagramGridProps) {
       </Container>
     </section>
   );
-}
-
-/* ── Instagram Cell ────────────────────────────────────────────────────────── */
-
-function InstagramCell({
-  post,
-  index,
-}: {
-  post: InstagramPostData;
-  index: number;
-}) {
-  const cell = (
-    <div className="group relative aspect-square overflow-hidden rounded-xl border border-white/[0.06] bg-ds-black-charcoal transition-all duration-500 hover:border-ds-red/30 hover:shadow-brand-glow-sm hover:z-10">
-      <img
-        src={post.imageUrl}
-        alt={post.caption || "Instagram post from Dream Star Drivers Club"}
-        className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-        loading={index < 4 ? "eager" : "lazy"}
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ds-black/60 to-transparent opacity-80 transition-opacity duration-300 group-hover:opacity-0" />
-      <div className="absolute right-2.5 top-2.5 opacity-60 transition-all duration-300 group-hover:opacity-90 group-hover:scale-110">
-        <InstagramIcon className="h-4 w-4 text-ds-white drop-shadow-lg" />
-      </div>
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ds-black/90 via-ds-black/40 to-transparent p-4 opacity-0 transition-all duration-400 group-hover:opacity-100">
-        {post.caption && (
-          <p className="line-clamp-3 text-xs leading-relaxed text-ds-white sm:text-sm">
-            {post.caption}
-          </p>
-        )}
-        <span className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-ds-red">
-          {INSTAGRAM_HANDLE}
-        </span>
-      </div>
-      <div className="absolute inset-x-3 bottom-0 h-px origin-left scale-x-0 bg-gradient-to-r from-ds-red/60 via-ds-red/30 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
-    </div>
-  );
-
-  if (post.link) {
-    return (
-      <a
-        href={post.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
-      >
-        {cell}
-      </a>
-    );
-  }
-  return cell;
 }
 
 /* ── Instagram Icon ────────────────────────────────────────────────────────── */

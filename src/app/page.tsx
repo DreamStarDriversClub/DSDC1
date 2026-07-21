@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { BRAND_NAME, TAGLINE } from "@/lib/constants";
-import { prisma } from "@/lib/prisma";
 import { getPrintfulFeaturedProducts, hasPrintfulProducts } from "@/lib/shop-data";
 
 import { Button } from "@/components/ui/Button";
@@ -177,26 +176,9 @@ const sakuraPetals = [
    ═══════════════════════════════════════════════════════════════════════════ */
 
 export default async function HomePage() {
-  let instagramPosts: {
-    id: string;
-    imageUrl: string;
-    caption: string | null;
-    link: string | null;
-  }[] = [];
-  try {
-    instagramPosts = await prisma.instagramPost.findMany({
-      orderBy: { order: "asc" },
-      take: 8,
-      select: {
-        id: true,
-        imageUrl: true,
-        caption: true,
-        link: true,
-      },
-    });
-  } catch (error) {
-    console.error("Failed to fetch Instagram posts:", error);
-  }
+  // Note: Instagram feed now uses Elfsight widget (see InstagramGrid component).
+  // Set NEXT_PUBLIC_ELFSIGHT_INSTAGRAM_APP_ID in .env to activate real posts.
+  // The old database-backed Instagram posts query has been removed.
 
   // Fetch Printful featured products for homepage — merge with fallbacks
   let featuredProducts = fallbackFeaturedProducts;
@@ -655,7 +637,7 @@ export default async function HomePage() {
       {/* ══════════════════════════════════════════════════════════════════
           Section 6: Instagram / Social Proof
           ══════════════════════════════════════════════════════════════════ */}
-      <InstagramGrid posts={instagramPosts} />
+      <InstagramGrid />
 
       {/* ══════════════════════════════════════════════════════════════════
           Section 7: Newsletter CTA — Join the Club
