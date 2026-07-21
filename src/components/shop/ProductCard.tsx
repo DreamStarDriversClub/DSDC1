@@ -33,9 +33,17 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
   const isAccessories = product.category?.slug?.startsWith("acc") || product.category?.slug === "accessories";
   const isPerformance = product.category?.slug?.startsWith("perf") || product.category?.slug === "ds-performance";
 
-  // Extract first image if available
-  const images = product.images as string[] | undefined;
-  const productImage = images && images.length > 0 ? images[0] : null;
+  // Extract first image if available.
+  // The DB stores images as a JSON column; Prisma may return it as a
+  // JSON-encoded string (from seed) or a parsed array — handle both.
+  const rawImages = product.images;
+  let images: string[] = [];
+  if (Array.isArray(rawImages)) {
+    images = rawImages as string[];
+  } else if (typeof rawImages === "string") {
+    try { images = JSON.parse(rawImages); } catch { /* keep empty */ }
+  }
+  const productImage = images.length > 0 ? images[0] : null;
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
