@@ -10,7 +10,7 @@ import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductFilters } from "./ProductFilters";
 
 export const metadata: Metadata = {
-  title: "All Products",
+  title: "All Products — JDM Apparel, Accessories & Performance Parts",
   description: "Browse every product in the Dream Star Drivers Club catalog — apparel, accessories, and performance parts.",
   openGraph: {
     title: `All Products | ${BRAND_NAME}`,

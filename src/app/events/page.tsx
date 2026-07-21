@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 
 export const metadata: Metadata = {
-  title: "Events",
+  title: "Events & Meets — Cars & Coffee, Track Days & JDM Gatherings",
   description:
     "Cars & Coffee, track days, mountain runs, and club gatherings. Join the Dream Star Drivers Club at our next event.",
+  robots: { index: false, follow: true },
   openGraph: {
     title: `Events | ${BRAND_NAME}`,
     description:
