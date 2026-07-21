@@ -79,7 +79,7 @@ export default async function AllProductsPage({
       price: parseFloat(p.price.toString()),
       salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
       category: p.category,
-      images: (p.images as string[]) || [],
+      images: (p.images as unknown as string[]) || [],
       isFeatured: p.isFeatured,
     }));
   } catch (error) {
@@ -109,7 +109,7 @@ export default async function AllProductsPage({
         price: p.price,
         salePrice: p.salePrice,
         category: p.category,
-        images: (p.images as string[]) || [],
+        images: (p.images as unknown as string[]) || [],
         isFeatured: p.isFeatured,
       }));
     }
