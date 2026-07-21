@@ -14,12 +14,12 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 
-/* ── PayPal hosted buttons types ────────────────────────── */
+/* ── PayPal Smart Buttons types ─────────────────────────── */
 
-interface PayPalHostedButtonsAPI {
-  HostedButtons: (config: {
-    hostedButtonId: string;
-    onApprove?: (data: { orderID?: string }) => void;
+interface PayPalButtonsAPI {
+  Buttons: (config: {
+    createOrder?: (data: Record<string, unknown>, actions: { order: { create: (opts: { purchase_units: Array<{ amount: { value: string } }> }) => Promise<string> } }) => Promise<string>;
+    onApprove?: (data: { orderID: string }) => Promise<void>;
     onError?: (err: unknown) => void;
     onCancel?: () => void;
   }) => { render: (selector: string) => void };
@@ -27,12 +27,8 @@ interface PayPalHostedButtonsAPI {
 
 declare global {
   interface Window {
-    paypal?: PayPalHostedButtonsAPI;
+    paypal?: PayPalButtonsAPI;
   }
-}
-
-function getPayPal(): PayPalHostedButtonsAPI | undefined {
-  return window.paypal;
 }
 
 /* ── Types ──────────────────────────────────────────────── */
@@ -83,16 +79,12 @@ const US_STATES = [
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
 ];
 
-/* ── PayPal Hosted Button Config ──────────────────────── */
-
-const PAYPAL_HOSTED_BUTTON_ID = "PJUCGFXRBCEJ4";
+/* ── PayPal Smart Buttons Config ─────────────────────── */
 
 /**
  * Build the PayPal SDK URL using NEXT_PUBLIC_PAYPAL_CLIENT_ID.
  *
- * IMPORTANT: The env var must contain a valid PayPal REST API Client ID
- * (not a hosted-button access token like BAA…).
- * Get one free at https://developer.paypal.com → Apps & Credentials.
+ * Uses the standard PayPal JavaScript SDK with Smart Payment Buttons.
  */
 function getPayPalSDKUrl(): string {
   const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
@@ -102,7 +94,7 @@ function getPayPalSDKUrl(): string {
     );
     return "";
   }
-  return `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&components=hosted-buttons`;
+  return `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&components=buttons&currency=USD`;
 }
 
 /* ── Page ───────────────────────────────────────────────── */
@@ -237,46 +229,46 @@ export default function CheckoutPage() {
     }
   }, [state, formData, subtotal, discount, shipping, tax, total]);
 
-  /* ── PayPal Hosted Button — dynamic script loading ─── */
+  /* ── PayPal Smart Buttons — dynamic script loading ─── */
 
   useEffect(() => {
     if (step !== "payment") return;
 
-    const containerId = `paypal-container-${PAYPAL_HOSTED_BUTTON_ID}`;
-    const scriptId = "paypal-hosted-button-sdk";
+    const containerId = "paypal-container";
+    const scriptId = "paypal-smart-button-sdk";
 
-    const callbacks = {
-      onApprove: async (data: { orderID?: string }) => {
-        setPaypalLoading(true);
-        setOrderError(null);
-        try {
-          const result = await createDbOrder();
-          if (result.success) {
-            setPaypalOrderId(data.orderID ?? "");
-            setOrderSuccess(result.orderId!);
-            clearCart();
-          } else {
-            setOrderError(
-              result.error ||
-                "Payment was captured but order creation failed. Please contact support.",
-            );
-          }
-        } catch {
+    const onApprove = async (data: { orderID: string }) => {
+      setPaypalLoading(true);
+      setOrderError(null);
+      try {
+        const result = await createDbOrder();
+        if (result.success) {
+          setPaypalOrderId(data.orderID);
+          setOrderSuccess(result.orderId!);
+          clearCart();
+        } else {
           setOrderError(
-            "An error occurred while processing your payment. Please try again.",
+            result.error ||
+              "Payment was captured but order creation failed. Please contact support.",
           );
-        } finally {
-          setPaypalLoading(false);
         }
-      },
-      onError: () => {
+      } catch {
         setOrderError(
-          "An error occurred with PayPal. Please try again or use a different payment method.",
+          "An error occurred while processing your payment. Please try again.",
         );
-      },
-      onCancel: () => {
-        setOrderError(null);
-      },
+      } finally {
+        setPaypalLoading(false);
+      }
+    };
+
+    const onError = () => {
+      setOrderError(
+        "An error occurred with PayPal. Please try again or use a different payment method.",
+      );
+    };
+
+    const onCancel = () => {
+      setOrderError(null);
     };
 
     const sdkUrl = getPayPalSDKUrl();
@@ -288,16 +280,22 @@ export default function CheckoutPage() {
     }
 
     const renderButton = () => {
-      const p = getPayPal();
+      const p = window.paypal;
       if (!p) return;
-      p.HostedButtons({
-        hostedButtonId: PAYPAL_HOSTED_BUTTON_ID,
-        ...callbacks,
+      p.Buttons({
+        createOrder: (_data: Record<string, unknown>, actions: { order: { create: (opts: { purchase_units: Array<{ amount: { value: string } }> }) => Promise<string> } }) => {
+          return actions.order.create({
+            purchase_units: [{ amount: { value: total.toFixed(2) } }],
+          });
+        },
+        onApprove,
+        onError,
+        onCancel,
       }).render(`#${containerId}`);
     };
 
     // If PayPal SDK already loaded, re-render into the container
-    if (getPayPal()) {
+    if (window.paypal) {
       const container = document.getElementById(containerId);
       if (container && !container.hasChildNodes()) {
         renderButton();
@@ -311,7 +309,6 @@ export default function CheckoutPage() {
     const script = document.createElement("script");
     script.id = scriptId;
     script.src = sdkUrl;
-    script.dataset.sdkIntegrationSource = "hosted-buttons";
     script.async = true;
 
     script.onload = () => {
@@ -327,7 +324,7 @@ export default function CheckoutPage() {
     return () => {
       // Don't remove the script on unmount — it may be reused across step toggles
     };
-  }, [step, createDbOrder, clearCart]);
+  }, [step, total, createDbOrder, clearCart]);
 
   /* ── Empty cart guard ────────────────────────────── */
 
@@ -848,8 +845,8 @@ export default function CheckoutPage() {
                         </div>
                       )}
 
-                      {/* PayPal Hosted Button container */}
-                      <div id={`paypal-container-${PAYPAL_HOSTED_BUTTON_ID}`}></div>
+                      {/* PayPal Smart Button container */}
+                      <div id="paypal-container"></div>
 
                       {orderError && (
                         <div className="rounded-xl border border-ds-red/30 bg-ds-red/5 p-4">
