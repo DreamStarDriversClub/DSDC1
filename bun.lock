@@ -5,7 +5,6 @@
     "": {
       "name": "dream-star-drivers-club",
       "dependencies": {
-        "@paypal/react-paypal-js": "^10.1.2",
         "@prisma/client": "^6.5.0",
         "jose": "^6.2.3",
         "next": "^14.2.29",
@@ -61,12 +60,6 @@
     "@nodelib/fs.stat": ["@nodelib/fs.stat@2.0.5", "", {}, "sha512-RkhPPp2zrqDAQA/2jNhnztcPAlv64XdhIp7a7454A5ovI7Bukxgt7MX7udwAu3zg1DcpPU0rz3VV1SeaqvY4+A=="],
 
     "@nodelib/fs.walk": ["@nodelib/fs.walk@1.2.8", "", { "dependencies": { "@nodelib/fs.scandir": "2.1.5", "fastq": "^1.6.0" } }, "sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg=="],
-
-    "@paypal/paypal-js": ["@paypal/paypal-js@10.0.3", "", { "dependencies": { "promise-polyfill": "^8.3.0" } }, "sha512-GtY3PID9Ey76fIJBAV8PobIwdH6Nsbm7MZlqFwB+MAPQEtVEwGe1EHrsZpb4AK0iuJNs9E3gaB75kgpFSpAEJQ=="],
-
-    "@paypal/react-paypal-js": ["@paypal/react-paypal-js@10.1.2", "", { "dependencies": { "@paypal/paypal-js": "^10.0.3", "@paypal/sdk-constants": "^1.0.122", "server-only": "^0.0.1" }, "peerDependencies": { "react": "^16.8.0 || ^17 || ^18 || ^19", "react-dom": "^16.8.0 || ^17 || ^18 || ^19" } }, "sha512-nPzTw58U+6Emv5qQDxVP5AdUL1gvdU5b1rHGOOTvB/WHmC2Ebn0soCOMNgP8xsvdz+Kshy2TJru0ERqC2zFkTA=="],
-
-    "@paypal/sdk-constants": ["@paypal/sdk-constants@1.0.158", "", { "dependencies": { "hi-base32": "^0.5.0" } }, "sha512-OrX2kN4gsBl6fG1GS1ewsNk7TTqYmdtUMVaJ+wAzPhsv9M7dfni95WuJdt4pMALOo5ioZeJ05a16BUSca5IC+Q=="],
 
     "@prisma/client": ["@prisma/client@6.19.3", "", { "peerDependencies": { "prisma": "*", "typescript": ">=5.1.0" }, "optionalPeers": ["prisma", "typescript"] }, "sha512-mKq3jQFhjvko5LTJFHGilsuQs+W+T3Gm451NzuTDGQxwCzwXHYnIu2zGkRoW+Exq3Rob7yp2MfzSrdIiZVhrBg=="],
 
@@ -184,8 +177,6 @@
 
     "hasown": ["hasown@2.0.4", "", { "dependencies": { "function-bind": "^1.1.2" } }, "sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A=="],
 
-    "hi-base32": ["hi-base32@0.5.1", "", {}, "sha512-EmBBpvdYh/4XxsnUybsPag6VikPYnN30td+vQk+GI3qpahVEG9+gTkG0aXVxTjBqQ5T6ijbWIu77O+C5WFWsnA=="],
-
     "is-binary-path": ["is-binary-path@2.1.0", "", { "dependencies": { "binary-extensions": "^2.0.0" } }, "sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw=="],
 
     "is-core-module": ["is-core-module@2.16.2", "", { "dependencies": { "hasown": "^2.0.3" } }, "sha512-evOr8xfXKxE6qSR0hSXL2r3sd7ALj8+7jQEUvPYcm5sgZFdJ+AYzT6yNmJenvIYQBgIGwfwz08sL8zoL7yq2BA=="],
@@ -266,8 +257,6 @@
 
     "prisma": ["prisma@6.19.3", "", { "dependencies": { "@prisma/config": "6.19.3", "@prisma/engines": "6.19.3" }, "peerDependencies": { "typescript": ">=5.1.0" }, "optionalPeers": ["typescript"], "bin": { "prisma": "build/index.js" } }, "sha512-++ZJ0ijLrDJF6hNB4t4uxg2br3fC4H9Yc9tcbjr2fcNFP3rh/SBNrAgjhsqBU4Ght8JPrVofG/ZkXfnSfnYsFg=="],
 
-    "promise-polyfill": ["promise-polyfill@8.3.0", "", {}, "sha512-H5oELycFml5yto/atYqmjyigJoAo3+OXwolYiH7OfQuYlAqhxNvTfiNMbV9hsC6Yp83yE5r2KTVmtrG6R9i6Pg=="],
-
     "pure-rand": ["pure-rand@6.1.0", "", {}, "sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA=="],
 
     "queue-microtask": ["queue-microtask@1.2.3", "", {}, "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="],
@@ -289,8 +278,6 @@
     "run-parallel": ["run-parallel@1.2.0", "", { "dependencies": { "queue-microtask": "^1.2.2" } }, "sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA=="],
 
     "scheduler": ["scheduler@0.23.2", "", { "dependencies": { "loose-envify": "^1.1.0" } }, "sha512-UOShsPwz7NrMUqhR6t0hWjFduvOzbtv7toDH1/hIrfRNIDBnnBWd0CwJTGvTpngVlmwGCdP9/Zl/tVrDqcuYzQ=="],
-
-    "server-only": ["server-only@0.0.1", "", {}, "sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA=="],
 
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
 
