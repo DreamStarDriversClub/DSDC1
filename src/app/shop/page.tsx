@@ -20,19 +20,37 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopPage() {
-  // Fetch main categories
-  const mainCategories = await prisma.category.findMany({
-    where: { parentId: null },
-    orderBy: { name: "asc" },
-  });
+  // Fetch main categories (wrap every DB call so a schema mismatch won't crash the page)
+  let mainCategories: { id: string; slug: string; name: string; description: string | null }[] = [];
+  try {
+    mainCategories = await prisma.category.findMany({
+      where: { parentId: null },
+      orderBy: { name: "asc" },
+    });
+  } catch (error) {
+    console.error("Failed to fetch main categories for shop page:", error);
+  }
 
   // Fetch featured products from Product table
-  const featured = await prisma.product.findMany({
-    where: { isFeatured: true, isActive: true },
-    include: { category: { select: { name: true, slug: true } } },
-    take: 8,
-    orderBy: { createdAt: "desc" },
-  });
+  let featured: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  try {
+    const dbFeatured = await prisma.product.findMany({
+      where: { isFeatured: true, isActive: true },
+      include: { category: { select: { name: true, slug: true } } },
+      take: 8,
+      orderBy: { createdAt: "desc" },
+    });
+    featured = dbFeatured.map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      price: parseFloat(p.price.toString()),
+      salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
+      category: p.category,
+      isFeatured: p.isFeatured,
+    }));
+  } catch (error) {
+    console.error("Failed to fetch featured products for shop page:", error);
+  }
 
   // Fetch Printful products for the featured section
   let printfulProducts: typeof featured = [];
@@ -47,7 +65,7 @@ export default async function ShopPage() {
         salePrice: p.salePrice,
         category: p.category,
         isFeatured: false,
-      })) as unknown as typeof featured;
+      }));
     }
   } catch (error) {
     console.error("Failed to fetch Printful products for shop:", error);

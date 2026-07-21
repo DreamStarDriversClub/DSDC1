@@ -19,23 +19,35 @@ export const metadata: Metadata = {
 };
 
 export default async function ApparelPage() {
-  // Fetch the apparel category
-  const category = await prisma.category.findUnique({
-    where: { slug: "apparel" },
-  });
+  // Fetch the apparel category (wrapped so a DB outage doesn't crash the page)
+  let category: { id: string } | null = null;
+  try {
+    category = await prisma.category.findUnique({
+      where: { slug: "apparel" },
+    });
+  } catch (error) {
+    console.error("Failed to fetch apparel category:", error);
+  }
 
   // Fetch subcategories
-  const subcategories = category
-    ? await prisma.category.findMany({
+  let subcategories: { name: string; slug: string }[] = [];
+  if (category) {
+    try {
+      subcategories = await prisma.category.findMany({
         where: { parentId: category.id },
         orderBy: { name: "asc" },
         select: { name: true, slug: true },
-      })
-    : [];
+      });
+    } catch (error) {
+      console.error("Failed to fetch apparel subcategories:", error);
+    }
+  }
 
   // Fetch all products in this category or its subcategories
-  const products = category
-    ? await prisma.product.findMany({
+  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  if (category) {
+    try {
+      const products = await prisma.product.findMany({
         where: {
           isActive: true,
           category: {
@@ -49,18 +61,20 @@ export default async function ApparelPage() {
           category: { select: { name: true, slug: true } },
         },
         orderBy: { createdAt: "desc" },
-      })
-    : [];
+      });
 
-  // Map for display
-  const mappedProducts = products.map((p) => ({
-    slug: p.slug,
-    name: p.name,
-    price: parseFloat(p.price.toString()),
-    salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
-    category: p.category,
-    isFeatured: p.isFeatured,
-  }));
+      mappedProducts = products.map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: parseFloat(p.price.toString()),
+        salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
+        category: p.category,
+        isFeatured: p.isFeatured,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch apparel products:", error);
+    }
+  }
 
   // Fetch Printful apparel (tees, hoodies, etc.)
   let printfulProducts: typeof mappedProducts = [];

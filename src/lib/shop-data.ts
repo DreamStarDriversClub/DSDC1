@@ -193,14 +193,19 @@ function iconForName(name: string): React.ReactNode {
  * product cards link to individual detail pages instead of category pages.
  */
 export async function getAllPrintfulProducts(): Promise<ShopProduct[]> {
-  const products = await prisma.printfulProduct.findMany({
-    orderBy: { name: "asc" },
-  });
-
-  if (products.length === 0) return [];
-
-  // Fetch all variants separately since variant.productId is unreliable
-  const allVariants = await prisma.printfulVariant.findMany();
+  let products: { name: string; printfulId: string; thumbnailUrl: string | null }[];
+  let allVariants: { productId: string; name: string; price: number; size: string | null; color: string | null; printfulId: string }[] = [];
+  try {
+    products = await prisma.printfulProduct.findMany({
+      orderBy: { name: "asc" },
+    });
+    if (products.length === 0) return [];
+    // Fetch all variants separately since variant.productId is unreliable
+    allVariants = await prisma.printfulVariant.findMany();
+  } catch {
+    // Tables may not exist yet — return empty gracefully
+    return [];
+  }
 
   return products.map((product) => {
     // Match variants: try printfulId first, fall back to name
@@ -266,10 +271,17 @@ export async function getPrintfulFeaturedProducts(): Promise<
 
 /**
  * Check whether any Printful products exist in the database.
+ * Gracefully returns false if the Printful tables don't exist (e.g. in production
+ * before the Printful sync migration has run).
  */
 export async function hasPrintfulProducts(): Promise<boolean> {
-  const count = await prisma.printfulProduct.count();
-  return count > 0;
+  try {
+    const count = await prisma.printfulProduct.count();
+    return count > 0;
+  } catch {
+    // Table may not exist yet — that's fine, just no Printful products available
+    return false;
+  }
 }
 
 // ── Product Detail (Unified: DB + Printful) ────────────
@@ -350,18 +362,19 @@ export async function getProductBySlug(
 
   // 2. Try Printful product (slugs start with "pf-")
   if (slug.startsWith("pf-")) {
-    const nameSlug = slug.replace("pf-", "");
+    try {
+      const nameSlug = slug.replace("pf-", "");
 
-    // Find the Printful product whose slugified name matches
-    const pfProducts = await prisma.printfulProduct.findMany();
-    const pfProduct = pfProducts.find(
-      (p) => slugify(p.name) === nameSlug,
-    );
+      // Find the Printful product whose slugified name matches
+      const pfProducts = await prisma.printfulProduct.findMany();
+      const pfProduct = pfProducts.find(
+        (p) => slugify(p.name) === nameSlug,
+      );
 
-    if (pfProduct) {
-      const pfVariants = await prisma.printfulVariant.findMany({
-        where: { productId: pfProduct.printfulId },
-      });
+      if (pfProduct) {
+        const pfVariants = await prisma.printfulVariant.findMany({
+          where: { productId: pfProduct.printfulId },
+        });
 
       const category = getCategory(pfProduct.name);
 
@@ -401,6 +414,9 @@ export async function getProductBySlug(
         reviews: [],
         thumbnailUrl: pfProduct.thumbnailUrl,
       };
+      }
+    } catch {
+      // Printful tables may not exist yet — just fall through to null
     }
   }
 
