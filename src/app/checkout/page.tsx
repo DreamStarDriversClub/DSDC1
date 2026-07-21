@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useCallback, type FormEvent } from "react";
+import { useState, useCallback, useEffect, type FormEvent } from "react";
 import Link from "next/link";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useCart } from "@/lib/cart-context";
 import {
   validateCouponAction,
@@ -14,6 +13,27 @@ import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
+
+/* ── PayPal hosted buttons types ────────────────────────── */
+
+interface PayPalHostedButtonsAPI {
+  HostedButtons: (config: {
+    hostedButtonId: string;
+    onApprove?: (data: { orderID?: string }) => void;
+    onError?: (err: unknown) => void;
+    onCancel?: () => void;
+  }) => { render: (selector: string) => void };
+}
+
+declare global {
+  interface Window {
+    paypal?: PayPalHostedButtonsAPI;
+  }
+}
+
+function getPayPal(): PayPalHostedButtonsAPI | undefined {
+  return window.paypal;
+}
 
 /* ── Types ──────────────────────────────────────────────── */
 
@@ -63,19 +83,11 @@ const US_STATES = [
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
 ];
 
-/* ── PayPal Initial Options ────────────────────────────── */
+/* ── PayPal Hosted Button Config ──────────────────────── */
 
-function getPayPalOptions() {
-  return {
-    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
-    currency: "USD",
-    intent: "capture" as const,
-    // Enable Venmo
-    enableFunding: "venmo",
-    // Disable unnecessary funding sources for cleaner UI
-    disableFunding: "paylater,card",
-  };
-}
+const PAYPAL_HOSTED_BUTTON_ID = "PJUCGFXRBCEJ4";
+const PAYPAL_SDK_URL =
+  "https://www.paypal.com/sdk/js?client-id=BAA1VnVJshDn-KVymvqh3olpScBDjjwN4BWGZ0TYOC1nou_rFgbkmMJLJhy9-lYg8zaUYr5fG7_xQwZIto&components=hosted-buttons";
 
 /* ── Page ───────────────────────────────────────────────── */
 
@@ -104,8 +116,6 @@ export default function CheckoutPage() {
   const [paypalOrderId, setPaypalOrderId] = useState<string | null>(null);
 
   const { coupon, couponError } = state;
-
-  const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
 
   /* ── Coupon ──────────────────────────────────────── */
 
@@ -210,6 +220,90 @@ export default function CheckoutPage() {
       return { success: false, error: "Failed to create order. Please try again." };
     }
   }, [state, formData, subtotal, discount, shipping, tax, total]);
+
+  /* ── PayPal Hosted Button — dynamic script loading ─── */
+
+  useEffect(() => {
+    if (step !== "payment") return;
+
+    const containerId = `paypal-container-${PAYPAL_HOSTED_BUTTON_ID}`;
+    const scriptId = "paypal-hosted-button-sdk";
+
+    const callbacks = {
+      onApprove: async (data: { orderID?: string }) => {
+        setPaypalLoading(true);
+        setOrderError(null);
+        try {
+          const result = await createDbOrder();
+          if (result.success) {
+            setPaypalOrderId(data.orderID ?? "");
+            setOrderSuccess(result.orderId!);
+            clearCart();
+          } else {
+            setOrderError(
+              result.error ||
+                "Payment was captured but order creation failed. Please contact support.",
+            );
+          }
+        } catch {
+          setOrderError(
+            "An error occurred while processing your payment. Please try again.",
+          );
+        } finally {
+          setPaypalLoading(false);
+        }
+      },
+      onError: () => {
+        setOrderError(
+          "An error occurred with PayPal. Please try again or use a different payment method.",
+        );
+      },
+      onCancel: () => {
+        setOrderError(null);
+      },
+    };
+
+    const renderButton = () => {
+      const p = getPayPal();
+      if (!p) return;
+      p.HostedButtons({
+        hostedButtonId: PAYPAL_HOSTED_BUTTON_ID,
+        ...callbacks,
+      }).render(`#${containerId}`);
+    };
+
+    // If PayPal SDK already loaded, re-render into the container
+    if (getPayPal()) {
+      const container = document.getElementById(containerId);
+      if (container && !container.hasChildNodes()) {
+        renderButton();
+      }
+      return;
+    }
+
+    // Prevent duplicate script injection
+    if (document.getElementById(scriptId)) return;
+
+    const script = document.createElement("script");
+    script.id = scriptId;
+    script.src = PAYPAL_SDK_URL;
+    script.dataset.sdkIntegrationSource = "hosted-buttons";
+    script.async = true;
+
+    script.onload = () => {
+      renderButton();
+    };
+
+    script.onerror = () => {
+      setOrderError("Failed to load PayPal. Please refresh the page and try again.");
+    };
+
+    document.body.appendChild(script);
+
+    return () => {
+      // Don't remove the script on unmount — it may be reused across step toggles
+    };
+  }, [step, createDbOrder, clearCart]);
 
   /* ── Empty cart guard ────────────────────────────── */
 
@@ -698,214 +792,91 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Payment — PayPal */}
+                  {/* Payment — PayPal Hosted Button */}
                   <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-6 sm:p-8">
                     <h2 className="font-display text-xl font-bold text-ds-white mb-6">
                       Payment
                     </h2>
 
-                    {!paypalClientId ? (
-                      /* Fallback when PayPal Client ID is not configured */
-                      <div className="rounded-xl border border-ds-gold/20 bg-ds-gold/5 p-6 text-center">
-                        <div className="mb-3 flex justify-center">
-                          <svg className="h-10 w-10 text-ds-gold/40" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7.076 21.337H2.47a.641.641 0 01-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797H8.475c-.554 0-1.026.38-1.132.923l-1.3 8.25a.638.638 0 01-.633.54h.001z" />
+                    <div className="space-y-5">
+                      {paypalLoading && (
+                        <div className="mb-4 flex items-center justify-center gap-2 text-sm text-ds-gray-400">
+                          <svg
+                            className="h-4 w-4 animate-spin"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
                           </svg>
+                          Processing PayPal payment…
                         </div>
-                        <p className="text-sm text-ds-gray-300 mb-2">
-                          PayPal payment is not configured.
-                        </p>
-                        <p className="text-xs text-ds-gray-500">
-                          Set <code className="rounded bg-ds-black-darkgray px-1 py-0.5 font-mono">NEXT_PUBLIC_PAYPAL_CLIENT_ID</code> in your environment.
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="space-y-5">
-                        {/* PayPal Smart Buttons */}
-                        <PayPalScriptProvider options={getPayPalOptions()}>
-                          {paypalLoading && (
-                            <div className="mb-4 flex items-center justify-center gap-2 text-sm text-ds-gray-400">
-                              <svg
-                                className="h-4 w-4 animate-spin"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                />
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                                />
-                              </svg>
-                              Processing PayPal payment…
+                      )}
+
+                      {/* PayPal Hosted Button container */}
+                      <div id={`paypal-container-${PAYPAL_HOSTED_BUTTON_ID}`}></div>
+
+                      {orderError && (
+                        <div className="rounded-xl border border-ds-red/30 bg-ds-red/5 p-4">
+                          <p className="text-sm text-ds-red">{orderError}</p>
+                        </div>
+                      )}
+
+                      {/* Order summary inside payment for review before paying */}
+                      <div className="mt-6 rounded-xl border border-white/[0.06] bg-ds-black p-4">
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-3">
+                          You&apos;re Paying
+                        </h3>
+
+                        <div className="space-y-1.5 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-ds-gray-300">Subtotal</span>
+                            <span className="text-ds-white">{formatPrice(subtotal)}</span>
+                          </div>
+                          {discount > 0 && (
+                            <div className="flex justify-between text-green-400">
+                              <span>Discount</span>
+                              <span>-{formatPrice(discount)}</span>
                             </div>
                           )}
-
-                          <PayPalButtons
-                            style={{
-                              layout: "vertical",
-                              color: "gold",
-                              shape: "rect",
-                              label: "paypal",
-                              tagline: false,
-                            }}
-                            forceReRender={[total, state.shippingMethod, discount]}
-                            createOrder={(_data, actions) => {
-                              const purchaseItems = state.items.map((item) => ({
-                                name: item.name.slice(0, 127), // PayPal 127 char limit
-                                unit_amount: {
-                                  currency_code: "USD",
-                                  value: item.price.toFixed(2),
-                                },
-                                quantity: String(item.quantity),
-                              }));
-
-                              // PayPal requires item_total to match the sum of item unit_amount * quantity
-                              const calcItemTotal = state.items.reduce(
-                                (sum, item) => sum + item.price * item.quantity,
-                                0,
-                              );
-
-                              return actions.order.create({
-                                intent: "CAPTURE",
-                                purchase_units: [
-                                  {
-                                    description: `Dream Star Drivers Club — Order (${itemCount} ${itemCount === 1 ? "item" : "items"})`,
-                                    amount: {
-                                      currency_code: "USD",
-                                      value: total.toFixed(2),
-                                      breakdown: {
-                                        item_total: {
-                                          currency_code: "USD",
-                                          value: calcItemTotal.toFixed(2),
-                                        },
-                                        shipping: {
-                                          currency_code: "USD",
-                                          value: shipping.toFixed(2),
-                                        },
-                                        tax_total: {
-                                          currency_code: "USD",
-                                          value: tax.toFixed(2),
-                                        },
-                                        ...(discount > 0
-                                          ? {
-                                              discount: {
-                                                currency_code: "USD",
-                                                value: discount.toFixed(2),
-                                              },
-                                            }
-                                          : {}),
-                                      },
-                                    },
-                                    items: purchaseItems,
-                                  },
-                                ],
-                              });
-                            }}
-                            onApprove={async (data, actions) => {
-                              setPaypalLoading(true);
-                              setOrderError(null);
-
-                              try {
-                                if (!actions.order) {
-                                  throw new Error("PayPal order actions unavailable");
-                                }
-
-                                // Capture the PayPal payment
-                                await actions.order.capture();
-
-                                // Create the order in our database
-                                const result = await createDbOrder();
-
-                                if (result.success) {
-                                  setPaypalOrderId(data.orderID);
-                                  setOrderSuccess(result.orderId!);
-                                  clearCart();
-                                } else {
-                                  setOrderError(
-                                    result.error ||
-                                      "Payment was captured but order creation failed. Please contact support.",
-                                  );
-                                }
-                              } catch (err) {
-                                console.error("PayPal onApprove error:", err);
-                                setOrderError(
-                                  "An error occurred while processing your payment. Please try again.",
-                                );
-                              } finally {
-                                setPaypalLoading(false);
-                              }
-                            }}
-                            onError={(err) => {
-                              console.error("PayPal error:", err);
-                              setOrderError(
-                                "An error occurred with PayPal. Please try again or use a different payment method.",
-                              );
-                            }}
-                            onCancel={() => {
-                              setOrderError(null);
-                            }}
-                          />
-                        </PayPalScriptProvider>
-
-                        {orderError && (
-                          <div className="rounded-xl border border-ds-red/30 bg-ds-red/5 p-4">
-                            <p className="text-sm text-ds-red">{orderError}</p>
+                          <div className="flex justify-between">
+                            <span className="text-ds-gray-300">Shipping</span>
+                            <span className={shipping === 0 ? "text-green-400" : "text-ds-white"}>
+                              {shipping === 0 ? "Free" : formatPrice(shipping)}
+                            </span>
                           </div>
-                        )}
-
-                        {/* Order summary inside payment for review before paying */}
-                        <div className="mt-6 rounded-xl border border-white/[0.06] bg-ds-black p-4">
-                          <h3 className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-3">
-                            You&apos;re Paying
-                          </h3>
-
-                          <div className="space-y-1.5 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-ds-gray-300">Tax (est.)</span>
+                            <span className="text-ds-white">{formatPrice(tax)}</span>
+                          </div>
+                          <div className="border-t border-white/[0.06] pt-1.5 mt-1.5">
                             <div className="flex justify-between">
-                              <span className="text-ds-gray-300">Subtotal</span>
-                              <span className="text-ds-white">{formatPrice(subtotal)}</span>
-                            </div>
-                            {discount > 0 && (
-                              <div className="flex justify-between text-green-400">
-                                <span>Discount</span>
-                                <span>-{formatPrice(discount)}</span>
-                              </div>
-                            )}
-                            <div className="flex justify-between">
-                              <span className="text-ds-gray-300">Shipping</span>
-                              <span className={shipping === 0 ? "text-green-400" : "text-ds-white"}>
-                                {shipping === 0 ? "Free" : formatPrice(shipping)}
+                              <span className="font-semibold text-ds-white">Total</span>
+                              <span className="font-bold text-ds-white">
+                                {formatPrice(total)}
                               </span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-ds-gray-300">Tax (est.)</span>
-                              <span className="text-ds-white">{formatPrice(tax)}</span>
-                            </div>
-                            <div className="border-t border-white/[0.06] pt-1.5 mt-1.5">
-                              <div className="flex justify-between">
-                                <span className="font-semibold text-ds-white">Total</span>
-                                <span className="font-bold text-ds-white">
-                                  {formatPrice(total)}
-                                </span>
-                              </div>
                             </div>
                           </div>
                         </div>
-
-                        <p className="text-center text-xs text-ds-gray-600">
-                          Powered by{" "}
-                          <span className="font-semibold text-ds-gray-500">PayPal</span>.
-                          Secure payment processing.
-                        </p>
                       </div>
-                    )}
+
+                      <p className="text-center text-xs text-ds-gray-600">
+                        Powered by{" "}
+                        <span className="font-semibold text-ds-gray-500">PayPal</span>.
+                        Secure payment processing.
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
