@@ -9,11 +9,11 @@ import { Button } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "Community — Events & Local Teams | Dream Star Drivers Club",
   description:
-    "Connect with the Las Vegas JDM community. Browse upcoming events — Cars & Coffee, Midnight Touge Runs, Drift Days, and track nights. Meet local teams and clubs pushing the culture forward.",
+    "The scene doesn't exist without the people. Connect with fellow enthusiasts across the valley — upcoming events, local teams, and the crews that make the Vegas JDM community what it is.",
   openGraph: {
     title: `Community — Events & Local Teams | ${BRAND_NAME}`,
     description:
-      "Connect with the Las Vegas JDM community. Browse upcoming events and meet local teams pushing the culture forward.",
+      "The scene doesn't exist without the people. Connect with fellow enthusiasts across the valley.",
   },
 };
 
@@ -21,34 +21,34 @@ export const metadata: Metadata = {
 
 const EVENTS = [
   {
-    date: "Jul 5",
+    date: "Jul 12",
     month: "July",
-    day: "5",
+    day: "12",
     year: "2026",
     name: "Cars & Coffee Las Vegas",
-    location: "Las Vegas Motor Speedway",
+    location: "SpeedVegas",
     description:
       "The valley's biggest monthly gathering. Hundreds of builds from classic JDM to modern exotics. Roll in early, grab coffee, and talk cars with the best community in Vegas.",
     badge: "Monthly",
   },
   {
-    date: "Jul 18",
+    date: "Jul 25",
     month: "July",
-    day: "18",
+    day: "25",
     year: "2026",
     name: "Midnight Touge Run",
-    location: "Mount Charleston",
+    location: "Mt Charleston",
     description:
       "Late-night mountain pass run under the stars. Technical corners, elevation changes, and pure driving. Meet at the base — headlights mandatory, egos left at home.",
     badge: "Night Run",
   },
   {
-    date: "Aug 1–2",
+    date: "Aug 1",
     month: "August",
     day: "1",
     year: "2026",
     name: "JDM Fest West",
-    location: "Las Vegas Convention Center",
+    location: "LV Convention Center",
     description:
       "The West Coast's premier Japanese automotive festival. Two days of show cars, vendor booths, drift demos, and special guest builds from across the country.",
     badge: "Major Event",
@@ -58,8 +58,8 @@ const EVENTS = [
     month: "August",
     day: "15",
     year: "2026",
-    name: "Drift Day at LVMS",
-    location: "Las Vegas Motor Speedway — Skid Pad",
+    name: "Drift Day",
+    location: "LVMS",
     description:
       "Full day of open drifting on the LVMS skid pad. All skill levels welcome. Tech inspection at 8 AM, tires not included. Bring spares — you'll need them.",
     badge: "Track Day",
@@ -70,43 +70,21 @@ const EVENTS = [
     day: "22",
     year: "2026",
     name: "Rotary Reunion Meet",
-    location: "Dream Star HQ, Las Vegas",
+    location: "Sunset Park",
     description:
-      "The annual gathering for rotary enthusiasts. FCs, FDs, RX-8s, and anything else that spins triangles. BBQ, garage tours, and the unmistakable sound of bridge-ported 13Bs echoing off the walls.",
+      "The annual gathering for rotary enthusiasts. FCs, FDs, RX-8s, and anything else that spins triangles. BBQ, garage tours, and the unmistakable sound of bridge-ported 13Bs echoing across the park.",
     badge: "DSDC Event",
   },
   {
-    date: "Sep 5",
-    month: "September",
-    day: "5",
+    date: "Aug 29",
+    month: "August",
+    day: "29",
     year: "2026",
     name: "Import Showdown",
-    location: "LVMS Drag Strip",
+    location: "South Point Arena",
     description:
       "Quarter-mile battle: JDM vs. the world. Bracket racing, test-and-tune sessions, and a show-n-shine. The strip gets hot and the times get low. Who's bringing the Supra?",
     badge: "Race Event",
-  },
-  {
-    date: "Sep 19",
-    month: "September",
-    day: "19",
-    year: "2026",
-    name: "Track Night @ Spring Mountain",
-    location: "Spring Mountain Motorsports Ranch",
-    description:
-      "Open lapping on one of the most technical road courses in the Southwest. 2.4 miles of elevation changes, sweeping corners, and desert views. Novice and advanced run groups available.",
-    badge: "Track Day",
-  },
-  {
-    date: "Oct 3",
-    month: "October",
-    day: "3",
-    year: "2026",
-    name: "Sunset Cruise Night",
-    location: "Red Rock Canyon",
-    description:
-      "A scenic group drive through Red Rock Canyon as the sun sets over the desert. No racing — just cruising, photography, and good vibes. End the night at a local spot for food and stories.",
-    badge: "Cruise",
   },
 ];
 
@@ -116,21 +94,21 @@ const ORGANIZATIONS = [
   {
     name: "Vegas Rotary Club",
     description:
-      "Dedicated to keeping the rotary engine alive in the desert. Weekly meets, group rebuild sessions, and an encyclopedia of 13B knowledge passed down through generations of enthusiasts.",
+      "Dedicated to keeping the rotary engine alive in the desert. Weekly meets, group rebuild sessions, and an encyclopedia of 13B knowledge passed down through generations of enthusiasts who understand that triangles spin different.",
     location: "Las Vegas, NV",
     members: "180+ members",
   },
   {
     name: "Desert Drift Squad",
     description:
-      "Vegas's premier drifting collective. Organizes monthly drift days, tire-shredding demos, and beginner clinics. If it slides, they're probably behind it.",
+      "Vegas's premier drifting collective. Organizes monthly drift days, tire-shredding demos, and beginner clinics. If it slides, they're probably behind it — and they'll teach you how to do it too.",
     location: "Las Vegas, NV",
     members: "250+ members",
   },
   {
     name: "LV JDM Collective",
     description:
-      "The central hub for Japanese car enthusiasts in the valley. Hosts mixers, group drives, and Cars & Coffee takeovers. All chassis welcome — from kei cars to GT-Rs.",
+      "The central hub for Japanese car enthusiasts in the valley. Hosts mixers, group drives, and Cars & Coffee takeovers. All chassis welcome — from kei cars to GT-Rs, stock to full build.",
     location: "Las Vegas, NV",
     members: "400+ members",
   },
@@ -140,21 +118,6 @@ const ORGANIZATIONS = [
       "Mountain pass specialists. They scout the best canyon roads within driving distance and organize safe, responsible group runs. Pace notes optional, respect mandatory.",
     location: "Las Vegas, NV",
     members: "120+ members",
-  },
-  {
-    name: "702 Imports",
-    description:
-      "Las Vegas's longest-running import crew. Started in parking lots, now runs some of the biggest meets in the valley. A family built on shared passion and late-night wrenching.",
-    location: "Henderson, NV",
-    members: "300+ members",
-  },
-  {
-    name: "Dream Star Drivers Club",
-    description:
-      "That's us. More than a brand — we're a community hub for rotary and JDM enthusiasts. Garage sessions, canyon runs, and a shared belief that the best road is always the one ahead.",
-    location: "Las Vegas, NV",
-    members: "Join the crew",
-    isDSDC: true,
   },
 ];
 
@@ -179,11 +142,8 @@ export default function CommunityPage() {
             </h1>
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
-              The Vegas Valley isn&apos;t just where we&apos;re based — it&apos;s
-              where the culture lives. From mountain-pass touge runs to parking-lot
-              meets that run past midnight, this is a community built on shared
-              passion, mutual respect, and the sound of engines echoing off desert
-              canyon walls.
+              The scene doesn&apos;t exist without the people. Connect with fellow
+              enthusiasts across the valley.
             </p>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-ds-gray-400">
               Whether you&apos;re local or just passing through, there&apos;s a
@@ -204,7 +164,7 @@ export default function CommunityPage() {
             className="mb-12"
           />
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {EVENTS.map((event) => (
               <Card key={event.name} padding="lg" hover className="flex flex-col">
                 {/* Date badge */}
@@ -277,23 +237,17 @@ export default function CommunityPage() {
             className="mb-12"
           />
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2">
             {ORGANIZATIONS.map((org) => (
               <Card
                 key={org.name}
                 padding="lg"
                 hover
-                className={`flex flex-col ${org.isDSDC ? "border-ds-red/30 ring-1 ring-ds-red/10" : ""}`}
+                className="flex flex-col"
               >
                 {/* Header */}
                 <div className="mb-4 flex items-center gap-3">
-                  <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${
-                      org.isDSDC
-                        ? "border-ds-red/30 bg-ds-red/10 text-ds-red"
-                        : "border-white/[0.08] bg-ds-white/5 text-ds-gray-300"
-                    }`}
-                  >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-ds-white/5 text-ds-gray-300">
                     <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
                     </svg>
@@ -319,20 +273,9 @@ export default function CommunityPage() {
 
                 {/* Members badge */}
                 <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
-                  <span
-                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                      org.isDSDC
-                        ? "bg-ds-red/10 text-ds-red"
-                        : "bg-ds-white/5 text-ds-gray-400"
-                    }`}
-                  >
+                  <span className="inline-flex items-center rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
                     {org.members}
                   </span>
-                  {org.isDSDC && (
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-red/60">
-                      Host Club
-                    </span>
-                  )}
                 </div>
               </Card>
             ))}
