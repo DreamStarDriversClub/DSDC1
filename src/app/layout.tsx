@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { BRAND_NAME, TAGLINE } from "@/lib/constants";
+import { BRAND_NAME, TAGLINE, SITE_URL } from "@/lib/constants";
 import { getSession } from "@/lib/auth";
 import { CartProvider } from "@/lib/cart-context";
 import { Navbar } from "@/components/ui/Navbar";
@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dreamstardriversclub.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: `%s | ${BRAND_NAME}`,
     default: `${BRAND_NAME} — ${TAGLINE}`,
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://dreamstardriversclub.com",
+    url: SITE_URL,
     siteName: BRAND_NAME,
     title: `${BRAND_NAME} — ${TAGLINE}`,
     description:

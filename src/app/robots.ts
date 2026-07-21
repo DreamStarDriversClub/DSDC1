@@ -1,4 +1,4 @@
-import { BRAND_NAME } from "@/lib/constants";
+import { BRAND_NAME, SITE_URL } from "@/lib/constants";
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/account/", "/auth/", "/api/", "/checkout/"],
     },
-    sitemap: "https://dreamstardriversclub.com/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

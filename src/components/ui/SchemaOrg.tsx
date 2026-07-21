@@ -1,12 +1,12 @@
-import { BRAND_NAME, TAGLINE, SOCIAL_LINKS } from "@/lib/constants";
+import { BRAND_NAME, TAGLINE, SOCIAL_LINKS, SITE_URL } from "@/lib/constants";
 
 export function OrganizationSchema() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: BRAND_NAME,
-    url: "https://dreamstardriversclub.com",
-    logo: "https://dreamstardriversclub.com/logo.png",
+    url: SITE_URL,
+    logo: `${SITE_URL}/logo.png`,
     description: `Premium automotive lifestyle brand rooted in Japanese car culture. ${TAGLINE}`,
     sameAs: [
       SOCIAL_LINKS.instagram,
@@ -61,7 +61,7 @@ export function ProductSchema({
     category,
     offers: {
       "@type": "Offer",
-      url: `https://dreamstardriversclub.com/shop/${slug}`,
+      url: `${SITE_URL}/shop/${slug}`,
       priceCurrency: "USD",
       price,
       availability: "https://schema.org/InStock",
@@ -83,13 +83,13 @@ export function WebSiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: BRAND_NAME,
-    url: "https://dreamstardriversclub.com",
+    url: SITE_URL,
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
         urlTemplate:
-          "https://dreamstardriversclub.com/search?q={search_term_string}",
+          `${SITE_URL}/search?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },

@@ -3,6 +3,9 @@ export const BRAND_NAME = "Dream Star Drivers Club";
 export const TAGLINE = "Chase the Horizon";
 export const BRAND_SHORT = "DSDC";
 
+// ─── Site URL ────────────────────────────────────────────────────────────────
+export const SITE_URL = "https://dreamstardc.com";
+
 // ─── Colors ────────────────────────────────────────────────────────────────
 export const COLORS = {
   red: {
