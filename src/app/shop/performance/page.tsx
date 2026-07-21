@@ -51,6 +51,7 @@ export default async function PerformancePage() {
     price: p.price,
     salePrice: p.salePrice,
     category: p.category,
+    images: (p.images as string[]) || [],
     isFeatured: p.isFeatured,
   }));
 

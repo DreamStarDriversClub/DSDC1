@@ -44,7 +44,7 @@ export default async function ApparelPage() {
   }
 
   // Fetch all products in this category or its subcategories
-  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; images: string[]; isFeatured: boolean }[] = [];
   if (category) {
     try {
       const products = await prisma.product.findMany({
@@ -69,6 +69,7 @@ export default async function ApparelPage() {
         price: parseFloat(p.price.toString()),
         salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
         category: p.category,
+        images: (p.images as string[]) || [],
         isFeatured: p.isFeatured,
       }));
     } catch (error) {
@@ -88,6 +89,7 @@ export default async function ApparelPage() {
         price: p.price,
         salePrice: p.salePrice,
         category: p.category,
+        images: (p.images as string[]) || [],
         isFeatured: p.isFeatured,
       }));
     }
