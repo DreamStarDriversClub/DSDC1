@@ -435,60 +435,93 @@ export default async function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          Section 3: New Arrivals
+          Section 3: New Arrivals — Horizontal Scroll
           ══════════════════════════════════════════════════════════════════ */}
       <section className="bg-ds-black section-padding">
         <Container>
           <SectionHeading
             eyebrow="Fresh Drops"
             heading="New Arrivals"
-            description="The latest gear, parts, and accessories — freshest club drops this season."
+            description="The latest gear, parts, and accessories — freshest club drops this season. Scroll to explore."
             align="center"
             className="mb-12"
           />
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/shop/${product.category.toLowerCase().replace(/\s+/g, "-")}`}
-                className="group block"
-              >
-                <Card hover padding="none" className="overflow-hidden">
-                  {/* Product image placeholder */}
-                  <div
-                    className={`relative flex h-56 items-center justify-center bg-gradient-to-br ${product.gradient} overflow-hidden`}
-                  >
-                    <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
-                    <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                      {product.icon}
-                    </div>
-                    {/* View Details overlay */}
-                    <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
-                      <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
-                        <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
-                          View Details
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+          {/* Horizontal scroll row with gradient fade edges */}
+          <div className="relative -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+            {/* Left fade indicator */}
+            <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 bg-gradient-to-r from-ds-black to-transparent sm:w-14 lg:w-20" />
+            {/* Right fade indicator */}
+            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 bg-gradient-to-r from-transparent to-ds-black sm:w-14 lg:w-20" />
 
-                  <div className="p-5">
-                    <div className="mb-2 flex items-center justify-between">
-                      <Badge variant={product.categoryBadge} size="sm">
-                        {product.category}
-                      </Badge>
-                    </div>
-                    <h3 className="font-display text-sm font-bold text-ds-white transition-colors group-hover:text-ds-red">
-                      {product.name}
-                    </h3>
-                    <p className="mt-2 text-lg font-bold text-ds-white">
-                      {formatPrice(product.price)}
-                    </p>
-                  </div>
-                </Card>
-              </Link>
-            ))}
+            {/* Scrollable track */}
+            <div className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory scroll-smooth pb-2 pr-8 sm:pr-12 lg:pr-16">
+              {featuredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="w-[280px] shrink-0 snap-start sm:w-[320px]"
+                >
+                  <Link
+                    href={`/shop/${product.category.toLowerCase().replace(/\s+/g, "-")}`}
+                    className="group block"
+                  >
+                    <Card hover padding="none" className="overflow-hidden">
+                      {/* Product image placeholder */}
+                      <div
+                        className={`relative flex h-56 items-center justify-center bg-gradient-to-br ${product.gradient} overflow-hidden`}
+                      >
+                        <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
+                        <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
+                          {product.icon}
+                        </div>
+                        {/* View Details overlay */}
+                        <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+                          <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
+                            <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
+                              View Details
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="p-5">
+                        <div className="mb-2 flex items-center justify-between">
+                          <Badge variant={product.categoryBadge} size="sm">
+                            {product.category}
+                          </Badge>
+                        </div>
+                        <h3 className="font-display text-sm font-bold text-ds-white transition-colors group-hover:text-ds-red">
+                          {product.name}
+                        </h3>
+                        <p className="mt-2 text-lg font-bold text-ds-white">
+                          {formatPrice(product.price)}
+                        </p>
+                      </div>
+                    </Card>
+                  </Link>
+                </div>
+              ))}
+            </div>
+
+            {/* Scroll hint — subtle arrow row at bottom */}
+            <div className="mt-4 flex items-center justify-center gap-1 sm:hidden">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-ds-gray-600">
+                Swipe for more
+              </span>
+              <svg
+                className="h-3 w-3 text-ds-gray-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </div>
           </div>
 
           {/* View All CTA */}

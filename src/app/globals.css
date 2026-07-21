@@ -195,6 +195,15 @@
     animation-delay: 700ms;
   }
 
+  /* ── Scrollbar hide ───────────────────────────────────────── */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* ── Fill mode for staggered animations ────────────────────── */
   .animate-fill-forwards {
     animation-fill-mode: forwards;
