@@ -86,8 +86,24 @@ const US_STATES = [
 /* ── PayPal Hosted Button Config ──────────────────────── */
 
 const PAYPAL_HOSTED_BUTTON_ID = "PJUCGFXRBCEJ4";
-const PAYPAL_SDK_URL =
-  "https://www.paypal.com/sdk/js?client-id=BAA1VnVJshDn-KVymvqh3olpScBDjjwN4BWGZ0TYOC1nou_rFgbkmMJLJhy9-lYg8zaUYr5fG7_xQwZIto&components=hosted-buttons";
+
+/**
+ * Build the PayPal SDK URL using NEXT_PUBLIC_PAYPAL_CLIENT_ID.
+ *
+ * IMPORTANT: The env var must contain a valid PayPal REST API Client ID
+ * (not a hosted-button access token like BAA…).
+ * Get one free at https://developer.paypal.com → Apps & Credentials.
+ */
+function getPayPalSDKUrl(): string {
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+  if (!clientId) {
+    console.error(
+      "NEXT_PUBLIC_PAYPAL_CLIENT_ID is not set. PayPal will not load.",
+    );
+    return "";
+  }
+  return `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&components=hosted-buttons`;
+}
 
 /* ── Page ───────────────────────────────────────────────── */
 
@@ -263,6 +279,14 @@ export default function CheckoutPage() {
       },
     };
 
+    const sdkUrl = getPayPalSDKUrl();
+    if (!sdkUrl) {
+      setOrderError(
+        "PayPal Client ID is not configured. Please contact the site owner.",
+      );
+      return;
+    }
+
     const renderButton = () => {
       const p = getPayPal();
       if (!p) return;
@@ -286,7 +310,7 @@ export default function CheckoutPage() {
 
     const script = document.createElement("script");
     script.id = scriptId;
-    script.src = PAYPAL_SDK_URL;
+    script.src = sdkUrl;
     script.dataset.sdkIntegrationSource = "hosted-buttons";
     script.async = true;
 
