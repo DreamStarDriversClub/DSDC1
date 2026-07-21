@@ -94,9 +94,17 @@ export function slugify(name: string): string {
 /** Determine category from product name using keyword heuristics */
 function getCategory(name: string): { name: string; slug: string } {
   const lower = name.toLowerCase();
-  if (lower.includes("hat") || lower.includes("cap")) {
+
+  // Accessories: hats, caps, bags
+  if (
+    lower.includes("hat") ||
+    lower.includes("cap") ||
+    lower.includes("bag")
+  ) {
     return { name: "Accessories", slug: "accessories" };
   }
+
+  // Apparel: all clothing types
   if (
     lower.includes("tee") ||
     lower.includes("hoodie") ||
@@ -105,10 +113,19 @@ function getCategory(name: string): { name: string; slug: string } {
     lower.includes("windbreaker") ||
     lower.includes("sweatshirt") ||
     lower.includes("tank") ||
-    lower.includes("crewneck")
+    lower.includes("crewneck") ||
+    lower.includes("jogger") ||
+    lower.includes("longsleeve") ||
+    lower.includes("long sleeve") ||
+    lower.includes("pant") ||
+    lower.includes("fleece") ||
+    lower.includes("pullover") ||
+    lower.includes("zip") ||
+    lower.includes("polo")
   ) {
     return { name: "Apparel", slug: "apparel" };
   }
+
   return { name: "Apparel", slug: "apparel" }; // default
 }
 

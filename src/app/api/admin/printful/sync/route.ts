@@ -105,7 +105,7 @@ export async function POST() {
           },
           create: {
             printfulId: String(sv.id),
-            productId: String(sv.product_id),
+            productId: String(sv.sync_product_id),
             name: sv.name,
             size: sv.size,
             color: sv.color,
