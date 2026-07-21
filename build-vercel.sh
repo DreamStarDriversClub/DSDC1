@@ -2,6 +2,8 @@
 # Produce a Vercel Build Output API bundle (.vercel/output) for this Next.js site.
 # Next.js natively supports Vercel, so we just build and wrap it for the
 # Build Output API v3 format that go-live.sh expects.
+# NOTE: next.config.js auto-detects the Vercel environment (process.env.VERCEL).
+#       No config swap needed — the same config works everywhere.
 set -euo pipefail
 cd "$(dirname "$0")"
 umask 002
@@ -9,11 +11,8 @@ umask 002
 echo "[1/3] Installing dependencies"
 bun install
 
-echo "[2/3] Building Next.js (standalone output with Vercel config)"
-cp next.config.js next.config.bak.js
-cp next.config.vercel.js next.config.js
+echo "[2/3] Building Next.js (standalone output)"
 bun run build
-mv next.config.bak.js next.config.js
 
 echo "[3/3] Assembling .vercel/output (Build Output API v3)"
 
