@@ -19,7 +19,7 @@ const SECTIONS = [
     content: (
       <>
         <p>
-          By accessing or using the Dream Star Drivers Club website (dreamstardriversclub.com),
+          By accessing or using the Dream Star Drivers Club website (dreamstardc.com),
           placing an order, or creating an account, you agree to be bound by these Terms of
           Service. If you do not agree with any part of these terms, please do not use
           our website or services.
