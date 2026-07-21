@@ -55,6 +55,7 @@ export const NAV_LINKS = [
     ],
   },
   { label: "About", href: "/about" },
+  { label: "Community", href: "/community" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -74,6 +75,7 @@ export const FOOTER_LINK_GROUPS = [
       { label: "About Us", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog" },
+      { label: "Community", href: "/community" },
       { label: "Events", href: "/events" },
     ],
   },
