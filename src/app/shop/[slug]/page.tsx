@@ -442,6 +442,7 @@ export default async function ProductDetailPage({ params }: Props) {
                     price: p.price,
                     salePrice: p.salePrice,
                     category: p.category,
+                    images: p.images,
                     isFeatured: p.isFeatured,
                   }}
                   badgeVariant={

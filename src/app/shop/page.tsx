@@ -173,6 +173,7 @@ export default async function ShopPage() {
                     price: product.price,
                     salePrice: product.salePrice,
                     category: product.category,
+                    images: product.images,
                     isFeatured: product.isFeatured,
                   }}
                   badgeVariant={
