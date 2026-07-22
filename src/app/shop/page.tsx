@@ -32,7 +32,7 @@ export default async function ShopPage() {
   }
 
   // Fetch featured products from Product table
-  let featured: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  let featured: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean; images?: unknown }[] = [];
   try {
     const dbFeatured = await prisma.product.findMany({
       where: { isFeatured: true, isActive: true },
@@ -47,6 +47,7 @@ export default async function ShopPage() {
       salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
       category: p.category,
       isFeatured: p.isFeatured,
+      images: p.images,
     }));
   } catch (error) {
     console.error("Failed to fetch featured products for shop page:", error);
@@ -65,6 +66,7 @@ export default async function ShopPage() {
         salePrice: p.salePrice,
         category: p.category,
         isFeatured: false,
+        images: p.images,
       }));
     }
   } catch (error) {
