@@ -1,3 +1,28 @@
+/* Sprite Graffiti — display typeface for brand headings */
+@font-face {
+  font-family: "Sprite Graffiti";
+  src: url("/Sprite%20Graffiti.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sprite Graffiti Extras";
+  src: url("/Sprite%20Graffiti%20Extras.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sprite Graffiti Shadow";
+  src: url("/Sprite%20Graffiti%20Shadow.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
