@@ -362,7 +362,7 @@ export function ShippingManager() {
                     <span className="text-xs font-semibold uppercase tracking-wider text-ds-gray-500">
                       Rates
                     </span>
-                    <Button size="xs" onClick={() => openNewRate(zone.id)}>
+                    <Button size="sm" onClick={() => openNewRate(zone.id)}>
                       + Add Rate
                     </Button>
                   </div>

@@ -471,7 +471,7 @@ export default async function HomePage() {
                   className="w-[280px] shrink-0 snap-start sm:w-[320px]"
                 >
                   <Link
-                    href={`/shop/${product.category.toLowerCase().replace(/\s+/g, "-")}`}
+                    href={`/shop/${((product as any).category?.name || (product as any).category || '').toLowerCase().replace(/\s+/g, "-")}`}
                     className="group block"
                   >
                     <Card hover padding="none" className="overflow-hidden">
