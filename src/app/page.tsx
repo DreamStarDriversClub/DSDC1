@@ -213,6 +213,15 @@ export default async function HomePage() {
         />
         {/* Dark overlay for text readability */}
         <div className="pointer-events-none absolute inset-0 bg-ds-black/60" />
+        {/* Rotary 13B blueprint watermark */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-center bg-no-repeat opacity-[0.10]"
+          style={{
+            backgroundImage: "url('/images/rotary-blueprint.png')",
+            backgroundSize: "cover",
+            backgroundBlendMode: "soft-light",
+          }}
+        />
         {/* Background effects */}
         <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
         <div className="pointer-events-none absolute inset-0 bg-grid" />

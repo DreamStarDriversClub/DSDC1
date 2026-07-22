@@ -57,11 +57,24 @@ export default async function PerformancePage() {
 
   return (
     <>
-      <CategoryHeader
-        title="Built by Enthusiasts. Proven on the Touge."
-        description="This is where the catalog gets serious. DS Performance is our in-house line of Mazda rotary and Toyota 2JZ components — engineered for the driver who refuses to compromise. We don't sell parts we wouldn't run on our own cars. Every seal, every belt, every ported housing carries the weight of that promise. Our rotary lineup covers everything from apex seals and street port kits to full gasket sets — the kind of hardware that keeps the 13B heart beating strong at 9,000 RPM. On the 2JZ side, we stock timing belt kits, head gaskets, and essential maintenance components for the engine that defined a generation. We know these engines because we've torn them down and built them back up. In garages in the Tri-state. On the winding roads of Japan. In the Vegas Valley, where the heat tests everything. DS Performance parts are sourced from trusted manufacturers and vetted by the club — because when you're chasing the horizon at full boost, 'good enough' doesn't cut it."
-        image="/category-performance.jpg"
-      />
+      <div className="relative">
+        {/* Rotary 13B blueprint watermark */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.08]"
+          style={{
+            backgroundImage: "url('/images/rotary-blueprint.png')",
+            backgroundSize: "cover",
+            backgroundBlendMode: "soft-light",
+          }}
+        />
+        <div className="relative z-10">
+          <CategoryHeader
+            title="Built by Enthusiasts. Proven on the Touge."
+            description="This is where the catalog gets serious. DS Performance is our in-house line of Mazda rotary and Toyota 2JZ components — engineered for the driver who refuses to compromise. We don't sell parts we wouldn't run on our own cars. Every seal, every belt, every ported housing carries the weight of that promise. Our rotary lineup covers everything from apex seals and street port kits to full gasket sets — the kind of hardware that keeps the 13B heart beating strong at 9,000 RPM. On the 2JZ side, we stock timing belt kits, head gaskets, and essential maintenance components for the engine that defined a generation. We know these engines because we've torn them down and built them back up. In garages in the Tri-state. On the winding roads of Japan. In the Vegas Valley, where the heat tests everything. DS Performance parts are sourced from trusted manufacturers and vetted by the club — because when you're chasing the horizon at full boost, 'good enough' doesn't cut it."
+            image="/category-performance.jpg"
+          />
+        </div>
+      </div>
 
       <Container className="py-8">
         <Breadcrumbs
