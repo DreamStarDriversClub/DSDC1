@@ -324,6 +324,42 @@ model StoreSetting {
   updatedAt DateTime @updatedAt
 }
 
+// ── Team ───────────────────────────────────────────────
+
+model Team {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String
+  goals        String?
+  location     String
+  contactEmail String
+  logoUrl      String?
+  socialLinks  Json     @default("{}")
+  isApproved   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  events CommunityEvent[]
+}
+
+// ── CommunityEvent ─────────────────────────────────────
+
+model CommunityEvent {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String
+  eventType   String   @default("meet")
+  eventDate   DateTime
+  location    String
+  teamId      String?
+  team        Team?    @relation(fields: [teamId], references: [id], onDelete: SetNull)
+  isApproved  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 // ── Review ─────────────────────────────────────────────
 
 model Review {
