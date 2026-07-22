@@ -44,7 +44,7 @@ export default async function AccessoriesPage() {
   }
 
   // Fetch regular products from Product table
-  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean }[] = [];
+  let mappedProducts: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; images: string[]; isFeatured: boolean }[] = [];
   if (category) {
     try {
       const products = await prisma.product.findMany({
@@ -66,6 +66,7 @@ export default async function AccessoriesPage() {
         price: parseFloat(p.price.toString()),
         salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
         category: p.category,
+        images: (p.images as unknown as string[]) || [],
         isFeatured: p.isFeatured,
       }));
     } catch (error) {
@@ -85,6 +86,7 @@ export default async function AccessoriesPage() {
         price: p.price,
         salePrice: p.salePrice,
         category: p.category,
+        images: (p.images as unknown as string[]) || [],
         isFeatured: p.isFeatured,
       }));
     }
