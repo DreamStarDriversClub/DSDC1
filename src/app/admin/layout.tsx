@@ -93,6 +93,31 @@ function SettingsIcon() {
   );
 }
 
+function PlusIcon() {
+  return (
+    <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+    </svg>
+  );
+}
+
+function CategoriesIcon() {
+  return (
+    <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
+    </svg>
+  );
+}
+
+function MediaIcon() {
+  return (
+    <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z" />
+    </svg>
+  );
+}
+
 /* ── Layout ──────────────────────────────────────────────── */
 
 export default async function AdminLayout({
@@ -128,6 +153,15 @@ export default async function AdminLayout({
           </SidebarLink>
           <SidebarLink href="/admin/products" label="Products">
             <ProductsIcon />
+          </SidebarLink>
+          <SidebarLink href="/admin/products/new" label="New Product">
+            <PlusIcon />
+          </SidebarLink>
+          <SidebarLink href="/admin/categories" label="Categories">
+            <CategoriesIcon />
+          </SidebarLink>
+          <SidebarLink href="/admin/media" label="Media Library">
+            <MediaIcon />
           </SidebarLink>
           <SidebarLink href="/admin/customers" label="Customers">
             <CustomersIcon />
