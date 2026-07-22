@@ -149,6 +149,15 @@ const eventTypeLabels: Record<string, string> = {
 export default async function CommunityPage() {
   const session = await getSessionUser();
 
+  /* ── Database: approved teams & upcoming events ─────────────────────────── */
+  const [dbTeams, dbEvents] = await Promise.all([
+    prisma.team.findMany({ where: { isApproved: true } }),
+    prisma.communityEvent.findMany({
+      where: { isApproved: true, eventDate: { gte: new Date() } },
+      orderBy: { eventDate: "asc" },
+    }),
+  ]);
+
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────── */}
@@ -249,6 +258,58 @@ export default async function CommunityPage() {
                 </p>
               </Card>
             ))}
+
+            {/* Database events */}
+            {dbEvents.map((dbEvent) => {
+              const evDate = new Date(dbEvent.eventDate);
+              const monthName = evDate.toLocaleString("en-US", { month: "long" });
+              const dayNum = evDate.getDate().toString();
+              const yearNum = evDate.getFullYear().toString();
+              const shortMonth = monthName.slice(0, 3);
+              const badgeLabel = eventTypeLabels[dbEvent.eventType] ?? "Event";
+
+              return (
+                <Card key={dbEvent.id} padding="lg" hover className="flex flex-col">
+                  {/* Date badge */}
+                  <div className="mb-4 flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border border-ds-red/30 bg-ds-red/10">
+                        <span className="font-display text-lg font-black leading-none text-ds-red">
+                          {dayNum}
+                        </span>
+                        <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-red/70">
+                          {shortMonth}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-red/60">
+                          {monthName} {yearNum}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Badge */}
+                    <span className="shrink-0 rounded-full border border-ds-red/20 bg-ds-red/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-red/80">
+                      {badgeLabel}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="font-display text-base font-bold text-ds-white">
+                    {dbEvent.title}
+                  </h3>
+                  <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ds-gray-500">
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    {dbEvent.location}
+                  </div>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-ds-gray-400">
+                    {dbEvent.description}
+                  </p>
+                </Card>
+              );
+            })}
           </div>
 
           {/* Calendar note */}
@@ -318,6 +379,57 @@ export default async function CommunityPage() {
                 <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
                   <span className="inline-flex items-center rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
                     {org.members}
+                  </span>
+                </div>
+              </Card>
+            ))}
+
+            {/* Database teams */}
+            {dbTeams.map((team) => (
+              <Card
+                key={team.id}
+                padding="lg"
+                hover
+                className="flex flex-col"
+              >
+                {/* Header */}
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-ds-white/5 text-ds-gray-300">
+                    {team.logoUrl ? (
+                      <img
+                        src={team.logoUrl}
+                        alt={team.name}
+                        className="h-8 w-8 rounded object-contain"
+                      />
+                    ) : (
+                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-ds-white">
+                      {team.name}
+                    </h3>
+                    <div className="flex items-center gap-1.5 text-xs text-ds-gray-500">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                      </svg>
+                      {team.location}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="flex-1 text-sm leading-relaxed text-ds-gray-400">
+                  {team.description}
+                </p>
+
+                {/* Members badge */}
+                <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
+                  <span className="inline-flex items-center rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
+                    Approved Team
                   </span>
                 </div>
               </Card>
