@@ -1,19 +1,19 @@
-import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
+import { TaxManager } from "@/components/admin/TaxManager";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminAnalyticsPage() {
+export default function AdminTaxesPage() {
   return (
     <div>
       <div className="mb-8">
         <h1 className="font-display text-2xl font-bold tracking-tight text-ds-white">
-          Analytics
+          Taxes
         </h1>
         <p className="mt-1 text-sm text-ds-gray-400">
-          Store performance and sales analytics
+          Configure tax rates by country and state
         </p>
       </div>
-      <AnalyticsDashboard />
+      <TaxManager />
     </div>
   );
 }
