@@ -10,6 +10,12 @@ const nextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 768, 1024, 1280, 1536],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'files.cdn.printful.com',
+      },
+    ],
   },
 
   // Add Content-Disposition for clean image URLs
