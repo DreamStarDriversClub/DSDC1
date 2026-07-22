@@ -35,4 +35,63 @@ export const SOCIAL_LINKS = {
 export const NEWSLETTER = {
   title: "Join the Club",
   description: "Get exclusive drops, build tips, and event invites.",
+  placeholder: "Enter your email",
+  buttonText: "Sign Up",
 } as const;
+
+export const NAV_LINKS = [
+  {
+    label: "Shop",
+    href: "/shop",
+    children: [
+      { label: "All Products", href: "/shop/all", description: "Browse everything" },
+      { label: "Apparel", href: "/shop/apparel", description: "Tees, hoodies, hats" },
+      { label: "Accessories", href: "/shop/accessories", description: "Stickers, keychains, patches" },
+      { label: "DS Performance", href: "/shop/performance", description: "Rotary & 2JZ parts" },
+    ],
+  },
+  { label: "About", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
+] as const;
+
+export const FOOTER_LINK_GROUPS = [
+  {
+    title: "Shop",
+    links: [
+      { label: "All Products", href: "/shop/all" },
+      { label: "Apparel", href: "/shop/apparel" },
+      { label: "Accessories", href: "/shop/accessories" },
+      { label: "DS Performance", href: "/shop/performance" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "Contact Us", href: "/contact" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Shipping", href: "/shipping" },
+      { label: "Returns", href: "/returns" },
+      { label: "Size Guide", href: "/size-guide" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Events", href: "/events" },
+      { label: "Community", href: "/community" },
+    ],
+  },
+  {
+    title: "Legal",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Cookie Policy", href: "/cookies" },
+      { label: "Disclaimer", href: "/disclaimer" },
+    ],
+  },
+] as const;

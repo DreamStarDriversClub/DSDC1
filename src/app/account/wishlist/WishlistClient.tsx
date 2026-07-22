@@ -26,7 +26,7 @@ export default function WishlistClient({
 }: {
   items: WishlistItemWithProduct[];
 }) {
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
   const [removing, setRemoving] = useState<Set<string>>(new Set());
   const [adding, setAdding] = useState<Set<string>>(new Set());
 
@@ -43,12 +43,13 @@ export default function WishlistClient({
   ) => {
     setAdding((prev) => new Set(prev).add(productId));
     try {
-      addToCart({
+      addItem({
+        id: `${productId}-${Date.now()}`,
         productId,
-        variantId: null,
+        variantId: undefined,
         name: productName,
         slug: "",
-        sku: "",
+        sku: `SKU-${productId}`,
         price: parseFloat(price),
         quantity: 1,
       });

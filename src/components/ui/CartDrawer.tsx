@@ -15,14 +15,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [visible, setVisible] = useState(false);
   const {
     state,
-    removeFromCart,
+    removeItem,
     updateQuantity,
     subtotal,
     itemCount,
-    freeShippingRemaining,
-    isFreeShipping,
   } = useCart();
   const { items } = state;
+
+  const FREE_SHIPPING_THRESHOLD = 75;
+  const freeShippingRemaining = FREE_SHIPPING_THRESHOLD - subtotal;
+  const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
 
   useEffect(() => {
     if (open) {
@@ -212,7 +214,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                             {formatPrice(item.price * item.quantity)}
                           </span>
                           <button
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeItem(item.id)}
                             className="text-ds-gray-600 transition-colors hover:text-ds-red"
                             aria-label={`Remove ${item.name}`}
                           >

@@ -27,15 +27,16 @@ export function AddToCartButton({
   disabled = false,
   className = "",
 }: AddToCartButtonProps) {
-  const { addToCart, toggleCart } = useCart();
+  const { addItem } = useCart();
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
     if (disabled) return;
 
-    addToCart({
+    addItem({
+      id: `${productId}-${variantId || "default"}-${Date.now()}`,
       productId,
-      variantId,
+      variantId: variantId || undefined,
       name,
       slug,
       sku,
@@ -45,7 +46,6 @@ export function AddToCartButton({
     });
 
     setAdded(true);
-    toggleCart(true);
 
     setTimeout(() => setAdded(false), 2000);
   };

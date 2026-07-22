@@ -85,3 +85,5 @@ export const SORT_OPTIONS = [
   { label: "Price: High to Low", value: "price-desc" },
   { label: "Name: A-Z", value: "name-asc" },
 ] as const;
+
+export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
