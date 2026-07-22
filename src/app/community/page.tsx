@@ -12,15 +12,119 @@ import { Button } from "@/components/ui/Button";
 export const metadata: Metadata = {
   title: "Community — Events & Local Teams | Dream Star Drivers Club",
   description:
-    "The scene doesn't exist without the people. Connect with fellow enthusiasts across the valley — upcoming events, local teams, and the crews that make the JDM community what it is.",
+    "The scene doesn't exist without the people. Connect with fellow enthusiasts across the valley — upcoming events, local teams, and the crews that make the Vegas JDM community what it is.",
   openGraph: {
     title: `Community — Events & Local Teams | ${BRAND_NAME}`,
     description:
-      "The scene doesn't exist without the people. Connect with fellow enthusiasts.",
+      "The scene doesn't exist without the people. Connect with fellow enthusiasts across the valley.",
   },
 };
 
 export const dynamic = "force-dynamic";
+
+/* ── Events Data ─────────────────────────────────────────────────────────── */
+
+const EVENTS = [
+  {
+    date: "Jul 12",
+    month: "July",
+    day: "12",
+    year: "2026",
+    name: "Cars & Coffee Las Vegas",
+    location: "SpeedVegas",
+    description:
+      "The valley's biggest monthly gathering. Hundreds of builds from classic JDM to modern exotics. Roll in early, grab coffee, and talk cars with the best community in Vegas.",
+    badge: "Monthly",
+  },
+  {
+    date: "Jul 25",
+    month: "July",
+    day: "25",
+    year: "2026",
+    name: "Midnight Touge Run",
+    location: "Mt Charleston",
+    description:
+      "Late-night mountain pass run under the stars. Technical corners, elevation changes, and pure driving. Meet at the base — headlights mandatory, egos left at home.",
+    badge: "Night Run",
+  },
+  {
+    date: "Aug 1",
+    month: "August",
+    day: "1",
+    year: "2026",
+    name: "JDM Fest West",
+    location: "LV Convention Center",
+    description:
+      "The West Coast's premier Japanese automotive festival. Two days of show cars, vendor booths, drift demos, and special guest builds from across the country.",
+    badge: "Major Event",
+  },
+  {
+    date: "Aug 15",
+    month: "August",
+    day: "15",
+    year: "2026",
+    name: "Drift Day",
+    location: "LVMS",
+    description:
+      "Full day of open drifting on the LVMS skid pad. All skill levels welcome. Tech inspection at 8 AM, tires not included. Bring spares — you'll need them.",
+    badge: "Track Day",
+  },
+  {
+    date: "Aug 22",
+    month: "August",
+    day: "22",
+    year: "2026",
+    name: "Rotary Reunion Meet",
+    location: "Sunset Park",
+    description:
+      "The annual gathering for rotary enthusiasts. FCs, FDs, RX-8s, and anything else that spins triangles. BBQ, garage tours, and the unmistakable sound of bridge-ported 13Bs echoing across the park.",
+    badge: "DSDC Event",
+  },
+  {
+    date: "Aug 29",
+    month: "August",
+    day: "29",
+    year: "2026",
+    name: "Import Showdown",
+    location: "South Point Arena",
+    description:
+      "Quarter-mile battle: JDM vs. the world. Bracket racing, test-and-tune sessions, and a show-n-shine. The strip gets hot and the times get low. Who's bringing the Supra?",
+    badge: "Race Event",
+  },
+];
+
+/* ── Organizations Data ──────────────────────────────────────────────────── */
+
+const ORGANIZATIONS = [
+  {
+    name: "Vegas Rotary Club",
+    description:
+      "Dedicated to keeping the rotary engine alive in the desert. Weekly meets, group rebuild sessions, and an encyclopedia of 13B knowledge passed down through generations of enthusiasts who understand that triangles spin different.",
+    location: "Las Vegas, NV",
+    members: "180+ members",
+  },
+  {
+    name: "Desert Drift Squad",
+    description:
+      "Vegas's premier drifting collective. Organizes monthly drift days, tire-shredding demos, and beginner clinics. If it slides, they're probably behind it — and they'll teach you how to do it too.",
+    location: "Las Vegas, NV",
+    members: "250+ members",
+  },
+  {
+    name: "LV JDM Collective",
+    description:
+      "The central hub for Japanese car enthusiasts in the valley. Hosts mixers, group drives, and Cars & Coffee takeovers. All chassis welcome — from kei cars to GT-Rs, stock to full build.",
+    location: "Las Vegas, NV",
+    members: "400+ members",
+  },
+  {
+    name: "Sin City Touge Runners",
+    description:
+      "Mountain pass specialists. They scout the best canyon roads within driving distance and organize safe, responsible group runs. Pace notes optional, respect mandatory.",
+    location: "Las Vegas, NV",
+    members: "120+ members",
+  },
+];
 
 const eventTypeColors: Record<string, "red" | "gold" | "info" | "warning" | "success"> = {
   meet: "red",
@@ -45,32 +149,6 @@ const eventTypeLabels: Record<string, string> = {
 export default async function CommunityPage() {
   const session = await getSessionUser();
 
-  const [teams, events] = await Promise.all([
-    prisma.team.findMany({
-      where: { isApproved: true },
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        description: true,
-        location: true,
-        logoUrl: true,
-        socialLinks: true,
-      },
-    }),
-    prisma.communityEvent.findMany({
-      where: {
-        isApproved: true,
-        eventDate: { gte: new Date() },
-      },
-      orderBy: { eventDate: "asc" },
-      include: {
-        team: { select: { name: true, slug: true } },
-      },
-    }),
-  ]);
-
   return (
     <>
       {/* ── Hero ───────────────────────────────────────────────── */}
@@ -80,7 +158,7 @@ export default async function CommunityPage() {
         <Container className="relative py-20 sm:py-28 lg:py-36">
           <div className="mx-auto max-w-3xl text-center opacity-start animate-fade-in-up">
             <span className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-ds-red">
-              Built by Enthusiasts
+              Las Vegas JDM Scene
             </span>
             <h1 className="mt-4 font-display text-display-lg text-ds-white">
               Community
@@ -88,7 +166,11 @@ export default async function CommunityPage() {
             <div className="mx-auto mt-6 h-[3px] w-12 rounded-full bg-ds-red" />
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ds-gray-300">
               The scene doesn&apos;t exist without the people. Connect with fellow
-              enthusiasts, register your team, and find the next meet.
+              enthusiasts across the valley.
+            </p>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-ds-gray-400">
+              Whether you&apos;re local or just passing through, there&apos;s a
+              meet, a run, or a garage session waiting for you. Find your crew below.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/community/register">
@@ -114,187 +196,171 @@ export default async function CommunityPage() {
           <SectionHeading
             eyebrow="What's Happening"
             heading="Upcoming Events"
-            description={
-              events.length > 0
-                ? "Community-submitted events. Dates subject to change — follow hosts for real-time updates."
-                : "No upcoming events yet. Be the first to submit one!"
-            }
+            description="Summer 2026 is stacked. From Cars & Coffee to track nights, here's where you'll find the Dream Star crew and the wider Vegas JDM community."
             align="center"
             className="mb-12"
           />
 
-          {events.length === 0 ? (
-            <div className="py-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.06] bg-ds-black-charcoal">
-                <svg className="h-8 w-8 text-ds-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-              </div>
-              <p className="text-ds-gray-500">Events submitted by the community will appear here once approved.</p>
-            </div>
-          ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {events.map((event) => {
-                const d = new Date(event.eventDate);
-                const month = d.toLocaleString("en-US", { month: "short" });
-                const day = d.getDate().toString();
-                const year = d.getFullYear().toString();
-
-                return (
-                  <Card key={event.id} padding="lg" hover className="flex flex-col">
-                    {/* Date badge */}
-                    <div className="mb-4 flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border border-ds-red/30 bg-ds-red/10">
-                          <span className="font-display text-lg font-black leading-none text-ds-red">
-                            {day}
-                          </span>
-                          <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-red/70">
-                            {month}
-                          </span>
-                        </div>
-                      </div>
-                      <Badge variant={eventTypeColors[event.eventType] ?? "gray"} size="sm">
-                        {eventTypeLabels[event.eventType] ?? event.eventType}
-                      </Badge>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {EVENTS.map((event) => (
+              <Card key={event.name} padding="lg" hover className="flex flex-col">
+                {/* Date badge */}
+                <div className="mb-4 flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl border border-ds-red/30 bg-ds-red/10">
+                      <span className="font-display text-lg font-black leading-none text-ds-red">
+                        {event.day}
+                      </span>
+                      <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-red/70">
+                        {event.month.slice(0, 3)}
+                      </span>
                     </div>
-
-                    <h3 className="font-display text-base font-bold text-ds-white">
-                      {event.title}
-                    </h3>
-                    <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ds-gray-500">
-                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                      </svg>
-                      {event.location}
-                      {event.team && (
-                        <>
-                          <span className="mx-1">·</span>
-                          <span>Hosted by {event.team.name}</span>
-                        </>
-                      )}
+                    <div>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-ds-red/60">
+                        {event.month} {event.year}
+                      </span>
                     </div>
-                    <p className="mt-3 flex-1 text-sm leading-relaxed text-ds-gray-400">
-                      {event.description}
-                    </p>
-                  </Card>
-                );
-              })}
-            </div>
-          )}
+                  </div>
+                  {/* Badge */}
+                  <span className="shrink-0 rounded-full border border-ds-red/20 bg-ds-red/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-red/80">
+                    {event.badge}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <h3 className="font-display text-base font-bold text-ds-white">
+                  {event.name}
+                </h3>
+                <div className="mt-1.5 flex items-center gap-1.5 text-xs text-ds-gray-500">
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                  {event.location}
+                </div>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-ds-gray-400">
+                  {event.description}
+                </p>
+              </Card>
+            ))}
+          </div>
+
+          {/* Calendar note */}
+          <div className="mt-10 text-center">
+            <p className="text-sm text-ds-gray-500">
+              Dates and locations are subject to change. Follow{" "}
+              <a
+                href="https://www.instagram.com/dreamstardriversclub/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
+              >
+                @dreamstardriversclub
+              </a>{" "}
+              for real-time updates on all events.
+            </p>
+          </div>
         </Container>
       </section>
 
-      {/* ── Team Directory ─────────────────────────────────────── */}
+      {/* ── Local Organizations ────────────────────────────────── */}
       <section className="bg-ds-black-deepest section-padding">
         <Container>
           <SectionHeading
             eyebrow="The Crews"
-            heading="Team Directory"
-            description={
-              teams.length > 0
-                ? "These are the clubs, crews, and collectives that make the scene what it is. Connect with them and find your people."
-                : "No teams registered yet. Start one and be the first on the board!"
-            }
+            heading="Local Organizations & Teams"
+            description="These are the clubs, crews, and collectives that make the Vegas JDM scene what it is. Connect with them, show up to their meets, and find your people."
             align="center"
             className="mb-12"
           />
 
-          {teams.length === 0 ? (
-            <div className="py-12 text-center">
-              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.06] bg-ds-black-charcoal">
-                <svg className="h-8 w-8 text-ds-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                </svg>
-              </div>
-              <p className="text-ds-gray-500">Teams will appear here once approved by our moderators.</p>
-              <Link href="/community/register" className="mt-4 inline-block">
-                <Button variant="primary" size="sm">Register Your Team</Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {teams.map((team) => {
-                const socials = team.socialLinks as Record<string, string> | null;
+          <div className="grid gap-6 sm:grid-cols-2">
+            {ORGANIZATIONS.map((org) => (
+              <Card
+                key={org.name}
+                padding="lg"
+                hover
+                className="flex flex-col"
+              >
+                {/* Header */}
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] bg-ds-white/5 text-ds-gray-300">
+                    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-display text-base font-bold text-ds-white">
+                      {org.name}
+                    </h3>
+                    <div className="flex items-center gap-1.5 text-xs text-ds-gray-500">
+                      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                      </svg>
+                      {org.location}
+                    </div>
+                  </div>
+                </div>
 
-                return (
-                  <Link key={team.id} href={`/community/teams/${team.slug}`}>
-                    <Card padding="lg" hover className="flex h-full flex-col">
-                      {/* Logo + Name */}
-                      <div className="mb-4 flex items-center gap-3">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/[0.08] bg-ds-white/5">
-                          {team.logoUrl ? (
-                            <img
-                              src={team.logoUrl}
-                              alt={team.name}
-                              className="h-full w-full object-cover"
-                            />
-                          ) : (
-                            <svg className="h-6 w-6 text-ds-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-                            </svg>
-                          )}
-                        </div>
-                        <div>
-                          <h3 className="font-display text-base font-bold text-ds-white">
-                            {team.name}
-                          </h3>
-                          <div className="flex items-center gap-1 text-xs text-ds-gray-500">
-                            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                            {team.location}
-                          </div>
-                        </div>
-                      </div>
+                {/* Description */}
+                <p className="flex-1 text-sm leading-relaxed text-ds-gray-400">
+                  {org.description}
+                </p>
 
-                      {/* Description excerpt */}
-                      <p className="flex-1 text-sm leading-relaxed text-ds-gray-400">
-                        {team.description.length > 150
-                          ? team.description.slice(0, 150) + "..."
-                          : team.description}
-                      </p>
+                {/* Members badge */}
+                <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
+                  <span className="inline-flex items-center rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
+                    {org.members}
+                  </span>
+                </div>
+              </Card>
+            ))}
+          </div>
 
-                      {/* Social links */}
-                      {socials && Object.keys(socials).length > 0 && (
-                        <div className="mt-4 flex items-center gap-2 border-t border-white/[0.06] pt-4">
-                          {socials.instagram && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
-                              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                                <circle cx="12" cy="12" r="5" />
-                              </svg>
-                              IG
-                            </span>
-                          )}
-                          {socials.youtube && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
-                              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z" />
-                              </svg>
-                              YT
-                            </span>
-                          )}
-                          {socials.tiktok && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-ds-white/5 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ds-gray-400">
-                              TT
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </Card>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
+          {/* CTA */}
+          <div className="mt-12 text-center">
+            <p className="text-sm text-ds-gray-400">
+              Are you part of a local crew not listed here?{" "}
+              <Link
+                href="/contact"
+                className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
+              >
+                Get in touch
+              </Link>{" "}
+              — we&apos;d love to add you to the community.
+            </p>
+          </div>
         </Container>
       </section>
 
-      {/* ── CTA: Join / Follow ──────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-ds-black">
+      {/* ── Join the Community ─────────────────────────────────── */}
+      <section className="bg-ds-black section-padding">
+        <Container className="text-center">
+          <SectionHeading
+            eyebrow="Build Your Crew"
+            heading="Start or Join a Team"
+            description="Register your team to get listed in the directory, or browse existing teams to find your people. Team profiles, event hosting, and more — all driven by the community."
+            align="center"
+            className="mb-10"
+          />
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/community/register">
+              <Button variant="primary" size="lg">
+                Register Your Team
+              </Button>
+            </Link>
+            <Link href="/community/teams">
+              <Button variant="outline" size="lg">
+                Browse Teams
+              </Button>
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* ── CTA: Join the Scene ────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-ds-black-deepest">
         <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
         <Container className="relative py-20 text-center sm:py-28">
           <div className="mx-auto max-w-2xl">
@@ -304,7 +370,7 @@ export default async function CommunityPage() {
             <p className="mt-4 text-lg leading-relaxed text-ds-gray-300">
               The best way to experience the community is to show up. Follow us on
               Instagram for event reminders, behind-the-scenes content, and the
-              latest from the scene.
+              latest from the Vegas JDM scene.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
