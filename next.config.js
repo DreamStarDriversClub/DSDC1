@@ -2,7 +2,6 @@ const isVercel = process.env.VERCEL === '1';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
   staticPageGenerationTimeout: 120,
 
   // Image optimization — enables next/image with automatic WebP/AVIF serving
