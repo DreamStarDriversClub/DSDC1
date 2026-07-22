@@ -17,6 +17,10 @@ sudo sh -c 'lsof -t -iTCP:3000 -sTCP:LISTEN | xargs -r kill' 2>/dev/null || true
 # Install dependencies (no-op once node_modules is current)
 bun install
 
+# Clean stale build cache from previous builds — prevents "PageNotFoundError"
+# when source files change under a stale .next directory (e.g. after git checkout)
+rm -rf .next
+
 # Build Next.js for production
 bun run build
 
