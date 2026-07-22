@@ -1,38 +1,13 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import type { DiscountType } from "@prisma/client";
 
 /* ── Types ───────────────────────────────────────────────── */
 
-export interface ValidatedCartItem {
-  productId: string;
-  variantId: string | null;
-  name: string;
-  slug: string;
-  sku: string;
-  price: number;
-  quantity: number;
-  variantName?: string;
-}
-
-export interface ValidatedCoupon {
-  code: string;
-  discountType: DiscountType;
-  discountValue: number;
-}
-
-export interface CouponValidationResult {
-  valid: boolean;
-  coupon?: ValidatedCoupon;
-  error?: string;
-}
-
 export interface ShippingAddress {
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
   phone?: string;
   line1: string;
   line2?: string;
@@ -42,9 +17,20 @@ export interface ShippingAddress {
   country: string;
 }
 
-export interface CreateOrderInput {
-  items: ValidatedCartItem[];
-  coupon?: ValidatedCoupon | null;
+interface OrderItemInput {
+  productId: string;
+  variantId?: string;
+  name: string;
+  slug: string;
+  sku: string;
+  price: number;
+  quantity: number;
+  variantName?: string;
+}
+
+interface CreateOrderInput {
+  items: OrderItemInput[];
+  coupon?: { code: string; discountType: string; discountValue: number } | null;
   shippingMethod: string;
   shippingAddress: ShippingAddress;
   subtotal: number;
@@ -54,33 +40,16 @@ export interface CreateOrderInput {
   total: number;
 }
 
-export interface CreateOrderResult {
-  success: boolean;
-  orderId?: string;
-  error?: string;
-}
+/* ── Coupon validation ──────────────────────────────────── */
 
-/* ── Coupon Validation ───────────────────────────────────── */
-
-export async function validateCouponAction(
-  code: string,
-  subtotal: number,
-): Promise<CouponValidationResult> {
-  "use server";
-
-  if (!code || typeof code !== "string" || code.trim().length === 0) {
-    return { valid: false, error: "Please enter a coupon code." };
-  }
-
-  const normalized = code.trim().toUpperCase();
-
+export async function validateCouponAction(code: string, subtotal: number) {
   try {
     const coupon = await prisma.coupon.findUnique({
-      where: { code: normalized },
+      where: { code: code.toUpperCase() },
     });
 
     if (!coupon) {
-      return { valid: false, error: `Coupon "${normalized}" not found.` };
+      return { valid: false, error: "Invalid coupon code." };
     }
 
     if (!coupon.isActive) {
@@ -91,20 +60,17 @@ export async function validateCouponAction(
       return { valid: false, error: "This coupon has expired." };
     }
 
-    if (
-      coupon.maxUses !== null &&
-      coupon.currentUses >= coupon.maxUses
-    ) {
+    if (coupon.maxUses && coupon.currentUses >= coupon.maxUses) {
       return { valid: false, error: "This coupon has reached its usage limit." };
     }
 
     if (
       coupon.minOrderAmount &&
-      subtotal < Number(coupon.minOrderAmount)
+      subtotal < parseFloat(coupon.minOrderAmount.toString())
     ) {
       return {
         valid: false,
-        error: `Minimum order of $${Number(coupon.minOrderAmount).toFixed(2)} required.`,
+        error: `Minimum order amount of $${parseFloat(coupon.minOrderAmount.toString()).toFixed(2)} required.`,
       };
     }
 
@@ -113,160 +79,53 @@ export async function validateCouponAction(
       coupon: {
         code: coupon.code,
         discountType: coupon.discountType,
-        discountValue: Number(coupon.discountValue),
+        discountValue: parseFloat(coupon.discountValue.toString()),
       },
     };
-  } catch (err) {
-    console.error("Coupon validation error:", err);
-    return { valid: false, error: "Failed to validate coupon. Please try again." };
+  } catch (error) {
+    console.error("Coupon validation error:", error);
+    return { valid: false, error: "Failed to validate coupon." };
   }
 }
 
-/* ── Price Verification ──────────────────────────────────── */
-
-export async function verifyProductPriceAction(
-  productId: string,
-  variantId: string | null,
-): Promise<{ valid: boolean; price: number; name: string; slug: string; sku: string; variantName?: string } | null> {
-  "use server";
-
-  try {
-    if (variantId) {
-      const variant = await prisma.productVariant.findUnique({
-        where: { id: variantId },
-        include: {
-          product: { select: { id: true, name: true, slug: true, isActive: true } },
-        },
-      });
-
-      if (!variant || !variant.product.isActive || variant.product.id !== productId) {
-        return null;
-      }
-
-      return {
-        valid: true,
-        price: Number(variant.price),
-        name: variant.product.name,
-        slug: variant.product.slug,
-        sku: variant.sku,
-        variantName: variant.name,
-      };
-    } else {
-      const product = await prisma.product.findUnique({
-        where: { id: productId },
-      });
-
-      if (!product || !product.isActive) {
-        return null;
-      }
-
-      const effectivePrice = product.salePrice
-        ? Number(product.salePrice)
-        : Number(product.price);
-
-      return {
-        valid: true,
-        price: effectivePrice,
-        name: product.name,
-        slug: product.slug,
-        sku: product.sku,
-      };
-    }
-  } catch (err) {
-    console.error("Price verification error:", err);
-    return null;
-  }
-}
-
-/* ── Order Creation ──────────────────────────────────────── */
+/* ── Create order ───────────────────────────────────────── */
 
 export async function createOrderAction(
-  input: CreateOrderInput,
-): Promise<CreateOrderResult> {
-  "use server";
-
+  input: CreateOrderInput
+): Promise<{ success: boolean; orderId?: string; error?: string }> {
   try {
-    // Verify all items have valid prices (server-side price check)
-    for (const item of input.items) {
-      const verified = await verifyProductPriceAction(
-        item.productId,
-        item.variantId,
-      );
-      if (!verified) {
-        return {
-          success: false,
-          error: `Product "${item.name}" is no longer available at the expected price.`,
-        };
-      }
-      if (Math.abs(verified.price - item.price) > 0.01) {
-        return {
-          success: false,
-          error: `Price for "${item.name}" has changed. Please refresh and try again.`,
-        };
-      }
-    }
-
-    // Create the order
-    const order = await prisma.$transaction(async (tx) => {
-      // Create shipping address
-      const address = await tx.address.create({
-        data: {
-          userId: "guest", // Will be replaced with real user ID when auth is implemented
-          line1: input.shippingAddress.line1,
-          line2: input.shippingAddress.line2 || null,
-          city: input.shippingAddress.city,
-          state: input.shippingAddress.state,
-          zip: input.shippingAddress.zip,
-          country: input.shippingAddress.country || "US",
+    const order = await prisma.order.create({
+      data: {
+        subtotal: input.subtotal,
+        tax: input.tax,
+        shipping: input.shipping,
+        total: input.total,
+        items: {
+          create: input.items.map((item) => ({
+            productId: item.productId || null,
+            variantId: item.variantId || null,
+            name: item.name,
+            sku: item.sku,
+            price: item.price,
+            quantity: item.quantity,
+          })),
         },
-      });
+      },
+    });
 
-      // Create order
-      const newOrder = await tx.order.create({
-        data: {
-          subtotal: input.subtotal,
-          tax: input.tax,
-          shipping: input.shipping,
-          total: input.total,
-          shippingAddressId: address.id,
-          billingAddressId: address.id, // Same as shipping for now
-          notes: input.shippingAddress.email, // Store email in notes for guest checkout
-          items: {
-            create: input.items.map((item) => ({
-              productId: item.productId,
-              variantId: item.variantId,
-              name: item.name,
-              sku: item.sku,
-              price: item.price,
-              quantity: item.quantity,
-            })),
-          },
-        },
-        include: { items: true },
-      });
-
-      // Increment coupon usage if applied
-      if (input.coupon) {
-        await tx.coupon.update({
+    // Increment coupon usage if applicable
+    if (input.coupon) {
+      try {
+        await prisma.coupon.update({
           where: { code: input.coupon.code },
           data: { currentUses: { increment: 1 } },
         });
-      }
+      } catch {}
+    }
 
-      return newOrder;
-    });
-
-    revalidatePath("/checkout");
-
-    return {
-      success: true,
-      orderId: order.id,
-    };
-  } catch (err) {
-    console.error("Order creation error:", err);
-    return {
-      success: false,
-      error: "Failed to create order. Please try again.",
-    };
+    return { success: true, orderId: order.id };
+  } catch (error) {
+    console.error("Order creation error:", error);
+    return { success: false, error: "Failed to create order." };
   }
 }

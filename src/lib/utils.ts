@@ -1,52 +1,80 @@
-/**
- * Format a price number to USD currency string.
- */
-export function formatPrice(price: number | { toString(): string }): string {
-  const num = typeof price === "number" ? price : parseFloat(price.toString());
+/* ── Classname utility ──────────────────────────────────── */
+
+type ClassValue = string | number | boolean | null | undefined | ClassValue[] | Record<string, boolean>;
+
+function toVal(mix: ClassValue): string {
+  if (typeof mix === "string" || typeof mix === "number") return String(mix);
+  if (typeof mix === "boolean" || mix === null || mix === undefined) return "";
+  if (Array.isArray(mix)) return mix.map(toVal).filter(Boolean).join(" ");
+  if (typeof mix === "object") {
+    return Object.entries(mix)
+      .filter(([, v]) => v)
+      .map(([k]) => k)
+      .join(" ");
+  }
+  return "";
+}
+
+export function cn(...inputs: ClassValue[]): string {
+  return inputs.map(toVal).filter(Boolean).join(" ");
+}
+
+/* ── Currency formatting ────────────────────────────────── */
+
+export function formatPrice(
+  value: number | string | { toString(): string }
+): string {
+  const num =
+    typeof value === "number"
+      ? value
+      : parseFloat(
+          typeof value === "string" ? value : value.toString()
+        );
+  if (isNaN(num)) return "$0.00";
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    minimumFractionDigits: num % 1 === 0 ? 0 : 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
   }).format(num);
 }
 
-/** Product sort options */
-export const SORT_OPTIONS = [
-  { label: "Newest", value: "newest" },
-  { label: "Price: Low to High", value: "price-asc" },
-  { label: "Price: High to Low", value: "price-desc" },
-  { label: "Name: A – Z", value: "name-asc" },
-] as const;
+// Alias for backward compatibility
+export const formatCurrency = formatPrice;
 
-export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+/* ── Product card gradients ─────────────────────────────── */
 
-/**
- * Convert a hex color to a bg-gradient-friendly rgba.
- * e.g. "#DC2626" -> "rgba(220,38,38,0.3)"
- */
-export function colorToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-}
-
-/** Generate a consistent gradient from a slug string */
-const PALETTE = [
-  ["#DC2626", "#7F1D1D"],
-  ["#991B1B", "#450A0A"],
-  ["#B91C1C", "#0A0A0A"],
-  ["#7F1D1D", "#111111"],
-  ["#DC2626", "#1A1A1A"],
-];
+const gradients = {
+  apparel: "from-ds-red-950/20 via-ds-red-900/10 to-ds-black",
+  accessories: "from-ds-gold-muted via-ds-black to-ds-black",
+  performance: "from-ds-red-950/30 via-ds-black to-ds-black",
+  default: "from-ds-black-charcoal via-ds-black to-ds-black",
+};
 
 export function productGradient(slug: string): string {
-  let hash = 0;
-  for (let i = 0; i < slug.length; i++) {
-    hash = slug.charCodeAt(i) + ((hash << 5) - hash);
+  if (!slug) return gradients.default;
+  const bg = slug.toLowerCase();
+  if (bg.includes("apparel") || bg.includes("tee") || bg.includes("hoodie") || bg.includes("hat") || bg.includes("crew")) {
+    return `bg-gradient-to-br ${gradients.apparel}`;
   }
-  const idx = Math.abs(hash) % PALETTE.length;
-  const [from, to] = PALETTE[idx];
-  return `bg-gradient-to-br from-[${from}]/40 to-[${to}]/30`;
+  if (bg.includes("accessories") || bg.includes("acc") || bg.includes("sticker") || bg.includes("keychain") || bg.includes("patch")) {
+    return `bg-gradient-to-br ${gradients.accessories}`;
+  }
+  if (bg.includes("performance") || bg.includes("perf") || bg.includes("rotary") || bg.includes("2jz") || bg.includes("engine") || bg.includes("turbo") || bg.includes("exhaust") || bg.includes("intercooler")) {
+    return `bg-gradient-to-br ${gradients.performance}`;
+  }
+  return `bg-gradient-to-br ${gradients.default}`;
+}
+
+/* ── Misc helpers ───────────────────────────────────────── */
+
+export function truncate(str: string, length: number): string {
+  if (str.length <= length) return str;
+  return str.slice(0, length) + "...";
+}
+
+export function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 }
