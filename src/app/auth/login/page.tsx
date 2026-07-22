@@ -1,152 +1,110 @@
 "use client";
 
-import { Suspense, useState, useTransition } from "react";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
-function LoginForm() {
+export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/account";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
+    setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const email = (formData.get("email") as string)?.trim().toLowerCase() ?? "";
-    const password = (formData.get("password") as string) ?? "";
-
-    startTransition(async () => {
+    try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-      const result = await res.json();
-      if (result.success) {
-        router.push(redirect);
+
+      const data = await res.json();
+
+      if (data.success) {
+        router.push("/admin");
+        router.refresh();
       } else {
-        setError(result.error ?? "Login failed.");
+        setError(data.error || "Invalid credentials.");
       }
-    });
-  }
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="section-padding">
-      <Container>
-        <div className="mx-auto max-w-md">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="font-display text-3xl text-ds-white">Welcome Back</h1>
-            <p className="mt-2 text-ds-gray-300">
-              Sign in to your Dream Star account
+    <div className="flex min-h-screen items-center justify-center bg-ds-black px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <Link href="/" className="inline-block">
+            <h1 className="font-display text-2xl font-black tracking-tight text-ds-white">
+              DREAM STAR
+            </h1>
+            <p className="mt-1 text-xs uppercase tracking-[0.2em] text-ds-red">
+              Admin
             </p>
-          </div>
+          </Link>
+        </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-6">
+          <h2 className="mb-6 text-center font-display text-lg font-bold text-ds-white">
+            Sign In
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@dreamstardc.com"
+              required
+            />
+
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+
             {error && (
-              <div className="rounded-xl border border-ds-red/30 bg-ds-red/10 px-4 py-3 text-sm text-ds-red">
-                {error}
+              <div className="rounded-lg border border-ds-red/30 bg-ds-red/5 p-3">
+                <p className="text-xs text-ds-red">{error}</p>
               </div>
             )}
-
-            <div>
-              <label
-                htmlFor="email"
-                className="mb-1.5 block text-sm font-medium text-ds-gray-300"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
-                placeholder="admin@dreamstardc.com"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="password"
-                className="mb-1.5 block text-sm font-medium text-ds-gray-300"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                required
-                className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
-                placeholder="Enter your password"
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-sm text-ds-gray-300 cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  className="h-4 w-4 rounded border-white/20 bg-ds-black-charcoal text-ds-red focus:ring-ds-red/40"
-                />
-                Remember me
-              </label>
-              <Link
-                href="/auth/forgot-password"
-                className="text-sm text-ds-red hover:text-ds-red-400 transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
 
             <Button
               type="submit"
               variant="primary"
               size="lg"
               className="w-full"
-              disabled={isPending}
+              disabled={loading}
             >
-              {isPending ? "Signing In..." : "Sign In"}
+              {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-ds-gray-400">
-            Not a member yet?{" "}
+          <div className="mt-6 text-center">
             <Link
-              href="/auth/register"
-              className="font-medium text-ds-red hover:text-ds-red-400 transition-colors"
+              href="/auth/forgot-password"
+              className="text-xs text-ds-gray-400 transition-colors hover:text-ds-white"
             >
-              Join the Club
+              Forgot password?
             </Link>
-          </p>
+          </div>
         </div>
-      </Container>
+      </div>
     </div>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="section-padding">
-          <Container>
-            <div className="mx-auto max-w-md text-center">
-              <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-ds-red border-t-transparent" />
-            </div>
-          </Container>
-        </div>
-      }
-    >
-      <LoginForm />
-    </Suspense>
   );
 }

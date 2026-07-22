@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { verifyPassword, createToken } from "@/lib/auth";
-import { cookies } from "next/headers";
+import { hashPassword, verifyPassword, createSession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
-
-const SESSION_COOKIE = "dsdc_session";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,22 +34,14 @@ export async function POST(request: NextRequest) {
       role: user.role,
     };
 
-    const token = await createToken(sessionPayload);
-
-    const cookieStore = await cookies();
-    cookieStore.set(SESSION_COOKIE, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-    });
+    await createSession(sessionPayload);
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error("[api/auth/login] Error:", error?.message || error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "unknown";
+    console.error("[api/auth/login] Error:", message);
     return NextResponse.json(
-      { success: false, error: "Server error: " + (error?.message || "unknown") },
+      { success: false, error: `Server error: ${message}` },
       { status: 500 }
     );
   }

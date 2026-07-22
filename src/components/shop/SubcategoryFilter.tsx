@@ -1,53 +1,57 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-interface Subcategory {
-  name: string;
-  slug: string;
-}
+import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback } from "react";
 
 interface SubcategoryFilterProps {
-  subcategories: Subcategory[];
-  currentSlug?: string;
+  subcategories: { name: string; slug: string }[];
 }
 
-export function SubcategoryFilter({
-  subcategories,
-  currentSlug,
-}: SubcategoryFilterProps) {
-  const pathname = usePathname();
+export function SubcategoryFilter({ subcategories }: SubcategoryFilterProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentSubcategory = searchParams.get("subcategory") || "";
+
+  const setSubcategory = useCallback(
+    (slug: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (slug) {
+        params.set("subcategory", slug);
+      } else {
+        params.delete("subcategory");
+      }
+      router.push(`?${params.toString()}`);
+    },
+    [router, searchParams]
+  );
+
+  if (subcategories.length === 0) return null;
 
   return (
     <div className="flex flex-wrap gap-2">
-      <Link
-        href={pathname}
-        className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
-          !currentSlug
-            ? "border-ds-red bg-ds-red/10 text-ds-red"
-            : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
+      <button
+        onClick={() => setSubcategory("")}
+        className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+          !currentSubcategory
+            ? "border-ds-red/50 bg-ds-red/10 text-ds-red"
+            : "border-white/[0.08] bg-transparent text-ds-gray-400 hover:border-white/[0.15] hover:text-ds-white"
         }`}
       >
         All
-      </Link>
-      {subcategories.map((sub) => {
-        const href = `/shop/${pathname.split("/").pop()}/${sub.slug}`;
-        const isActive = currentSlug === sub.slug;
-        return (
-          <Link
-            key={sub.slug}
-            href={href}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 ${
-              isActive
-                ? "border-ds-red bg-ds-red/10 text-ds-red"
-                : "border-white/[0.08] bg-ds-black-charcoal text-ds-gray-300 hover:border-ds-red/30 hover:text-ds-white"
-            }`}
-          >
-            {sub.name}
-          </Link>
-        );
-      })}
+      </button>
+      {subcategories.map((sub) => (
+        <button
+          key={sub.slug}
+          onClick={() => setSubcategory(sub.slug)}
+          className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+            currentSubcategory === sub.slug
+              ? "border-ds-red/50 bg-ds-red/10 text-ds-red"
+              : "border-white/[0.08] bg-transparent text-ds-gray-400 hover:border-white/[0.15] hover:text-ds-white"
+          }`}
+        >
+          {sub.name}
+        </button>
+      ))}
     </div>
   );
 }

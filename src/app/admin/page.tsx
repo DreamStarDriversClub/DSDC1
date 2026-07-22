@@ -1,29 +1,40 @@
-import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { StatsCard } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import type { OrderStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
+const statusBadgeVariant: Record<OrderStatus, "warning" | "info" | "gray" | "success" | "danger"> = {
+  PENDING: "warning",
+  CONFIRMED: "info",
+  SHIPPED: "gray",
+  DELIVERED: "success",
+  CANCELLED: "danger",
+};
+
 export default async function AdminDashboardPage() {
-  const [orderCount, customerCount, productCount] = await Promise.all([
-    prisma.order.count(),
-    prisma.user.count({ where: { role: "CUSTOMER" } }),
-    prisma.product.count({ where: { isActive: true } }),
-  ]);
+  const [orderCount, customerCount, productCount, revenueAgg, recentOrders] =
+    await Promise.all([
+      prisma.order.count(),
+      prisma.user.count({ where: { role: "CUSTOMER" } }),
+      prisma.product.count({ where: { isActive: true } }),
+      prisma.order.aggregate({
+        _sum: { total: true },
+        where: { status: { not: "CANCELLED" } },
+      }),
+      prisma.order.findMany({
+        take: 10,
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: { select: { firstName: true, lastName: true, email: true } },
+          items: { select: { quantity: true } },
+        },
+      }),
+    ]);
 
-  const revenueResult = await prisma.order.aggregate({
-    _sum: { total: true },
-    where: { status: { not: "CANCELLED" } },
-  });
-  const totalRevenue = Number(revenueResult._sum.total ?? 0);
-
-  const recentOrders = await prisma.order.findMany({
-    take: 10,
-    orderBy: { createdAt: "desc" },
-    include: {
-      user: { select: { firstName: true, lastName: true, email: true } },
-      items: { select: { quantity: true } },
-    },
-  });
+  const totalRevenue = Number(revenueAgg._sum.total ?? 0);
 
   const stats = [
     {
@@ -79,24 +90,8 @@ export default async function AdminDashboardPage() {
     { label: "Instagram Grid", href: "/admin/instagram", desc: "Manage homepage feed" },
   ];
 
-  const statusBadge = (status: string) => {
-    const map: Record<string, string> = {
-      PENDING: "bg-yellow-500/10 text-yellow-400 border-yellow-500/30",
-      CONFIRMED: "bg-blue-500/10 text-blue-400 border-blue-500/30",
-      SHIPPED: "bg-purple-500/10 text-purple-400 border-purple-500/30",
-      DELIVERED: "bg-green-500/10 text-green-400 border-green-500/30",
-      CANCELLED: "bg-red-500/10 text-red-400 border-red-500/30",
-    };
-    return (
-      <span className={`inline-flex rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${map[status] ?? "bg-gray-500/10 text-gray-400 border-gray-500/30"}`}>
-        {status}
-      </span>
-    );
-  };
-
   return (
     <div>
-      {/* Page heading */}
       <div className="mb-8">
         <h1 className="font-display text-2xl font-bold tracking-tight text-ds-white">
           Dashboard
@@ -106,30 +101,24 @@ export default async function AdminDashboardPage() {
         </p>
       </div>
 
-      {/* Stats cards */}
+      {/* Stats Grid */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
-          <div
+          <StatsCard
             key={stat.label}
-            className="rounded-xl border border-white/[0.06] bg-ds-charcoal p-5"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-wider text-ds-gray-400">
-                {stat.label}
-              </span>
-              <span className={`rounded-lg p-2 ${stat.bg} ${stat.text}`}>
-                {stat.icon}
-              </span>
-            </div>
-            <p className="mt-3 text-2xl font-bold text-ds-white">{stat.value}</p>
-          </div>
+            label={stat.label}
+            value={stat.value}
+            icon={stat.icon}
+            bg={stat.bg}
+            text={stat.text}
+          />
         ))}
       </div>
 
-      {/* Quick links + Recent orders grid */}
+      {/* Quick Links + Recent Orders */}
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Quick links */}
-        <div className="rounded-xl border border-white/[0.06] bg-ds-charcoal p-5">
+        {/* Quick Links */}
+        <div className="rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-5">
           <h2 className="mb-4 font-display text-sm font-bold uppercase tracking-wider text-ds-white">
             Quick Links
           </h2>
@@ -144,7 +133,13 @@ export default async function AdminDashboardPage() {
                   <p className="font-medium text-ds-white">{link.label}</p>
                   <p className="text-xs text-ds-gray-500">{link.desc}</p>
                 </div>
-                <svg className="h-4 w-4 shrink-0 text-ds-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  className="h-4 w-4 shrink-0 text-ds-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
@@ -152,8 +147,8 @@ export default async function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Recent orders */}
-        <div className="rounded-xl border border-white/[0.06] bg-ds-charcoal p-5 lg:col-span-2">
+        {/* Recent Orders */}
+        <div className="rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-5 lg:col-span-2">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-display text-sm font-bold uppercase tracking-wider text-ds-white">
               Recent Orders
@@ -212,9 +207,13 @@ export default async function AdminDashboardPage() {
                         </p>
                       </td>
                       <td className="py-3 pr-4 text-ds-gray-300">
-                        {order.items.reduce((s, i) => s + i.quantity, 0)}
+                        {order.items.reduce((sum, i) => sum + i.quantity, 0)}
                       </td>
-                      <td className="py-3 pr-4">{statusBadge(order.status)}</td>
+                      <td className="py-3 pr-4">
+                        <Badge variant={statusBadgeVariant[order.status]} size="sm">
+                          {order.status}
+                        </Badge>
+                      </td>
                       <td className="py-3 text-right font-medium text-ds-white">
                         ${Number(order.total).toFixed(2)}
                       </td>
