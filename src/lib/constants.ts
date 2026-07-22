@@ -22,3 +22,17 @@ export const CATEGORIES = {
   ACCESSORIES: "accessories",
   PERFORMANCE: "ds-performance",
 } as const;
+
+export const TAGLINE = "Drive the Dream";
+
+export const SOCIAL_LINKS = {
+  instagram: "https://instagram.com/dreamstardc",
+  youtube: "https://youtube.com/@dreamstardc",
+  twitter: "https://twitter.com/dreamstardc",
+  tiktok: "https://tiktok.com/@dreamstardc",
+} as const;
+
+export const NEWSLETTER = {
+  title: "Join the Club",
+  description: "Get exclusive drops, build tips, and event invites.",
+} as const;

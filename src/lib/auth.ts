@@ -115,3 +115,29 @@ export async function getUser() {
     },
   });
 }
+
+/* Alias for backward compatibility */
+export async function getAuthenticatedUser() {
+  const session = await getSessionUser();
+  if (!session) return null;
+  return {
+    id: session.userId,
+    email: session.email,
+    firstName: session.firstName,
+    lastName: session.lastName,
+    role: session.role,
+  };
+}
+
+/* Aliases for backward compatibility with auth-actions */
+export async function getSession() {
+  return getSessionUser();
+}
+
+export async function setSessionCookie(payload: SessionPayload) {
+  return createSession(payload);
+}
+
+export async function clearSession() {
+  return logout();
+}
