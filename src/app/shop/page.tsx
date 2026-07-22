@@ -86,7 +86,7 @@ export default async function ShopPage() {
     <>
       {/* Hero */}
       <CategoryHeader
-        title="Shop All"
+        title="The Garage Is Open."
         description="Premium apparel, accessories, and Mazda rotary performance parts — crafted for enthusiasts who live the car life."
       />
 

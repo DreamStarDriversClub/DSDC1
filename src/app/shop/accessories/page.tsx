@@ -100,9 +100,9 @@ export default async function AccessoriesPage() {
   return (
     <>
       <CategoryHeader
-        title="Details Make the Build."
-        description="The right sticker on a quarter window. A keychain that clinks against the steering column every time you downshift. The lanyard hanging from your rearview — subtle, but loaded with meaning. These aren't afterthoughts. They're the finishing touches that say you belong to something bigger. Dream Star accessories are designed for the enthusiast who sweats the details. Die-cut vinyl decals that hold their own against weather and speed. Embroidered lanyards that feel substantial in your hand. Keychains, plate frames, and lifestyle gear that bridge the gap between your build and your daily carry. Each piece pulls from Japanese automotive aesthetics — rotary engine motifs, touge-inspired graphics, and the club insignia that ties it all together. Whether you're dressing up your toolbox, your daily driver, or your track-day kit, this is the gear that completes the picture."
-        image="/category-accessories.jpg"
+        title="The Finishing Line."
+        description="A decal on the quarter window. A keychain against the steering column. The lanyard hanging from the rearview catching light at every corner. These aren't afterthoughts — they're signals. Every detail a conversation waiting to start."
+        image="/images/hero-accessories.png"
       />
 
       <Container className="py-8">
