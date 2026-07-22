@@ -178,8 +178,14 @@ export default async function CommunityPage() {
                   Register Your Team
                 </Button>
               </Link>
-              {session && (
-                <Link href="#submit-event">
+              {session ? (
+                <Link href="/community/events/submit">
+                  <Button variant="outline" size="lg">
+                    Submit an Event
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/auth/login?redirect=/community/events/submit">
                   <Button variant="outline" size="lg">
                     Submit an Event
                   </Button>
