@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 interface Order {
   id: string;
@@ -28,6 +29,7 @@ const statusBadgeClasses: Record<string, string> = {
 };
 
 export function AdminOrdersClient() {
+  const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,7 +96,8 @@ export function AdminOrdersClient() {
                 {orders.map((order) => (
                   <tr
                     key={order.id}
-                    className="border-b border-white/[0.03] transition-colors hover:bg-ds-white/[0.02]"
+                    onClick={() => router.push(`/admin/orders/${order.id}`)}
+                    className="cursor-pointer border-b border-white/[0.03] transition-colors hover:bg-ds-white/[0.02]"
                   >
                     <td className="px-5 py-3 font-mono text-xs text-ds-gray-300">
                       #{order.id.slice(-8).toUpperCase()}
