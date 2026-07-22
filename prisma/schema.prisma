@@ -277,6 +277,53 @@ model PrintfulVariant {
   syncedAt   DateTime @default(now())
 }
 
+// ── ShippingZone ────────────────────────────────────────
+
+model ShippingZone {
+  id        String         @id @default(cuid())
+  name      String
+  countries Json           @default("[]")
+  isActive  Boolean        @default(true)
+  createdAt DateTime       @default(now())
+
+  rates ShippingRate[]
+}
+
+// ── ShippingRate ────────────────────────────────────────
+
+model ShippingRate {
+  id            String       @id @default(cuid())
+  zoneId        String
+  name          String
+  rate          Decimal      @db.Decimal(10, 2)
+  minOrder      Decimal?     @db.Decimal(10, 2)
+  estimatedDays String?
+  isActive      Boolean      @default(true)
+
+  zone ShippingZone @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+}
+
+// ── TaxRate ──────────────────────────────────────────────
+
+model TaxRate {
+  id        String   @id @default(cuid())
+  name      String
+  country   String   @default("US")
+  state     String?
+  rate      Decimal  @db.Decimal(5, 3)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ── StoreSetting ─────────────────────────────────────────
+
+model StoreSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 // ── Review ─────────────────────────────────────────────
 
 model Review {

@@ -1,19 +1,19 @@
-import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
+import { ShippingManager } from "@/components/admin/ShippingManager";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminAnalyticsPage() {
+export default function AdminShippingPage() {
   return (
     <div>
       <div className="mb-8">
         <h1 className="font-display text-2xl font-bold tracking-tight text-ds-white">
-          Analytics
+          Shipping
         </h1>
         <p className="mt-1 text-sm text-ds-gray-400">
-          Store performance and sales analytics
+          Manage shipping zones and rates
         </p>
       </div>
-      <AnalyticsDashboard />
+      <ShippingManager />
     </div>
   );
 }
