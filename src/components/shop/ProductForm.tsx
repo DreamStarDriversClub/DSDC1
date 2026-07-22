@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useCart } from "@/lib/cart-context";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { formatPrice } from "@/lib/utils";
@@ -51,6 +52,8 @@ export function ProductForm({
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
+  const { addItem } = useCart();
+
   const currentVariant = variants.find((v) => v.id === selectedVariant);
   const variantPrice = currentVariant
     ? typeof currentVariant.price === "number"
@@ -64,10 +67,36 @@ export function ProductForm({
     (currentVariant && currentVariant.inventory <= 0);
 
   const handleAddToCart = useCallback(() => {
-    // Placeholder — cart integration will be added
+    if (isOutOfStock) return;
+
+    addItem({
+      id: `${productId}-${selectedVariant || "default"}-${Date.now()}`,
+      productId,
+      variantId: selectedVariant || undefined,
+      name: productName,
+      slug: productSlug,
+      sku: productSku,
+      price: displayPrice,
+      quantity,
+      variantName: currentVariant?.name,
+      image: images.length > 0 ? images[0] : undefined,
+    });
+
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
-  }, []);
+  }, [
+    isOutOfStock,
+    addItem,
+    productId,
+    selectedVariant,
+    productName,
+    productSlug,
+    productSku,
+    displayPrice,
+    quantity,
+    currentVariant,
+    images,
+  ]);
 
   return (
     <div className="space-y-6">

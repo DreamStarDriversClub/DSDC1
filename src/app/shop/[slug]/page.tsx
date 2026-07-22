@@ -8,12 +8,11 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ProductForm } from "@/components/shop/ProductForm";
+import { ProductImageGallery } from "@/components/shop/ProductImageGallery";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
-import { formatPrice, productGradient } from "@/lib/utils";
-import { toWebpPath } from "@/lib/images";
+import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
-import Image from "next/image";
 
 /* ── Dynamic Params ─────────────────────────────────────── */
 
@@ -47,7 +46,6 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  const gradient = productGradient(product.slug);
   const specifications = product.specifications;
   const compatibleVehicles = product.compatibleVehicles;
 
@@ -118,98 +116,21 @@ export default async function ProductDetailPage({ params }: Props) {
       <section className="bg-ds-black section-padding-tight">
         <Container>
           <div className="grid gap-10 lg:grid-cols-2">
-            {/* Left: Image */}
-            <div className="space-y-4">
-              <div
-                className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-white/[0.06] ${gradient}`}
-              >
-                {/* Product image or placeholder */}
-                {product.images.length > 0 ? (
-                  <Image
-                    src={toWebpPath(product.images[0])}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                    priority
-                    quality={90}
-                  />
-                ) : (
-                  <div className="flex flex-col items-center gap-4 text-center">
-                    <svg
-                      className="h-20 w-20 text-ds-red/30"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={0.5}
-                    >
-                      {isPerformance ? (
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z"
-                        />
-                      ) : isAccessories ? (
-                        <>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6 6h.008v.008H6V6z"
-                          />
-                        </>
-                      ) : (
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                        />
-                      )}
-                    </svg>
-                    <span className="text-sm text-ds-gray-600">
-                      {product.sku}
-                    </span>
-                  </div>
-                )}
-
-                {/* Sale badge */}
-                {product.salePrice && (
-                  <div className="absolute left-4 top-4">
-                    <Badge variant="red" size="md">
-                      {Math.round(
-                        (1 - product.salePrice / product.price) * 100,
-                      )}
-                      % OFF
-                    </Badge>
-                  </div>
-                )}
-              </div>
-
-              {/* Thumbnail row */}
-              {product.images.length > 1 && (
-                <div className="flex gap-3">
-                  {product.images.map((img: string, i: number) => (
-                    <div
-                      key={i}
-                      className="relative h-20 w-20 overflow-hidden rounded-lg border border-white/[0.06] bg-ds-black-charcoal"
-                    >
-                      <Image
-                        src={toWebpPath(img)}
-                        alt={`${product.name} ${i + 1}`}
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                        loading="lazy"
-                        quality={70}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+            {/* Left: Interactive image gallery */}
+            <div>
+              <ProductImageGallery
+                images={product.images}
+                productName={product.name}
+                productSlug={product.slug}
+                sku={product.sku}
+                salePercent={
+                  product.salePrice
+                    ? Math.round((1 - product.salePrice / product.price) * 100)
+                    : undefined
+                }
+                isPerformance={isPerformance}
+                isAccessories={isAccessories}
+              />
             </div>
 
             {/* Right: Product Info */}

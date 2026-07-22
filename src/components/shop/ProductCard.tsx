@@ -49,23 +49,27 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
 
   return (
     <Link href={`/shop/${product.slug}`} className="group block">
-      <Card hover padding="none" className="overflow-hidden">
+      <Card hover padding="none" className="overflow-hidden transition-transform duration-400 ease-out group-hover:scale-[1.02]">
         {/* Product image */}
         <div
           className={`relative flex h-56 items-center justify-center ${gradient} overflow-hidden`}
         >
           {/* Actual product image or fallback SVG icon */}
           {productImage ? (
-            <Image
-              src={toWebpPath(productImage)}
-              alt={product.name}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              loading={priority ? "eager" : "lazy"}
-              priority={priority}
-              quality={85}
-            />
+            <>
+              <Image
+                src={toWebpPath(productImage)}
+                alt={product.name}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                loading={priority ? "eager" : "lazy"}
+                priority={priority}
+                quality={85}
+              />
+              {/* Red glow vignette on hover */}
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ds-red/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100" />
+            </>
           ) : (
             <>
               <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
@@ -92,7 +96,7 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ds-black/60 to-transparent" />
           )}
           {/* View Details overlay */}
-          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
+          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0">
             <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
               <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
                 View Details

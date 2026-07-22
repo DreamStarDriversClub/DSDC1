@@ -103,9 +103,9 @@ export default async function ApparelPage() {
   return (
     <>
       <CategoryHeader
-        title="Wear the Drive."
-        description="Some people wear brands. You wear what you've lived — the late-night tuning sessions, the mountain passes that test everything, the rotary hum that stays with you long after the key leaves the ignition. Dream Star apparel isn't merch. It's a uniform for the club you already belong to. Every piece in this collection is built to move with you — from the garage to the meet, from the driver's seat to the after-party. We source heavyweight cotton, precision-cut fabrics, and subtle design details that speak to those who know. No overbranding. No generic graphics. Just clean lines, Japanese automotive influence, and a fit that feels like it was tailored for the touge. Our tees, hoodies, and outerwear carry the spirit of golden-era JDM — think midnight runs, parking lot gatherings, and the unmistakable silhouette of an FD RX-7 against a setting sun. Wear the rotary heart on your sleeve. Chase the horizon in style."
-        image="/category-apparel.jpg"
+        title="Garage to Grid."
+        description="Not streetwear. Not merch. This is the uniform you reach for when the garage door opens at 2 AM and the mountain is calling. Heavyweight cotton, clean cuts, and design that speaks in rotary."
+        image="/images/hero-apparel.png"
       />
 
       <Container className="py-8">
