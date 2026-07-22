@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { formatPrice, productGradient } from "@/lib/utils";
+import { toWebpPath } from "@/lib/images";
 
 interface ProductCardData {
   slug: string;
@@ -54,11 +56,15 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
         >
           {/* Actual product image or fallback SVG icon */}
           {productImage ? (
-            <img
-              src={productImage}
+            <Image
+              src={toWebpPath(productImage)}
               alt={product.name}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              loading={priority ? "eager" : "lazy"}
+              priority={priority}
+              quality={85}
             />
           ) : (
             <>

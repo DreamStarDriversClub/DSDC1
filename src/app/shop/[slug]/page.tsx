@@ -11,7 +11,9 @@ import { ProductForm } from "@/components/shop/ProductForm";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
 import { formatPrice, productGradient } from "@/lib/utils";
+import { toWebpPath } from "@/lib/images";
 import Link from "next/link";
+import Image from "next/image";
 
 /* ── Dynamic Params ─────────────────────────────────────── */
 
@@ -123,11 +125,14 @@ export default async function ProductDetailPage({ params }: Props) {
               >
                 {/* Product image or placeholder */}
                 {product.images.length > 0 ? (
-                  <img
-                    src={product.images[0]}
+                  <Image
+                    src={toWebpPath(product.images[0])}
                     alt={product.name}
-                    className="h-full w-full object-cover"
-                    loading="eager"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                    quality={90}
                   />
                 ) : (
                   <div className="flex flex-col items-center gap-4 text-center">
@@ -190,13 +195,16 @@ export default async function ProductDetailPage({ params }: Props) {
                   {product.images.map((img: string, i: number) => (
                     <div
                       key={i}
-                      className="h-20 w-20 overflow-hidden rounded-lg border border-white/[0.06] bg-ds-black-charcoal"
+                      className="relative h-20 w-20 overflow-hidden rounded-lg border border-white/[0.06] bg-ds-black-charcoal"
                     >
-                      <img
-                        src={img}
+                      <Image
+                        src={toWebpPath(img)}
                         alt={`${product.name} ${i + 1}`}
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                         loading="lazy"
+                        quality={70}
                       />
                     </div>
                   ))}
