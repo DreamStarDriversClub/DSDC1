@@ -203,3 +203,25 @@ export async function getPrintfulProductsByCategory(
     return [];
   }
 }
+
+export async function getPrintfulFeaturedProducts(): Promise<ShopProductCard[]> {
+  try {
+    const products = await prisma.printfulProduct.findMany({
+      take: 6,
+      orderBy: { syncedAt: "desc" },
+    });
+
+    return products.map((p) => ({
+      slug: `printful-${p.printfulId}`,
+      name: p.name,
+      price: 29.99,
+      salePrice: null,
+      category: { name: "Apparel", slug: "apparel" },
+      images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
+      isFeatured: true,
+      source: "printful" as const,
+    }));
+  } catch {
+    return [];
+  }
+}
