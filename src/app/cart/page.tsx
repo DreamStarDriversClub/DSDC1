@@ -18,7 +18,7 @@ const breadcrumbItems = [
 export default function CartPage() {
   const {
     state,
-    removeFromCart,
+    removeItem,
     updateQuantity,
     applyCoupon,
     clearCart,
@@ -28,8 +28,9 @@ export default function CartPage() {
     tax,
     total,
     itemCount,
-    isFreeShipping,
   } = useCart();
+
+  const isFreeShipping = subtotal - discount >= FREE_SHIPPING_THRESHOLD || shipping === 0;
 
   const [couponInput, setCouponInput] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
@@ -244,7 +245,7 @@ export default function CartPage() {
                             {formatPrice(item.price * item.quantity)}
                           </span>
                           <button
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => removeItem(item.id)}
                             className="text-ds-gray-600 transition-colors hover:text-ds-red"
                             aria-label="Remove"
                           >
