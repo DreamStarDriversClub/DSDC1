@@ -187,8 +187,19 @@ export default async function HomePage() {
     if (hasPrintful) {
       const pfFeatured = await getPrintfulFeaturedProducts();
       if (pfFeatured.length > 0) {
+        // Normalize Printful products to match fallback shape
+        const normalizedPf = pfFeatured.map((p) => ({
+          id: p.slug,
+          name: p.name,
+          price: p.price,
+          description: p.name,
+          category: typeof p.category === "string" ? p.category : p.category?.name || "Apparel",
+          categoryBadge: "red" as const,
+          gradient: "from-ds-red-900/40 to-ds-red-950/20",
+          icon: null as unknown as React.JSX.Element,
+        }));
         // Prepend Printful products before fallback samples
-        featuredProducts = [...pfFeatured, ...fallbackFeaturedProducts] as typeof fallbackFeaturedProducts;
+        featuredProducts = [...normalizedPf, ...fallbackFeaturedProducts];
       }
     }
   } catch (error) {

@@ -197,7 +197,7 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
               {extendedProducts.map((product, i) => (
                 <Link
                   key={`${product.id}-${i}`}
-                  href={`/shop/${product.category.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={`/shop/${((product as any).category?.name || (product as any).category || '').toLowerCase().replace(/\s+/g, "-")}`}
                   className="group flex-shrink-0 px-2 sm:px-3"
                   style={{ width: `${100 / cardsPerView}%` }}
                 >
