@@ -146,7 +146,7 @@ export async function getRelatedProducts(
   }
 }
 
-/* ── Printful stubs ─────────────────────────────────────── */
+/* ── Printful helpers ──────────────────────────────────── */
 
 export async function hasPrintfulProducts(): Promise<boolean> {
   try {
@@ -157,16 +157,45 @@ export async function hasPrintfulProducts(): Promise<boolean> {
   }
 }
 
+/**
+ * Batch-fetch the minimum variant price for a list of Printful product IDs.
+ * Returns a map of printfulId → minPriceInDollars.
+ */
+async function getMinPricesByPrintfulId(
+  printfulIds: string[]
+): Promise<Record<string, number>> {
+  if (printfulIds.length === 0) return {};
+  const priceMap: Record<string, number> = {};
+  try {
+    const variants = await prisma.printfulVariant.findMany({
+      where: { productId: { in: printfulIds } },
+      select: { productId: true, price: true },
+    });
+    for (const v of variants) {
+      const current = priceMap[v.productId];
+      if (current === undefined || v.price < current) {
+        priceMap[v.productId] = v.price;
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch Printful variant prices:", error);
+  }
+  return priceMap;
+}
+
 export async function getAllPrintfulProducts(): Promise<ShopProductCard[]> {
   try {
     const products = await prisma.printfulProduct.findMany({
       orderBy: { name: "asc" },
     });
 
+    const ids = products.map((p) => p.printfulId);
+    const priceMap = await getMinPricesByPrintfulId(ids);
+
     return products.map((p) => ({
       slug: `printful-${p.printfulId}`,
       name: p.name,
-      price: 29.99, // Default price, would come from variant
+      price: priceMap[p.printfulId] ?? 29.99,
       salePrice: null,
       category: { name: "Apparel", slug: "apparel" },
       images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
@@ -187,11 +216,13 @@ export async function getPrintfulProductsByCategory(
       orderBy: { name: "asc" },
     });
 
-    // Simple category mapping — in production this would come from Printful metadata
+    const ids = products.map((p) => p.printfulId);
+    const priceMap = await getMinPricesByPrintfulId(ids);
+
     return products.map((p) => ({
       slug: `printful-${p.printfulId}`,
       name: p.name,
-      price: 29.99,
+      price: priceMap[p.printfulId] ?? 29.99,
       salePrice: null,
       category: { name: category === "accessories" ? "Accessories" : "Apparel", slug: category },
       images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
@@ -275,10 +306,13 @@ export async function getPrintfulFeaturedProducts(): Promise<ShopProductCard[]> 
       orderBy: { syncedAt: "desc" },
     });
 
+    const ids = products.map((p) => p.printfulId);
+    const priceMap = await getMinPricesByPrintfulId(ids);
+
     return products.map((p) => ({
       slug: `printful-${p.printfulId}`,
       name: p.name,
-      price: 29.99,
+      price: priceMap[p.printfulId] ?? 29.99,
       salePrice: null,
       category: { name: "Apparel", slug: "apparel" },
       images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
