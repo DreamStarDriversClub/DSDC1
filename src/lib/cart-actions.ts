@@ -94,12 +94,32 @@ export async function createOrderAction(
   input: CreateOrderInput
 ): Promise<{ success: boolean; orderId?: string; error?: string }> {
   try {
+    // Create shipping address
+    let shippingAddressId: string | null = null;
+    try {
+      const address = await prisma.address.create({
+        data: {
+          line1: input.shippingAddress.line1,
+          line2: input.shippingAddress.line2 || null,
+          city: input.shippingAddress.city,
+          state: input.shippingAddress.state,
+          zip: input.shippingAddress.zip,
+          country: input.shippingAddress.country || "US",
+        },
+      });
+      shippingAddressId = address.id;
+    } catch (addrError) {
+      console.error("Address creation error:", addrError);
+    }
+
     const order = await prisma.order.create({
       data: {
         subtotal: input.subtotal,
         tax: input.tax,
         shipping: input.shipping,
+        discount: input.discount,
         total: input.total,
+        shippingAddressId,
         items: {
           create: input.items.map((item) => ({
             productId: item.productId || null,
