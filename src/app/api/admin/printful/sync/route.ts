@@ -101,6 +101,7 @@ export async function POST() {
             size: sv.size,
             color: sv.color,
             price,
+            catalogVariantId: sv.variant_id,
             syncedAt: new Date(),
           },
           create: {
@@ -110,6 +111,7 @@ export async function POST() {
             size: sv.size,
             color: sv.color,
             price,
+            catalogVariantId: sv.variant_id,
           },
         });
       }

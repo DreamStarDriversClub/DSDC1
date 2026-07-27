@@ -265,15 +265,16 @@ model PrintfulProduct {
 // ── PrintfulVariant ────────────────────────────────────
 
 model PrintfulVariant {
-  id         Int      @id @default(autoincrement())
-  printfulId String   @unique
-  productId  String
-  name       String
-  size       String?
-  color      String?
-  price      Float
-  currency   String   @default("USD")
-  syncedAt   DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  printfulId      String   @unique
+  catalogVariantId Int?
+  productId       String
+  name            String
+  size            String?
+  color           String?
+  price           Float
+  currency        String   @default("USD")
+  syncedAt        DateTime @default(now())
 }
 
 // ── ShippingZone ────────────────────────────────────────

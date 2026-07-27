@@ -99,7 +99,7 @@ export async function createPrintfulOrder(params: {
       email: params.shippingAddress.email,
     },
     items: params.items.map((item) => ({
-      variant_id: item.printfulVariantId,
+      sync_variant_id: item.printfulVariantId,
       quantity: item.quantity,
       retail_price: String(item.retailPrice.toFixed(2)),
       name: item.name,
