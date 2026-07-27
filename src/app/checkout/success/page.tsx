@@ -8,6 +8,8 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
+
 export default function CheckoutSuccessPage() {
   return (
     <Suspense
