@@ -7,7 +7,9 @@ import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 import { CategoryHeader } from "@/components/shop/CategoryHeader";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { SubcategoryFilter } from "@/components/shop/SubcategoryFilter";
+import { SortDropdown } from "@/components/shop/SortDropdown";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
+import { sortProducts, type SortValue } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Apparel — Premium JDM Streetwear",
@@ -18,7 +20,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ApparelPage() {
+interface SearchParams {
+  sort?: string;
+}
+
+export default async function ApparelPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sort = (searchParams.sort as SortValue) || "featured";
+
   // Fetch the apparel category (wrapped so a DB outage doesn't crash the page)
   let category: { id: string } | null = null;
   try {
@@ -98,7 +110,10 @@ export default async function ApparelPage() {
   }
 
   // Merge: Printful products first, then regular products
-  const allProducts = [...printfulProducts, ...mappedProducts];
+  const allProducts = sortProducts(
+    [...printfulProducts, ...mappedProducts],
+    sort,
+  );
 
   return (
     <>
@@ -114,9 +129,10 @@ export default async function ApparelPage() {
           className="mb-8"
         />
 
-        {/* Subcategory filters */}
-        <div className="mb-8">
+        {/* Filters row: subcategories + sort */}
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SubcategoryFilter subcategories={subcategories} />
+          <SortDropdown />
         </div>
 
         <ProductGrid

@@ -6,8 +6,10 @@ import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 import { CategoryHeader } from "@/components/shop/CategoryHeader";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { SubcategoryFilter } from "@/components/shop/SubcategoryFilter";
+import { SortDropdown } from "@/components/shop/SortDropdown";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { sortProducts, type SortValue } from "@/lib/utils";
 import Image from "next/image";
 
 export const metadata: Metadata = {
@@ -19,7 +21,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function PerformancePage() {
+interface SearchParams {
+  sort?: string;
+}
+
+export default async function PerformancePage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sort = (searchParams.sort as SortValue) || "featured";
+
   const category = await prisma.category.findUnique({
     where: { slug: "ds-performance" },
   });
@@ -50,12 +62,14 @@ export default async function PerformancePage() {
   const mappedProducts = products.map((p) => ({
     slug: p.slug,
     name: p.name,
-    price: p.price,
-    salePrice: p.salePrice,
+    price: parseFloat(p.price.toString()),
+    salePrice: p.salePrice ? parseFloat(p.salePrice.toString()) : null,
     category: p.category,
     images: (p.images as unknown as string[]) || [],
     isFeatured: p.isFeatured,
   }));
+
+  const sortedProducts = sortProducts(mappedProducts, sort);
 
   return (
     <>
@@ -84,12 +98,13 @@ export default async function PerformancePage() {
           className="mb-8"
         />
 
-        <div className="mb-8">
+        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SubcategoryFilter subcategories={subcategories} />
+          <SortDropdown />
         </div>
 
         <ProductGrid
-          products={mappedProducts}
+          products={sortedProducts}
           badgeVariant="red"
           emptyMessage="No performance parts available right now. Check back soon!"
         />

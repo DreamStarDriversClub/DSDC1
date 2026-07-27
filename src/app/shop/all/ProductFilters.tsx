@@ -17,7 +17,7 @@ interface ProductFiltersProps {
 export function ProductFilters({
   categories,
   currentCategory,
-  currentSort = "newest",
+  currentSort = "featured",
 }: ProductFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export function ProductFilters({
     } else {
       params.delete(key);
     }
-    router.push(`/shop/all?${params.toString()}`);
+    router.push(`/shop/all?${params.toString()}`, { scroll: false });
   }
 
   return (
@@ -64,20 +64,31 @@ export function ProductFilters({
       {/* Sort dropdown */}
       <div className="flex items-center gap-2">
         <label htmlFor="all-sort" className="text-sm text-ds-gray-400 whitespace-nowrap">
-          Sort:
+          Sort by:
         </label>
-        <select
-          id="all-sort"
-          value={currentSort}
-          onChange={(e) => updateParams("sort", e.target.value)}
-          className="rounded-lg border border-white/[0.08] bg-ds-black-charcoal px-3 py-2 text-sm text-ds-white focus:outline-none focus:ring-2 focus:ring-ds-red/40"
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            id="all-sort"
+            value={currentSort}
+            onChange={(e) => updateParams("sort", e.target.value)}
+            className="appearance-none rounded-lg border border-white/[0.08] bg-ds-black-charcoal py-2 pl-3 pr-9 text-sm text-ds-white transition-colors hover:border-white/[0.15] focus:border-ds-red/40 focus:outline-none focus:ring-2 focus:ring-ds-red/20 cursor-pointer"
+          >
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value} className="bg-ds-black-charcoal text-ds-white">
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <svg
+            className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ds-gray-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
     </>
   );

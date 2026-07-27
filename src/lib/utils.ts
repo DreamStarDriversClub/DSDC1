@@ -80,10 +80,46 @@ export function slugify(str: string): string {
 }
 
 export const SORT_OPTIONS = [
+  { label: "Featured", value: "featured" },
   { label: "Newest", value: "newest" },
-  { label: "Price: Low to High", value: "price-asc" },
-  { label: "Price: High to Low", value: "price-desc" },
-  { label: "Name: A-Z", value: "name-asc" },
+  { label: "Most Wanted", value: "most-wanted" },
+  { label: "Price: Low → High", value: "price-asc" },
+  { label: "Price: High → Low", value: "price-desc" },
 ] as const;
 
 export type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+
+/** Sort a flat products array by the given SortValue. */
+export function sortProducts<T extends { isFeatured?: boolean; price: number | { toString(): string } }>(
+  products: T[],
+  sort: SortValue,
+): T[] {
+  const arr = [...products];
+  switch (sort) {
+    case "featured":
+    case "most-wanted":
+      arr.sort((a, b) => {
+        const aFeat = a.isFeatured === true ? 1 : 0;
+        const bFeat = b.isFeatured === true ? 1 : 0;
+        return bFeat - aFeat;
+      });
+      break;
+    case "price-asc":
+      arr.sort((a, b) => toNum(a.price) - toNum(b.price));
+      break;
+    case "price-desc":
+      arr.sort((a, b) => toNum(b.price) - toNum(a.price));
+      break;
+    case "newest":
+    default:
+      // keep original order (already newest-first from Prisma)
+      break;
+  }
+  return arr;
+}
+
+function toNum(v: number | { toString(): string }): number {
+  if (typeof v === "number") return v;
+  const n = parseFloat(v.toString());
+  return isNaN(n) ? 0 : n;
+}

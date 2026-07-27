@@ -8,6 +8,7 @@ import { CategoryHeader } from "@/components/shop/CategoryHeader";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductFilters } from "./ProductFilters";
+import { sortProducts, type SortValue } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "All Products — JDM Apparel, Accessories & Performance Parts",
@@ -29,11 +30,12 @@ export default async function AllProductsPage({
   searchParams: SearchParams;
 }) {
   // Determine sort
-  const sort = searchParams.sort || "newest";
+  const sort = (searchParams.sort as SortValue) || "featured";
+
+  // Prisma-level ordering for efficient price sorts; fallback to createdAt desc
   let orderBy: Record<string, string> = { createdAt: "desc" };
   if (sort === "price-asc") orderBy = { price: "asc" };
   if (sort === "price-desc") orderBy = { price: "desc" };
-  if (sort === "name-asc") orderBy = { name: "asc" };
 
   // Determine category filter
   const categoryFilter = searchParams.category;
@@ -97,12 +99,6 @@ export default async function AllProductsPage({
           (p) => p.category.slug === categoryFilter,
         );
       }
-      // Sort Printful products if needed (they come sorted by name from the query)
-      if (sort === "price-asc") {
-        pfProducts.sort((a, b) => a.price - b.price);
-      } else if (sort === "price-desc") {
-        pfProducts.sort((a, b) => b.price - a.price);
-      }
       printfulProducts = pfProducts.map((p) => ({
         slug: p.slug,
         name: p.name,
@@ -117,8 +113,11 @@ export default async function AllProductsPage({
     console.error("Failed to fetch Printful products for all:", error);
   }
 
-  // Merge: Printful products first
-  const allProducts = [...printfulProducts, ...mappedProducts];
+  // Merge then sort (handles featured/most-wanted which Prisma can't sort by)
+  const allProducts = sortProducts(
+    [...printfulProducts, ...mappedProducts],
+    sort,
+  );
 
   // Get the current category name for display
   let currentCategoryName: string | undefined;
