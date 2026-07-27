@@ -164,6 +164,7 @@ model CartItem {
 model Order {
   id                String      @id @default(cuid())
   userId            String?
+  email             String?
   status            OrderStatus @default(PENDING)
   subtotal          Decimal     @db.Decimal(10, 2)
   tax               Decimal     @db.Decimal(10, 2) @default(0)

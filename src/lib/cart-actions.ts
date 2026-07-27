@@ -117,26 +117,35 @@ export async function createOrderAction(
       }
     }
 
-    const order = await prisma.order.create({
-      data: {
-        subtotal: input.subtotal,
-        tax: input.tax,
-        shipping: input.shipping,
-        discount: input.discount,
-        total: input.total,
-        shippingAddressId,
-        items: {
-          create: input.items.map((item) => ({
-            productId: item.productId || null,
-            variantId: item.variantId || null,
-            name: item.name,
-            sku: item.sku,
-            price: item.price,
-            quantity: item.quantity,
-          })),
+    let order;
+    try {
+      order = await prisma.order.create({
+        data: {
+          email: input.shippingAddress.email || null,
+          subtotal: input.subtotal,
+          tax: input.tax,
+          shipping: input.shipping,
+          discount: input.discount,
+          total: input.total,
+          shippingAddressId,
+          items: {
+            create: input.items.map((item) => ({
+              productId: item.productId || null,
+              variantId: item.variantId || null,
+              name: item.name,
+              sku: item.sku,
+              price: item.price,
+              quantity: item.quantity,
+            })),
+          },
         },
-      },
-    });
+      });
+    } catch (createError) {
+      console.error("Prisma order.create error:", createError);
+      const message =
+        createError instanceof Error ? createError.message : "Unknown database error";
+      return { success: false, error: `Failed to create order: ${message}` };
+    }
 
     // Increment coupon usage if applicable
     if (input.coupon) {
@@ -151,6 +160,7 @@ export async function createOrderAction(
     return { success: true, orderId: order.id };
   } catch (error) {
     console.error("Order creation error:", error);
-    return { success: false, error: "Failed to create order." };
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return { success: false, error: `Failed to create order: ${message}` };
   }
 }

@@ -183,32 +183,38 @@ export function CartProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  // Derived values
-  const subtotal = useMemo(
-    () => state.items.reduce((sum, i) => sum + i.price * i.quantity, 0),
-    [state.items]
-  );
+  // Derive values with NaN guards — financials must never be NaN
+  const subtotal = useMemo(() => {
+    const sum = state.items.reduce((s, i) => s + i.price * i.quantity, 0);
+    return Number.isNaN(sum) ? 0 : sum;
+  }, [state.items]);
 
   const discount = useMemo(() => {
     if (!state.coupon) return 0;
+    let d: number;
     if (state.coupon.discountType === "FIXED") {
-      return state.coupon.discountValue;
+      d = state.coupon.discountValue;
+    } else {
+      d = subtotal * (state.coupon.discountValue / 100);
     }
-    return subtotal * (state.coupon.discountValue / 100);
+    return Number.isNaN(d) ? 0 : d;
   }, [state.coupon, subtotal]);
 
   const shipping = useMemo(() => {
     if (state.shippingMethod === "free") return 0;
     if (subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
-    return SHIPPING_RATES[state.shippingMethod].price;
+    const rate = SHIPPING_RATES[state.shippingMethod]?.price;
+    return rate == null || Number.isNaN(rate) ? 0 : rate;
   }, [state.shippingMethod, subtotal]);
 
   const tax = useMemo(() => {
-    return parseFloat(((subtotal - discount) * TAX_RATE).toFixed(2));
+    const t = parseFloat(((subtotal - discount) * TAX_RATE).toFixed(2));
+    return Number.isNaN(t) ? 0 : t;
   }, [subtotal, discount]);
 
   const total = useMemo(() => {
-    return parseFloat((subtotal - discount + shipping + tax).toFixed(2));
+    const t = parseFloat((subtotal - discount + shipping + tax).toFixed(2));
+    return Number.isNaN(t) ? 0 : t;
   }, [subtotal, discount, shipping, tax]);
 
   const itemCount = useMemo(
