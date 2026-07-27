@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { getSession } from "@/lib/auth";
 
 /* ── Types ───────────────────────────────────────────────── */
 
@@ -94,22 +95,26 @@ export async function createOrderAction(
   input: CreateOrderInput
 ): Promise<{ success: boolean; orderId?: string; error?: string }> {
   try {
-    // Create shipping address
+    // Create shipping address (only for authenticated users)
     let shippingAddressId: string | null = null;
-    try {
-      const address = await prisma.address.create({
-        data: {
-          line1: input.shippingAddress.line1,
-          line2: input.shippingAddress.line2 || null,
-          city: input.shippingAddress.city,
-          state: input.shippingAddress.state,
-          zip: input.shippingAddress.zip,
-          country: input.shippingAddress.country || "US",
-        },
-      });
-      shippingAddressId = address.id;
-    } catch (addrError) {
-      console.error("Address creation error:", addrError);
+    const session = await getSession();
+    if (session) {
+      try {
+        const address = await prisma.address.create({
+          data: {
+            userId: session.userId,
+            line1: input.shippingAddress.line1,
+            line2: input.shippingAddress.line2 || null,
+            city: input.shippingAddress.city,
+            state: input.shippingAddress.state,
+            zip: input.shippingAddress.zip,
+            country: input.shippingAddress.country || "US",
+          },
+        });
+        shippingAddressId = address.id;
+      } catch (addrError) {
+        console.error("Address creation error:", addrError);
+      }
     }
 
     const order = await prisma.order.create({

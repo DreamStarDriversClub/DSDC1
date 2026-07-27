@@ -51,7 +51,7 @@ model User {
 
 model Address {
   id        String  @id @default(cuid())
-  userId    String?
+  userId    String
   line1     String
   line2     String?
   city      String
@@ -60,7 +60,7 @@ model Address {
   country   String  @default("US")
   isDefault Boolean @default(false)
 
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   orderShipping Order[] @relation("ShippingAddress")
   orderBilling  Order[] @relation("BillingAddress")
