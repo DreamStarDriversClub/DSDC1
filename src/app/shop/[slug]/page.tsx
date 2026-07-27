@@ -104,7 +104,7 @@ export default async function ProductDetailPage({ params }: Props) {
         description={product.description}
         sku={product.sku}
         price={product.salePrice ?? product.price}
-        image={product.images.length > 0 ? product.images[0] : undefined}
+        image={Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : undefined}
         slug={product.slug}
         category={product.category.name}
       />
