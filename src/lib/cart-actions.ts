@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { createPrintfulOrder } from "@/lib/printful";
 
 /* ── Types ───────────────────────────────────────────────── */
 
@@ -155,6 +156,75 @@ export async function createOrderAction(
           data: { currentUses: { increment: 1 } },
         });
       } catch {}
+    }
+
+    // Push order to Printful for fulfillment
+    try {
+      // Map order items to Printful variants via SKU or variantId
+      const printfulItems = [];
+      for (const item of input.items) {
+        // Try to find Printful variant — first by variantId, then by SKU
+        let printfulVariant = null;
+        
+        if (item.variantId) {
+          printfulVariant = await prisma.printfulVariant.findFirst({
+            where: { productId: item.variantId },
+          });
+        }
+        
+        if (!printfulVariant && item.sku) {
+          // Try matching by SKU on the product-level PrintfulVariant
+          printfulVariant = await prisma.printfulVariant.findFirst({
+            where: { name: { contains: item.sku } },
+          });
+        }
+
+        if (printfulVariant) {
+          printfulItems.push({
+            printfulVariantId: String(printfulVariant.printfulId),
+            quantity: item.quantity,
+            retailPrice: item.price,
+            name: item.name,
+          });
+        }
+      }
+
+      if (printfulItems.length > 0) {
+        const fullName = `${input.shippingAddress.firstName} ${input.shippingAddress.lastName}`;
+        const pfResult = await createPrintfulOrder({
+          externalId: order.id,
+          shippingAddress: {
+            name: fullName,
+            line1: input.shippingAddress.line1,
+            line2: input.shippingAddress.line2,
+            city: input.shippingAddress.city,
+            state: input.shippingAddress.state,
+            zip: input.shippingAddress.zip,
+            country: input.shippingAddress.country || "US",
+            email: input.shippingAddress.email,
+          },
+          items: printfulItems,
+          retailCosts: {
+            subtotal: input.subtotal,
+            shipping: input.shipping,
+            tax: input.tax,
+            discount: input.discount,
+            total: input.total,
+          },
+          shippingMethod: input.shippingMethod || "standard",
+        });
+
+        await prisma.order.update({
+          where: { id: order.id },
+          data: {
+            printfulOrderId: pfResult.printfulOrderId,
+            printfulStatus: pfResult.status,
+          },
+        });
+      }
+    } catch (pfError) {
+      console.error("Printful order creation failed:", pfError);
+      // Order is still saved — don't fail the whole checkout
     }
 
     return { success: true, orderId: order.id };

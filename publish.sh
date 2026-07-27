@@ -28,15 +28,17 @@ bun run build
 # Load env vars from .env for runtime
 DATABASE_URL=$(grep DATABASE_URL .env | cut -d= -f2-)
 STRIPE_SECRET_KEY=$(grep STRIPE_SECRET_KEY .env | head -1 | cut -d= -f2-)
+PRINTFUL_API_KEY=$(grep PRINTFUL_API_KEY .env | cut -d= -f2-)
 NEXT_PUBLIC_SITE_URL=$(grep NEXT_PUBLIC_SITE_URL .env | cut -d= -f2-)
-export DATABASE_URL STRIPE_SECRET_KEY NEXT_PUBLIC_SITE_URL
+export DATABASE_URL STRIPE_SECRET_KEY PRINTFUL_API_KEY NEXT_PUBLIC_SITE_URL
 # Write .env.local so Next.js reads it even if env vars are stripped
 cat > .env.local <<EOF
 DATABASE_URL=$DATABASE_URL
 STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY
+PRINTFUL_API_KEY=$PRINTFUL_API_KEY
 NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 EOF
-setsid nohup env DATABASE_URL="$DATABASE_URL" STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" NEXT_PUBLIC_SITE_URL="$NEXT_PUBLIC_SITE_URL" bun run start > .run/server.log 2>&1 < /dev/null &
+setsid nohup env DATABASE_URL="$DATABASE_URL" STRIPE_SECRET_KEY="$STRIPE_SECRET_KEY" PRINTFUL_API_KEY="$PRINTFUL_API_KEY" NEXT_PUBLIC_SITE_URL="$NEXT_PUBLIC_SITE_URL" bun run start > .run/server.log 2>&1 < /dev/null &
 
 # Wait for the new server to actually answer before reporting success, so a
 # startup crash surfaces here instead of silently leaving the old page live.

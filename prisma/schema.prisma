@@ -173,6 +173,8 @@ model Order {
   billingAddressId  String?
   trackingNumber    String?
   notes             String?
+  printfulOrderId   Int?
+  printfulStatus    String?
   createdAt         DateTime    @default(now())
 
   user           User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
