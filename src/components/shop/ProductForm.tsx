@@ -99,7 +99,7 @@ export function ProductForm({
   ]);
 
   return (
-    <div className="space-y-6">
+    <div id="main-add-to-cart" className="space-y-6">
       {/* Variant selector */}
       {variants.length > 0 && (
         <div>

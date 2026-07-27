@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ProductForm } from "@/components/shop/ProductForm";
+import { StickyAddToCart } from "@/components/shop/StickyAddToCart";
 import { ProductImageGallery } from "@/components/shop/ProductImageGallery";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
@@ -383,6 +384,19 @@ export default async function ProductDetailPage({ params }: Props) {
       )}
 
       <NewsletterBanner />
+
+      {/* Sticky mobile add-to-cart bar */}
+      <StickyAddToCart
+        productId={product.id}
+        productName={product.name}
+        productSlug={product.slug}
+        productSku={product.sku}
+        basePrice={product.price}
+        salePrice={product.salePrice}
+        images={product.images}
+        variants={product.variants}
+        inventory={product.inventory}
+      />
     </>
   );
 }
