@@ -94,8 +94,8 @@ export async function getProductBySlug(
         ? parseFloat(product.salePrice.toString())
         : null,
       images: Array.isArray(product.images) ? (product.images as string[]) : [],
-      specifications: product.specifications as { label: string; value: string }[],
-      compatibleVehicles: product.compatibleVehicles as string[],
+      specifications: Array.isArray(product.specifications) ? (product.specifications as { label: string; value: string }[]) : [],
+      compatibleVehicles: Array.isArray(product.compatibleVehicles) ? (product.compatibleVehicles as string[]) : [],
       variants: product.variants.map((v) => ({
         ...v,
         price: parseFloat(v.price.toString()),
