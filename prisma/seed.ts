@@ -33,7 +33,7 @@ async function main() {
       passwordHash: hashPassword("admin123"),
       firstName: "Dream",
       lastName: "Admin",
-      role: Role.ADMIN,
+      role: "ADMIN",
     },
   });
   console.log(`✔ Admin user: ${admin.email}`);
@@ -771,7 +771,7 @@ async function main() {
   await prisma.coupon.create({
     data: {
       code: "WELCOME10",
-      discountType: DiscountType.PERCENTAGE,
+      discountType: "PERCENTAGE",
       discountValue: 10,
       minOrderAmount: 25.00,
       maxUses: 1000,
@@ -785,7 +785,7 @@ async function main() {
   await prisma.coupon.create({
     data: {
       code: "FREESHIP",
-      discountType: DiscountType.FIXED,
+      discountType: "FIXED",
       discountValue: 0,
       minOrderAmount: 75.00,
       maxUses: 500,
