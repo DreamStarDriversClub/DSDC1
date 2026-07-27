@@ -148,6 +148,20 @@ export async function getRelatedProducts(
 
 /* ── Printful helpers ──────────────────────────────────── */
 
+/** Classify a Printful product by name into apparel or accessories */
+function categorizePrintful(name: string): { name: string; slug: string; parent: null } {
+  const lower = name.toLowerCase();
+  if (
+    lower.includes("hat") ||
+    lower.includes("cap") ||
+    lower.includes("bag") ||
+    lower.includes("backpack")
+  ) {
+    return { name: "Accessories", slug: "accessories", parent: null };
+  }
+  return { name: "Apparel", slug: "apparel", parent: null };
+}
+
 export async function hasPrintfulProducts(): Promise<boolean> {
   try {
     const count = await prisma.printfulProduct.count();
@@ -197,7 +211,7 @@ export async function getAllPrintfulProducts(): Promise<ShopProductCard[]> {
       name: p.name,
       price: priceMap[p.printfulId] ?? 29.99,
       salePrice: null,
-      category: { name: "Apparel", slug: "apparel" },
+      category: categorizePrintful(p.name),
       images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
       isFeatured: false,
       source: "printful" as const,
@@ -219,16 +233,18 @@ export async function getPrintfulProductsByCategory(
     const ids = products.map((p) => p.printfulId);
     const priceMap = await getMinPricesByPrintfulId(ids);
 
-    return products.map((p) => ({
-      slug: `printful-${p.printfulId}`,
-      name: p.name,
-      price: priceMap[p.printfulId] ?? 29.99,
-      salePrice: null,
-      category: { name: category === "accessories" ? "Accessories" : "Apparel", slug: category },
-      images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
-      isFeatured: false,
-      source: "printful" as const,
-    }));
+    return products
+      .map((p) => ({
+        slug: `printful-${p.printfulId}`,
+        name: p.name,
+        price: priceMap[p.printfulId] ?? 29.99,
+        salePrice: null,
+        category: categorizePrintful(p.name),
+        images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
+        isFeatured: false,
+        source: "printful" as const,
+      }))
+      .filter((p) => p.category.slug === category);
   } catch (error) {
     console.error("Failed to fetch Printful products by category:", error);
     return [];
@@ -284,11 +300,7 @@ export async function getPrintfulProductBySlug(
       compatibleVehicles: [],
       isActive: true,
       isFeatured: false,
-      category: {
-        name: "Apparel",
-        slug: "apparel",
-        parent: null,
-      },
+      category: categorizePrintful(product.name),
       variants: mappedVariants,
       reviews: [],
       source: "printful" as const,
@@ -314,7 +326,7 @@ export async function getPrintfulFeaturedProducts(): Promise<ShopProductCard[]> 
       name: p.name,
       price: priceMap[p.printfulId] ?? 29.99,
       salePrice: null,
-      category: { name: "Apparel", slug: "apparel" },
+      category: categorizePrintful(p.name),
       images: p.thumbnailUrl ? [p.thumbnailUrl] : [],
       isFeatured: true,
       source: "printful" as const,
