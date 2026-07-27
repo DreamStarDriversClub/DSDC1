@@ -44,13 +44,7 @@ export default async function OrderDetailPage({
   const order = await prisma.order.findFirst({
     where: { id: params.id, userId: user.id },
     include: {
-      items: {
-        include: {
-          product: {
-            select: { slug: true, images: true },
-          },
-        },
-      },
+      items: true,
       shippingAddress: true,
       billingAddress: true,
     },
@@ -158,22 +152,11 @@ export default async function OrderDetailPage({
                 key={item.id}
                 className="flex items-center gap-4 rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-4"
               >
-                {/* Product image */}
+                {/* Product image — placeholder since OrderItem no longer has product relation */}
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-ds-black-darkgray">
-                  {item.product?.images &&
-                  Array.isArray(item.product.images) &&
-                  typeof item.product.images[0] === "string" ? (
-                    <img
-                      src={item.product.images[0]}
-                      alt={item.name}
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-ds-gray-600 text-xs">
-                      DS
-                    </div>
-                  )}
+                  <div className="flex h-full w-full items-center justify-center text-ds-gray-600 text-xs">
+                    DS
+                  </div>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-ds-white truncate">
