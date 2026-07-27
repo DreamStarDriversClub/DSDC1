@@ -6,13 +6,15 @@ set -euo pipefail
 cd "$(dirname "$0")"
 umask 002
 
-echo "[1/4] Installing dependencies"
+echo "[1/5] Installing dependencies"
 bun install
 
-echo "[2/4] Building Next.js"
+echo "[2/5] Running database migrations"
+npx prisma migrate deploy
+echo "[3/5] Building Next.js"
 bun run build
 
-echo "[3/4] Assembling .vercel/output (Build Output API v3)"
+echo "[4/5] Assembling .vercel/output (Build Output API v3)"
 rm -rf .vercel/output
 mkdir -p .vercel/output/functions/render.func
 
@@ -31,7 +33,7 @@ app.prepare().then(() => {
 });
 SERVEREOF
 
-echo "[4/4] Installing production dependencies for render function"
+echo "[5/5] Installing production dependencies for render function"
 (
   cd .vercel/output/functions/render.func
   bun install --production
