@@ -87,6 +87,8 @@ export async function POST(req: NextRequest) {
       successUrl: `${SITE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${SITE_URL}/checkout`,
       metadata,
+      shippingAmount: shipping,
+      taxAmount: tax,
     });
 
     if (!session.url) {
