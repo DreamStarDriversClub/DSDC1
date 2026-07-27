@@ -206,6 +206,12 @@ export default function CheckoutPage() {
     }
   }, [state, formData, subtotal, discount, shipping, tax, total, router]);
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Cart", href: "/cart" },
+    { label: "Checkout" },
+  ];
+
   /* ── Empty cart guard ────────────────────────────── */
 
   if (state.items.length === 0) {
@@ -237,12 +243,6 @@ export default function CheckoutPage() {
       </>
     );
   }
-
-  const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    { label: "Cart", href: "/cart" },
-    { label: "Checkout" },
-  ];
 
   /* ── Checkout Steps ──────────────────────────────── */
 
