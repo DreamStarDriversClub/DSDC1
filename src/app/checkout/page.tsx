@@ -16,10 +16,16 @@ import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 
 /* ── PayPal Smart Buttons types ─────────────────────────── */
 
+interface PayPalCaptureResult {
+  id: string;
+  status: string;
+  payer: { email_address: string };
+}
+
 interface PayPalButtonsAPI {
   Buttons: (config: {
     createOrder?: (data: Record<string, unknown>, actions: { order: { create: (opts: { purchase_units: Array<{ amount: { value: string } }> }) => Promise<string> } }) => Promise<string>;
-    onApprove?: (data: { orderID: string }) => Promise<void>;
+    onApprove?: (data: { orderID: string }, actions: { order: { capture: () => Promise<PayPalCaptureResult> } }) => Promise<void>;
     onError?: (err: unknown) => void;
     onCancel?: () => void;
   }) => { render: (selector: string) => void };
@@ -237,13 +243,16 @@ export default function CheckoutPage() {
     const containerId = "paypal-container";
     const scriptId = "paypal-smart-button-sdk";
 
-    const onApprove = async (data: { orderID: string }) => {
+    const onApprove = async (data: { orderID: string }, actions: { order: { capture: () => Promise<PayPalCaptureResult> } }) => {
       setPaypalLoading(true);
       setOrderError(null);
       try {
+        // Capture the payment first — the card is only charged here
+        const capture = await actions.order.capture();
+        // Only create the DB order if capture succeeded
         const result = await createDbOrder();
         if (result.success) {
-          setPaypalOrderId(data.orderID);
+          setPaypalOrderId(capture.id);
           setOrderSuccess(result.orderId!);
           clearCart();
         } else {
