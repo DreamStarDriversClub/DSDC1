@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductDetailPage({ params }: Props) {
   const product = await getProductBySlug(params.slug);
 
-  if (!product || !product.isActive) {
+  if (!product) {
     notFound();
   }
 
