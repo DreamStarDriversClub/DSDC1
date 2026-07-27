@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
+import { TrustBar } from "@/components/shop/TrustBar";
 
 export const metadata: Metadata = {
   title: "Shop All",
@@ -15,5 +16,10 @@ export default function ShopLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <TrustBar />
+    </>
+  );
 }
