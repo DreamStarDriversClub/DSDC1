@@ -1,41 +1,15 @@
 "use client";
 
-import { useState, useCallback, useEffect, type FormEvent } from "react";
+import { useState, useCallback, type FormEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
-import {
-  validateCouponAction,
-  createOrderAction,
-} from "@/lib/cart-actions";
-import type { ShippingAddress } from "@/lib/cart-actions";
+import { validateCouponAction } from "@/lib/cart-actions";
 import { formatPrice } from "@/lib/utils";
 import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
-
-/* ── PayPal Smart Buttons types ─────────────────────────── */
-
-interface PayPalCaptureResult {
-  id: string;
-  status: string;
-  payer: { email_address: string };
-}
-
-interface PayPalButtonsAPI {
-  Buttons: (config: {
-    createOrder?: (data: Record<string, unknown>, actions: { order: { create: (opts: { purchase_units: Array<{ amount: { value: string } }> }) => Promise<string> } }) => Promise<string>;
-    onApprove?: (data: { orderID: string }, actions: { order: { capture: () => Promise<PayPalCaptureResult> } }) => Promise<void>;
-    onError?: (err: unknown) => void;
-    onCancel?: () => void;
-  }) => { render: (selector: string) => void };
-}
-
-declare global {
-  interface Window {
-    paypal?: PayPalButtonsAPI;
-  }
-}
 
 /* ── Types ──────────────────────────────────────────────── */
 
@@ -54,15 +28,7 @@ interface FormData {
   country: string;
 }
 
-interface FormErrors {
-  [key: string]: string;
-}
-
-const breadcrumbItems = [
-  { label: "Home", href: "/" },
-  { label: "Cart", href: "/cart" },
-  { label: "Checkout" },
-];
+type FormErrors = Partial<Record<keyof FormData, string>>;
 
 const initialFormData: FormData = {
   email: "",
@@ -77,6 +43,8 @@ const initialFormData: FormData = {
   country: "US",
 };
 
+/* ── US States ──────────────────────────────────────────── */
+
 const US_STATES = [
   "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
   "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
@@ -84,24 +52,6 @@ const US_STATES = [
   "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
   "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
 ];
-
-/* ── PayPal Smart Buttons Config ─────────────────────── */
-
-/**
- * Build the PayPal SDK URL using NEXT_PUBLIC_PAYPAL_CLIENT_ID.
- *
- * Uses the standard PayPal JavaScript SDK with Smart Payment Buttons.
- */
-function getPayPalSDKUrl(): string {
-  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-  if (!clientId) {
-    console.error(
-      "NEXT_PUBLIC_PAYPAL_CLIENT_ID is not set. PayPal will not load.",
-    );
-    return "";
-  }
-  return `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&components=buttons&currency=USD`;
-}
 
 /* ── Page ───────────────────────────────────────────────── */
 
@@ -119,15 +69,15 @@ export default function CheckoutPage() {
     itemCount,
   } = useCart();
 
+  const router = useRouter();
+
   const [step, setStep] = useState<CheckoutStep>("shipping");
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [couponInput, setCouponInput] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
-  const [paypalLoading, setPaypalLoading] = useState(false);
-  const [orderError, setOrderError] = useState<string | null>(null);
-  const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
-  const [paypalOrderId, setPaypalOrderId] = useState<string | null>(null);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const { coupon, couponError } = state;
 
@@ -191,11 +141,14 @@ export default function CheckoutPage() {
     }
   };
 
-  /* ── Create Order in DB (called after PayPal capture) ── */
+  /* ── Stripe Checkout ─────────────────────────────── */
 
-  const createDbOrder = useCallback(async (): Promise<{ success: boolean; orderId?: string; error?: string }> => {
+  const handleStripeCheckout = useCallback(async () => {
+    setCheckoutLoading(true);
+    setCheckoutError(null);
+
     try {
-      const shippingAddress: ShippingAddress = {
+      const shippingAddress = {
         email: formData.email,
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -208,136 +161,54 @@ export default function CheckoutPage() {
         country: formData.country || "US",
       };
 
-      const result = await createOrderAction({
-        items: state.items.map((item) => ({
-          productId: item.productId,
-          variantId: item.variantId,
-          name: item.name,
-          slug: item.slug,
-          sku: item.sku,
-          price: item.price,
-          quantity: item.quantity,
-          variantName: item.variantName,
-        })),
-        coupon: state.coupon,
-        shippingMethod: state.shippingMethod,
-        shippingAddress,
-        subtotal,
-        discount,
-        shipping,
-        tax,
-        total,
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: state.items.map((item) => ({
+            productId: item.productId,
+            variantId: item.variantId,
+            name: item.name,
+            slug: item.slug,
+            sku: item.sku,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image,
+            variantName: item.variantName,
+          })),
+          shippingAddress,
+          shippingMethod: state.shippingMethod,
+          subtotal,
+          discount,
+          shipping,
+          tax,
+          total,
+          coupon: state.coupon,
+        }),
       });
 
-      return result;
+      const data = await res.json();
+
+      if (data.error) {
+        setCheckoutError(data.error);
+        return;
+      }
+
+      if (data.url) {
+        router.push(data.url);
+      } else {
+        setCheckoutError("No checkout URL returned. Please try again.");
+      }
     } catch {
-      return { success: false, error: "Failed to create order. Please try again." };
+      setCheckoutError("An error occurred. Please try again.");
+    } finally {
+      setCheckoutLoading(false);
     }
-  }, [state, formData, subtotal, discount, shipping, tax, total]);
-
-  /* ── PayPal Smart Buttons — dynamic script loading ─── */
-
-  useEffect(() => {
-    if (step !== "payment") return;
-
-    const containerId = "paypal-container";
-    const scriptId = "paypal-smart-button-sdk";
-
-    const onApprove = async (data: { orderID: string }, actions: { order: { capture: () => Promise<PayPalCaptureResult> } }) => {
-      setPaypalLoading(true);
-      setOrderError(null);
-      try {
-        // Capture the payment first — the card is only charged here
-        const capture = await actions.order.capture();
-        // Only create the DB order if capture succeeded
-        const result = await createDbOrder();
-        if (result.success) {
-          setPaypalOrderId(capture.id);
-          setOrderSuccess(result.orderId!);
-          clearCart();
-        } else {
-          setOrderError(
-            result.error ||
-              "Payment was captured but order creation failed. Please contact support.",
-          );
-        }
-      } catch {
-        setOrderError(
-          "An error occurred while processing your payment. Please try again.",
-        );
-      } finally {
-        setPaypalLoading(false);
-      }
-    };
-
-    const onError = () => {
-      setOrderError(
-        "An error occurred with PayPal. Please try again or use a different payment method.",
-      );
-    };
-
-    const onCancel = () => {
-      setOrderError(null);
-    };
-
-    const sdkUrl = getPayPalSDKUrl();
-    if (!sdkUrl) {
-      setOrderError(
-        "PayPal Client ID is not configured. Please contact the site owner.",
-      );
-      return;
-    }
-
-    const renderButton = () => {
-      const p = window.paypal;
-      if (!p) return;
-      p.Buttons({
-        createOrder: (_data: Record<string, unknown>, actions: { order: { create: (opts: { purchase_units: Array<{ amount: { value: string } }> }) => Promise<string> } }) => {
-          return actions.order.create({
-            purchase_units: [{ amount: { value: total.toFixed(2) } }],
-          });
-        },
-        onApprove,
-        onError,
-        onCancel,
-      }).render(`#${containerId}`);
-    };
-
-    // If PayPal SDK already loaded, re-render into the container
-    if (window.paypal) {
-      const container = document.getElementById(containerId);
-      if (container && !container.hasChildNodes()) {
-        renderButton();
-      }
-      return;
-    }
-
-    // Prevent duplicate script injection
-    if (document.getElementById(scriptId)) return;
-
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.src = sdkUrl;
-    script.async = true;
-
-    script.onload = () => {
-      renderButton();
-    };
-
-    script.onerror = () => {
-      setOrderError("Failed to load PayPal. Please refresh the page and try again.");
-    };
-
-    document.body.appendChild(script);
-
-    return () => {
-      // Don't remove the script on unmount — it may be reused across step toggles
-    };
-  }, [step, total, createDbOrder, clearCart]);
+  }, [state, formData, subtotal, discount, shipping, tax, total, router]);
 
   /* ── Empty cart guard ────────────────────────────── */
 
-  if (state.items.length === 0 && !orderSuccess) {
+  if (state.items.length === 0) {
     return (
       <>
         <Container className="py-8">
@@ -367,70 +238,11 @@ export default function CheckoutPage() {
     );
   }
 
-  /* ── Order Success ───────────────────────────────── */
-
-  if (orderSuccess) {
-    return (
-      <>
-        <Container className="py-8">
-          <Breadcrumbs items={breadcrumbItems} />
-        </Container>
-
-        <section className="section-padding">
-          <Container>
-            <div className="mx-auto max-w-lg text-center">
-              <div className="flex justify-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-500/10">
-                  <svg
-                    className="h-10 w-10 text-green-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <h1 className="mt-6 font-display text-3xl font-bold text-ds-white">
-                Order Confirmed!
-              </h1>
-              <p className="mt-3 text-ds-gray-300">
-                Thank you for your order. Your order number is{" "}
-                <span className="font-mono font-semibold text-ds-red">
-                  #{orderSuccess.slice(-8).toUpperCase()}
-                </span>
-              </p>
-              {paypalOrderId && (
-                <p className="mt-1 text-xs text-ds-gray-500">
-                  PayPal Transaction: {paypalOrderId.slice(0, 17)}…
-                </p>
-              )}
-              <p className="mt-1 text-sm text-ds-gray-400">
-                A confirmation email will be sent to {formData.email}.
-              </p>
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <Link href="/shop">
-                  <Button variant="primary" size="lg">
-                    Continue Shopping
-                  </Button>
-                </Link>
-                <Link href="/">
-                  <Button variant="outline" size="lg">
-                    Back to Home
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </Container>
-        </section>
-      </>
-    );
-  }
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Cart", href: "/cart" },
+    { label: "Checkout" },
+  ];
 
   /* ── Checkout Steps ──────────────────────────────── */
 
@@ -822,48 +634,71 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  {/* Payment — PayPal Hosted Button */}
+                  {/* Payment — Stripe Checkout */}
                   <div className="rounded-2xl border border-white/[0.06] bg-ds-black-charcoal p-6 sm:p-8">
                     <h2 className="font-display text-xl font-bold text-ds-white mb-6">
                       Payment
                     </h2>
 
                     <div className="space-y-5">
-                      {paypalLoading && (
-                        <div className="mb-4 flex items-center justify-center gap-2 text-sm text-ds-gray-400">
-                          <svg
-                            className="h-4 w-4 animate-spin"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
+                      {/* Pay with Card button */}
+                      <Button
+                        variant="primary"
+                        size="lg"
+                        className="w-full gap-2"
+                        onClick={handleStripeCheckout}
+                        disabled={checkoutLoading}
+                      >
+                        {checkoutLoading ? (
+                          <>
+                            <svg
+                              className="h-4 w-4 animate-spin"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                              />
+                            </svg>
+                            Redirecting to Stripe…
+                          </>
+                        ) : (
+                          <>
+                            <svg
+                              className="h-5 w-5"
+                              fill="none"
+                              viewBox="0 0 24 24"
                               stroke="currentColor"
-                              strokeWidth="4"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                            />
-                          </svg>
-                          Processing PayPal payment…
-                        </div>
-                      )}
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M3 10h18M7 15h1m4 0h1m-7 4h2m12-8v8a2 2 0 01-2 2H5a2 2 0 01-2-2v-8a2 2 0 012-2h14a2 2 0 012 2z"
+                              />
+                            </svg>
+                            Pay with Card
+                          </>
+                        )}
+                      </Button>
 
-                      {/* PayPal Smart Button container */}
-                      <div id="paypal-container"></div>
-
-                      {orderError && (
+                      {checkoutError && (
                         <div className="rounded-xl border border-ds-red/30 bg-ds-red/5 p-4">
-                          <p className="text-sm text-ds-red">{orderError}</p>
+                          <p className="text-sm text-ds-red">{checkoutError}</p>
                         </div>
                       )}
 
-                      {/* Order summary inside payment for review before paying */}
+                      {/* Order summary inside payment for review */}
                       <div className="mt-6 rounded-xl border border-white/[0.06] bg-ds-black p-4">
                         <h3 className="text-xs font-semibold uppercase tracking-wider text-ds-gray-400 mb-3">
                           You&apos;re Paying
@@ -903,7 +738,7 @@ export default function CheckoutPage() {
 
                       <p className="text-center text-xs text-ds-gray-600">
                         Powered by{" "}
-                        <span className="font-semibold text-ds-gray-500">PayPal</span>.
+                        <span className="font-semibold text-ds-gray-500">Stripe</span>.
                         Secure payment processing.
                       </p>
                     </div>
@@ -1023,7 +858,7 @@ export default function CheckoutPage() {
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                   </svg>
-                  <span>Secure Checkout via PayPal</span>
+                  <span>Secure Checkout via Stripe</span>
                 </div>
               </div>
             </div>
