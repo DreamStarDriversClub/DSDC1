@@ -34,7 +34,7 @@ export function ProductImageGallery({
     setActiveIndex(index);
   }, []);
 
-  const hasImages = images.length > 0;
+  const hasImages = Array.isArray(images) && images.length > 0;
   const activeImage = hasImages ? images[activeIndex] : null;
 
   return (
@@ -104,7 +104,7 @@ export function ProductImageGallery({
       </div>
 
       {/* Thumbnail row with interactive click */}
-      {images.length > 1 && (
+      {Array.isArray(images) && images.length > 1 && (
         <div className="flex gap-3">
           {images.map((img, i) => (
             <button
