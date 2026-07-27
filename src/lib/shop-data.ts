@@ -204,6 +204,70 @@ export async function getPrintfulProductsByCategory(
   }
 }
 
+export async function getPrintfulProductBySlug(
+  slug: string
+): Promise<ShopProduct | null> {
+  try {
+    // Parse the printful-<id> slug format used by existing stubs
+    if (!slug.startsWith("printful-")) return null;
+    const printfulId = slug.slice("printful-".length);
+
+    const product = await prisma.printfulProduct.findUnique({
+      where: { printfulId },
+    });
+
+    if (!product) return null;
+
+    // Fetch variants for this Printful product
+    const variants = await prisma.printfulVariant.findMany({
+      where: { productId: printfulId },
+    });
+
+    // Map variants to ShopProductVariant format
+    const mappedVariants: ShopProductVariant[] = variants.map((v) => ({
+      id: String(v.id),
+      name: v.name || `${v.size ?? ""} / ${v.color ?? ""}`.trim() || "Default",
+      price: v.price,
+      inventory: 999, // Printful manages stock externally
+    }));
+
+    // Use min variant price as base, or fallback
+    const basePrice =
+      variants.length > 0
+        ? Math.min(...variants.map((v) => v.price))
+        : 29.99;
+
+    const totalInventory = variants.length > 0 ? variants.length * 999 : 999;
+
+    return {
+      id: `printful-${product.printfulId}`,
+      name: product.name,
+      slug,
+      sku: product.printfulId,
+      description: `${product.name} — premium print-on-demand apparel from Dream Star Drivers Club. Each piece is printed to order with high-quality materials.`,
+      price: basePrice,
+      salePrice: null,
+      inventory: totalInventory,
+      images: product.thumbnailUrl ? [product.thumbnailUrl] : [],
+      specifications: [],
+      compatibleVehicles: [],
+      isActive: true,
+      isFeatured: false,
+      category: {
+        name: "Apparel",
+        slug: "apparel",
+        parent: null,
+      },
+      variants: mappedVariants,
+      reviews: [],
+      source: "printful" as const,
+    };
+  } catch (error) {
+    console.error("Failed to fetch Printful product by slug:", error);
+    return null;
+  }
+}
+
 export async function getPrintfulFeaturedProducts(): Promise<ShopProductCard[]> {
   try {
     const products = await prisma.printfulProduct.findMany({

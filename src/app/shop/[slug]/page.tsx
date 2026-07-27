@@ -1,4 +1,4 @@
-import { getProductBySlug, getRelatedProducts } from "@/lib/shop-data";
+import { getProductBySlug, getPrintfulProductBySlug, getRelatedProducts } from "@/lib/shop-data";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
@@ -23,7 +23,10 @@ interface Props {
 /* ── Metadata ──────────────────────────────────────────── */
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await getProductBySlug(params.slug);
+  let product = await getProductBySlug(params.slug);
+  if (!product) {
+    product = await getPrintfulProductBySlug(params.slug);
+  }
   if (!product) return { title: "Product Not Found" };
 
   return {
@@ -40,7 +43,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /* ── Page ───────────────────────────────────────────────── */
 
 export default async function ProductDetailPage({ params }: Props) {
-  const product = await getProductBySlug(params.slug);
+  let product = await getProductBySlug(params.slug);
+  if (!product) {
+    product = await getPrintfulProductBySlug(params.slug);
+  }
 
   if (!product) {
     notFound();
