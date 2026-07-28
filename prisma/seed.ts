@@ -9,57 +9,70 @@ function hashPassword(password: string): string {
   return `${salt}:${hash}`;
 }
 
+// ── Helper: find or create a category by slug ──────────
+async function findOrCreateCategory(slug: string, data: Record<string, any>) {
+  let cat = await prisma.category.findUnique({ where: { slug } });
+  if (!cat) {
+    cat = await prisma.category.create({ data: data as any });
+    console.log(`✔ Created category: ${slug}`);
+  } else {
+    console.log(`  Category already exists: ${slug} — skipping`);
+  }
+  return cat;
+}
+
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("🌱 Seeding database (idempotent — never deletes existing data)...\n");
 
-  // ── Clean existing data ────────────────────────────
-  await prisma.review.deleteMany();
-  await prisma.wishlistItem.deleteMany();
-  await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
-  await prisma.cartItem.deleteMany();
-  await prisma.cart.deleteMany();
-  await prisma.productVariant.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.category.deleteMany();
-  await prisma.coupon.deleteMany();
-  await prisma.address.deleteMany();
-  await prisma.user.deleteMany();
+  // ── Admin User ────────────────────────────────────────
+  let admin = await prisma.user.findUnique({ where: { email: "admin@dreamstardc.com" } });
+  if (!admin) {
+    admin = await prisma.user.create({
+      data: {
+        email: "admin@dreamstardc.com",
+        passwordHash: hashPassword("admin123"),
+        firstName: "Dream",
+        lastName: "Admin",
+        role: "ADMIN",
+      },
+    });
+    console.log(`✔ Admin user created: ${admin.email}`);
+  } else {
+    console.log(`  Admin user already exists: ${admin.email} — skipping`);
+  }
 
-  // ── Users ──────────────────────────────────────────
-  const admin = await prisma.user.create({
-    data: {
-      email: "admin@dreamstardc.com",
-      passwordHash: hashPassword("admin123"),
-      firstName: "Dream",
-      lastName: "Admin",
-      role: "ADMIN",
-    },
-  });
-  console.log(`✔ Admin user: ${admin.email}`);
-
-  // ── Categories ─────────────────────────────────────
+  // ── Categories ─────────────────────────────────────────
+  console.log("");
 
   // Main categories
-  const apparel = await prisma.category.create({
-    data: { name: "Apparel", slug: "apparel", description: "Premium automotive lifestyle apparel", image: "/images/categories/apparel.jpg" },
+  const apparel = await findOrCreateCategory("apparel", {
+    name: "Apparel", slug: "apparel",
+    description: "Premium automotive lifestyle apparel",
+    image: "/images/categories/apparel.jpg",
   });
-  const accessories = await prisma.category.create({
-    data: { name: "Accessories", slug: "accessories", description: "JDM-inspired accessories and lifestyle goods", image: "/images/categories/accessories.jpg" },
+  const accessories = await findOrCreateCategory("accessories", {
+    name: "Accessories", slug: "accessories",
+    description: "JDM-inspired accessories and lifestyle goods",
+    image: "/images/categories/accessories.jpg",
   });
-  const dsPerformance = await prisma.category.create({
-    data: { name: "DS Performance", slug: "ds-performance", description: "High-performance rotary & 2JZ parts", image: "/images/categories/ds-performance.jpg" },
+  const dsPerformance = await findOrCreateCategory("ds-performance", {
+    name: "DS Performance", slug: "ds-performance",
+    description: "High-performance rotary & 2JZ parts",
+    image: "/images/categories/ds-performance.jpg",
   });
 
   // Apparel subcategories
-  const apparelMens = await prisma.category.create({
-    data: { name: "Men's", slug: "apparel-mens", description: "Men's shirts and apparel", parentId: apparel.id },
+  const apparelMens = await findOrCreateCategory("apparel-mens", {
+    name: "Men's", slug: "apparel-mens",
+    description: "Men's shirts and apparel", parentId: apparel.id,
   });
-  const apparelWomens = await prisma.category.create({
-    data: { name: "Women's", slug: "apparel-womens", description: "Women's shirts and apparel", parentId: apparel.id },
+  const apparelWomens = await findOrCreateCategory("apparel-womens", {
+    name: "Women's", slug: "apparel-womens",
+    description: "Women's shirts and apparel", parentId: apparel.id,
   });
-  const apparelUnisex = await prisma.category.create({
-    data: { name: "Unisex", slug: "apparel-unisex", description: "Unisex outerwear and accessories", parentId: apparel.id },
+  const apparelUnisex = await findOrCreateCategory("apparel-unisex", {
+    name: "Unisex", slug: "apparel-unisex",
+    description: "Unisex outerwear and accessories", parentId: apparel.id,
   });
 
   // DS Performance subcategories
@@ -83,11 +96,10 @@ async function main() {
 
   const perfCats: Record<string, any> = {};
   for (const sub of perfSubcategories) {
-    perfCats[sub.slug] = await prisma.category.create({
-      data: { ...sub, parentId: dsPerformance.id },
+    perfCats[sub.slug] = await findOrCreateCategory(sub.slug, {
+      ...sub, parentId: dsPerformance.id,
     });
   }
-  console.log(`✔ DS Performance: ${perfSubcategories.length} subcategories`);
 
   // Accessories subcategories
   const accSubcategories = [
@@ -101,13 +113,17 @@ async function main() {
 
   const accCats: Record<string, any> = {};
   for (const sub of accSubcategories) {
-    accCats[sub.slug] = await prisma.category.create({
-      data: { name: sub.name, slug: sub.slug, description: `${sub.name} for your ride`, parentId: accessories.id },
+    accCats[sub.slug] = await findOrCreateCategory(sub.slug, {
+      name: sub.name, slug: sub.slug,
+      description: `${sub.name} for your ride`,
+      parentId: accessories.id,
     });
   }
-  console.log(`✔ Accessories: ${accSubcategories.length} subcategories`);
 
-  // ── Products: The 10 REAL products ─────────────────
+  // ── Products: The 10 REAL products ──────────────────────
+  console.log("");
+  const newProductSkus: Set<string> = new Set();
+
   const realProducts = [
     {
       name: "Men's DS Shirt - Crew Neck",
@@ -292,11 +308,17 @@ async function main() {
   ];
 
   for (const p of realProducts) {
-    await prisma.product.create({ data: p as any });
+    const existing = await prisma.product.findUnique({ where: { sku: p.sku } });
+    if (existing) {
+      console.log(`  Product already exists: ${p.sku} — skipping`);
+    } else {
+      await prisma.product.create({ data: p as any });
+      newProductSkus.add(p.sku);
+      console.log(`✔ Product created: ${p.sku}`);
+    }
   }
-  console.log(`✔ ${realProducts.length} real products seeded`);
 
-  // ── Additional sample products ─────────────────────
+  // ── Additional sample products ──────────────────────────
   const sampleProducts = [
     // --- DS Performance: RX-7 FC ---
     {
@@ -833,13 +855,19 @@ async function main() {
   ];
 
   for (const p of sampleProducts) {
-    await prisma.product.create({ data: p as any });
+    const existing = await prisma.product.findUnique({ where: { sku: p.sku } });
+    if (existing) {
+      console.log(`  Product already exists: ${p.sku} — skipping`);
+    } else {
+      await prisma.product.create({ data: p as any });
+      newProductSkus.add(p.sku);
+      console.log(`✔ Product created: ${p.sku}`);
+    }
   }
-  console.log(`✔ ${sampleProducts.length} sample products seeded`);
 
-  // ── Product Variants for Apparel ───────────────────
-  // Add size/color variants for the main apparel items
-  const apparelProductIds = realProducts.map((p: any) => p.sku);
+  // ── Product Variants for Apparel ────────────────────────
+  // Only create variants for newly-created apparel products
+  console.log("");
   const sizes = ["S", "M", "L", "XL", "2XL"];
   const colors: Record<string, string[]> = {
     "DS-M-CRW-001": ["Black", "Charcoal", "White"],
@@ -855,18 +883,30 @@ async function main() {
   };
 
   let variantCount = 0;
-  for (const p of realProducts) {
-    const product = await prisma.product.findUnique({ where: { sku: p.sku } });
+  for (const sku of newProductSkus) {
+    const productColors = colors[sku];
+    if (!productColors) continue; // not an apparel product with variants
+
+    const product = await prisma.product.findUnique({ where: { sku } });
     if (!product) continue;
-    const productColors = colors[p.sku] || ["Black"];
+
+    // Find the original product definition to get the base price
+    const allProducts = [...realProducts, ...sampleProducts] as any[];
+    const productDef = allProducts.find((p: any) => p.sku === sku);
+    const basePrice = productDef?.price ?? product.price;
+
     for (const size of sizes) {
       for (const color of productColors) {
+        const variantSku = `${sku}-${size}-${color.substring(0, 3).toUpperCase()}`;
+        const existingVariant = await prisma.productVariant.findUnique({ where: { sku: variantSku } });
+        if (existingVariant) continue; // variant already exists
+
         await prisma.productVariant.create({
           data: {
             productId: product.id,
             name: `${size} / ${color}`,
-            sku: `${p.sku}-${size}-${color.substring(0, 3).toUpperCase()}`,
-            price: p.price,
+            sku: variantSku,
+            price: basePrice,
             inventory: Math.floor(Math.random() * 30) + 5,
           },
         });
@@ -874,38 +914,53 @@ async function main() {
       }
     }
   }
-  console.log(`✔ ${variantCount} product variants seeded`);
+  if (variantCount > 0) {
+    console.log(`✔ ${variantCount} product variants created`);
+  } else {
+    console.log("  No new product variants to create");
+  }
 
-  // ── Coupons ────────────────────────────────────────
-  await prisma.coupon.create({
-    data: {
-      code: "WELCOME10",
-      discountType: "PERCENTAGE",
-      discountValue: 10,
-      minOrderAmount: 25.00,
-      maxUses: 1000,
-      currentUses: 0,
-      isActive: true,
-      expiresAt: new Date("2027-12-31"),
-    },
-  });
-  console.log("✔ Coupon: WELCOME10 (10% off)");
+  // ── Coupons ─────────────────────────────────────────────
+  console.log("");
+  const couponW10 = await prisma.coupon.findUnique({ where: { code: "WELCOME10" } });
+  if (!couponW10) {
+    await prisma.coupon.create({
+      data: {
+        code: "WELCOME10",
+        discountType: "PERCENTAGE",
+        discountValue: 10,
+        minOrderAmount: 25.00,
+        maxUses: 1000,
+        currentUses: 0,
+        isActive: true,
+        expiresAt: new Date("2027-12-31"),
+      },
+    });
+    console.log("✔ Coupon created: WELCOME10 (10% off)");
+  } else {
+    console.log("  Coupon already exists: WELCOME10 — skipping");
+  }
 
-  await prisma.coupon.create({
-    data: {
-      code: "FREESHIP",
-      discountType: "FIXED",
-      discountValue: 0,
-      minOrderAmount: 75.00,
-      maxUses: 500,
-      currentUses: 0,
-      isActive: true,
-      expiresAt: new Date("2027-12-31"),
-    },
-  });
-  console.log("✔ Coupon: FREESHIP (free shipping over $75)");
+  const couponFS = await prisma.coupon.findUnique({ where: { code: "FREESHIP" } });
+  if (!couponFS) {
+    await prisma.coupon.create({
+      data: {
+        code: "FREESHIP",
+        discountType: "FIXED",
+        discountValue: 0,
+        minOrderAmount: 75.00,
+        maxUses: 500,
+        currentUses: 0,
+        isActive: true,
+        expiresAt: new Date("2027-12-31"),
+      },
+    });
+    console.log("✔ Coupon created: FREESHIP (free shipping over $75)");
+  } else {
+    console.log("  Coupon already exists: FREESHIP — skipping");
+  }
 
-  console.log("\n✅ Seed complete!");
+  console.log("\n✅ Seed complete (idempotent — safe to run anytime)!");
 }
 
 main()
