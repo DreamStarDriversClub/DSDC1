@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { Product, ProductVariant, Review, Category, User } from "@prisma/client";
+import type { Product, ProductVariant, Review, Category } from "@prisma/client";
 
 /* ── Types ───────────────────────────────────────────────── */
 
@@ -14,10 +14,10 @@ interface ShopProductReview {
   id: string;
   rating: number;
   title: string | null;
-  body: string | null;
-  user: {
-    firstName: string;
-  };
+  body: string;
+  authorName: string;
+  verified: boolean;
+  createdAt: string;
 }
 
 export interface ShopProduct {
@@ -73,14 +73,17 @@ export async function getProductBySlug(
           select: { id: true, name: true, price: true, inventory: true },
         },
         reviews: {
-          where: { isApproved: true },
+          where: { published: true },
           select: {
             id: true,
             rating: true,
             title: true,
             body: true,
-            user: { select: { firstName: true } },
+            authorName: true,
+            verified: true,
+            createdAt: true,
           },
+          orderBy: { createdAt: "desc" },
         },
       },
     });
@@ -100,7 +103,10 @@ export async function getProductBySlug(
         ...v,
         price: parseFloat(v.price.toString()),
       })),
-      reviews: product.reviews,
+      reviews: product.reviews.map((r) => ({
+        ...r,
+        createdAt: r.createdAt.toISOString(),
+      })),
       source: "database" as const,
     };
   } catch (error) {

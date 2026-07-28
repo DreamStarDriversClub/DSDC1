@@ -5,7 +5,6 @@ import { BRAND_NAME } from "@/lib/constants";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
-import { Card } from "@/components/ui/Card";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ProductForm } from "@/components/shop/ProductForm";
 import { StickyAddToCart } from "@/components/shop/StickyAddToCart";
@@ -13,8 +12,8 @@ import { ProductImageGallery } from "@/components/shop/ProductImageGallery";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
 import { WishlistHeart } from "@/components/shop/WishlistHeart";
+import { ReviewsSection } from "@/components/shop/ReviewsSection";
 import { formatPrice } from "@/lib/utils";
-import Link from "next/link";
 
 /* ── Dynamic Params ─────────────────────────────────────── */
 
@@ -87,14 +86,6 @@ export default async function ProductDetailPage({ params }: Props) {
     product.source,
     4,
   );
-
-  // Compute reviews
-  const baseReviewCount = product.reviews.length;
-  const avgRating =
-    baseReviewCount > 0
-      ? product.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        baseReviewCount
-      : 0;
 
   // Category badge variant
   const badgeVariant = product.category.slug.startsWith("acc")
@@ -184,28 +175,6 @@ export default async function ProductDetailPage({ params }: Props) {
                   </span>
                 )}
               </div>
-
-              {/* Rating summary */}
-              {baseReviewCount > 0 && (
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`h-4 w-4 ${i < Math.round(avgRating) ? "text-ds-gold" : "text-ds-gray-700"}`}
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-sm text-ds-gray-400">
-                    {avgRating.toFixed(1)} ({baseReviewCount} review
-                    {baseReviewCount !== 1 ? "s" : ""})
-                  </span>
-                </div>
-              )}
 
               <div className="mt-6 h-px bg-white/[0.08]" />
 
@@ -302,62 +271,9 @@ export default async function ProductDetailPage({ params }: Props) {
             <div className="mb-12">
               <h2 className="font-display text-2xl font-bold text-ds-white mb-4">
                 Reviews
-                {baseReviewCount > 0 && (
-                  <span className="ml-2 text-lg text-ds-gray-400">
-                    ({baseReviewCount})
-                  </span>
-                )}
               </h2>
               <div className="h-[3px] w-8 rounded-full bg-ds-red mb-6" />
-
-              {baseReviewCount > 0 ? (
-                <div className="space-y-4">
-                  {product.reviews.map((review) => (
-                    <Card
-                      key={review.id}
-                      padding="md"
-                      className="flex flex-col"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-ds-red/20 text-xs font-bold text-ds-red">
-                          {review.user.firstName[0]}
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-ds-white">
-                            {review.user.firstName}
-                          </p>
-                          <div className="mt-0.5 flex gap-0.5">
-                            {Array.from({ length: 5 }).map((_, i) => (
-                              <svg
-                                key={i}
-                                className={`h-3 w-3 ${i < review.rating ? "text-ds-gold" : "text-ds-gray-700"}`}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                              </svg>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                      {review.title && (
-                        <p className="mt-3 text-sm font-semibold text-ds-gray-200">
-                          {review.title}
-                        </p>
-                      )}
-                      {review.body && (
-                        <p className="mt-1 text-sm text-ds-gray-300">
-                          {review.body}
-                        </p>
-                      )}
-                    </Card>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-ds-gray-400">
-                  No reviews yet. Be the first to review this product!
-                </p>
-              )}
+              <ReviewsSection productId={product.id} />
             </div>
           </div>
         </Container>
