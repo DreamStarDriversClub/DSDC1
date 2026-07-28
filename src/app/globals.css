@@ -120,6 +120,48 @@
   .animate-fill-both {
     animation-fill-mode: both;
   }
+
+  /* ── Brand Visual Effects ──────────────────────────── */
+
+  /* Hero background grid pattern */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(220, 38, 38, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220, 38, 38, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* Frosted glass navbar effect */
+  .glass {
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Hide scrollbar for horizontal scroll sections */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Static text gradient (non-animated) */
+  .text-gradient-static {
+    background: linear-gradient(135deg, #dc2626 0%, #f87171 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Opacity start state for scroll-triggered animations */
+  .opacity-start {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
 }
 
 /* ── Reduced Motion ─────────────────────────────────────── */
