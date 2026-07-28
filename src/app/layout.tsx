@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
+import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -56,6 +57,7 @@ export default async function RootLayout({
             <Navbar session={session} />
             {/* Spacer for fixed navbar */}
             <div className="h-[73px]" />
+            <PageViewTracker />
             <main>{children}</main>
             <Footer />
             <ScrollToTop />

@@ -27,33 +27,46 @@ interface Stats {
   totalProducts: number;
 }
 
+interface TrafficData {
+  todayViews: number;
+  weekViews: number;
+  totalViews: number;
+  uniqueSessions: number;
+  topPages: { path: string; views: number; percentage: string }[];
+  dailyViews: { date: string; count: number }[];
+}
+
 export function AnalyticsDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [revenue, setRevenue] = useState<RevenueMonth[]>([]);
   const [topProducts, setTopProducts] = useState<TopProduct[]>([]);
   const [orderStatuses, setOrderStatuses] = useState<OrderStatus[]>([]);
+  const [traffic, setTraffic] = useState<TrafficData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      const [statsRes, revRes, prodRes, statusRes] = await Promise.all([
+      const [statsRes, revRes, prodRes, statusRes, trafficRes] = await Promise.all([
         fetch("/api/admin/stats"),
         fetch("/api/admin/analytics/revenue"),
         fetch("/api/admin/analytics/top-products"),
         fetch("/api/admin/analytics/order-status"),
+        fetch("/api/admin/analytics/traffic"),
       ]);
 
       const statsData = await statsRes.json();
       const revData = await revRes.json();
       const prodData = await prodRes.json();
       const statusData = await statusRes.json();
+      const trafficData = await trafficRes.json();
 
       setStats(statsData);
       setRevenue(revData.revenue ?? []);
       setTopProducts(prodData.products ?? []);
       setOrderStatuses(statusData.statuses ?? []);
+      setTraffic(trafficData);
     } catch {
       setError("Failed to load analytics");
     } finally {
@@ -92,6 +105,66 @@ export function AnalyticsDashboard() {
       {error && (
         <div className="rounded-lg border border-ds-red/30 bg-ds-red/10 px-4 py-3 text-sm text-ds-red-400">
           {error}
+        </div>
+      )}
+
+      {/* Traffic Stats */}
+      {traffic && (
+        <div className="space-y-6">
+          <div>
+            <h2 className="mb-1 text-lg font-bold tracking-tight text-ds-white">Traffic</h2>
+            <p className="text-xs text-ds-gray-500">Site traffic overview</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard label="Today's Views" value={traffic.todayViews.toLocaleString()} />
+            <StatCard label="This Week" value={traffic.weekViews.toLocaleString()} />
+            <StatCard label="Total Views" value={traffic.totalViews.toLocaleString()} />
+            <StatCard label="Unique Visitors" value={traffic.uniqueSessions.toLocaleString()} />
+          </div>
+
+          {/* Top Pages Table */}
+          <div className="rounded-xl border border-white/[0.06] bg-ds-charcoal overflow-hidden">
+            <div className="px-6 py-4 border-b border-white/[0.06]">
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-ds-gray-300">
+                Top Pages
+              </h3>
+            </div>
+            {traffic.topPages.length === 0 ? (
+              <div className="py-12 text-center text-sm text-ds-gray-500">No page view data yet</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-white/[0.06] bg-ds-black/30">
+                      <th className="px-5 py-3 text-left text-xs font-medium uppercase tracking-wider text-ds-gray-500">
+                        Path
+                      </th>
+                      <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-ds-gray-500">
+                        Views
+                      </th>
+                      <th className="px-5 py-3 text-right text-xs font-medium uppercase tracking-wider text-ds-gray-500">
+                        % of Total
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {traffic.topPages.map((p, i) => (
+                      <tr
+                        key={p.path}
+                        className="border-b border-white/[0.03] hover:bg-ds-white/[0.02]"
+                      >
+                        <td className="px-5 py-3 font-mono text-xs text-ds-white">{p.path}</td>
+                        <td className="px-5 py-3 text-right font-semibold text-ds-white">{p.views.toLocaleString()}</td>
+                        <td className="px-5 py-3 text-right text-ds-gray-400">{p.percentage}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <hr className="border-white/[0.06]" />
         </div>
       )}
 

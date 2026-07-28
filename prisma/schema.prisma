@@ -363,6 +363,20 @@ model CommunityEvent {
   updatedAt   DateTime @updatedAt
 }
 
+// ── PageView ───────────────────────────────────────────
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  sessionId String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([path])
+  @@index([sessionId])
+}
+
 // ── Review ─────────────────────────────────────────────
 
 model Review {
