@@ -71,6 +71,38 @@ export const QUIZ_QUESTIONS: QuizQuestion[] = [
         categoryWeights: { lifestyle: 3, apparel: 2 },
         styleTags: ["ev", "futuristic", "innovator"],
       },
+      {
+        id: "sr20",
+        label: "SR20DET",
+        emoji: "🐌",
+        description: "Nissan's turbo four-cylinder icon. The S-chassis heartbeat.",
+        categoryWeights: { performance: 3, accessories: 1 },
+        styleTags: ["sr20", "turbo", "grassroots"],
+      },
+      {
+        id: "rb26",
+        label: "RB26DETT",
+        emoji: "👑",
+        description: "The Godzilla engine. Twin-turbo straight-six dominance.",
+        categoryWeights: { performance: 3, lifestyle: 2 },
+        styleTags: ["rb26", "power", "iconic", "legend"],
+      },
+      {
+        id: "4g63",
+        label: "4G63",
+        emoji: "💨",
+        description: "Mitsubishi's rally-bred beast. Evo heart, DSMs, and boost for days.",
+        categoryWeights: { performance: 3, apparel: 1 },
+        styleTags: ["4g63", "turbo", "rally", "aggressive"],
+      },
+      {
+        id: "bseries",
+        label: "B-Series",
+        emoji: "🏎️",
+        description: "Honda's high-revving masterpiece. B16, B18 — VTEC symphony.",
+        categoryWeights: { performance: 2, accessories: 2 },
+        styleTags: ["bseries", "vtec", "lightweight", "classic"],
+      },
     ],
   },
   {
@@ -321,6 +353,28 @@ export const QUIZ_ARCHETYPES: QuizArchetype[] = [
     styleTags: ["meet", "rotary", "show-car", "eurobeat", "full-collection", "purist", "social"],
     recommendedCategories: ["apparel", "accessories", "ds-performance"],
     recommendedSlugs: ["rotary-spirit-tee", "rotary-rebuild-gasket-kit", "dream-star-snapback"],
+  },
+  {
+    id: "rb26-godzilla",
+    name: "RB26 Godzilla",
+    tagline: "Twin turbos. Six cylinders. One legend.",
+    vibeEmoji: "👑",
+    description:
+      "You don't build cars — you build monuments. Your RB26-powered machine is the stuff of posters and wallpaper collections. Twin-turbo straight-six thunder, street demon aesthetics, and a presence that makes crowds part like the Red Sea. Phonk beats set the mood as you cruise the city, and your Dream Star accessories are the finishing touches on an icon. Godzilla doesn't hide — it prowls.",
+    styleTags: ["city", "rb26", "street-demon", "phonk", "accessories-first", "power", "legend", "iconic"],
+    recommendedCategories: ["accessories", "ds-performance"],
+    recommendedSlugs: ["ds-performance-keychain", "jdm-sticker-pack", "2jz-legends-hoodie"],
+  },
+  {
+    id: "garage-hero",
+    name: "Garage Hero",
+    tagline: "Built in a garage. Proven on the street.",
+    vibeEmoji: "🐌",
+    description:
+      "Your build was assembled late at night with greasy hands, cheap pizza, and YouTube tutorials blasting in the background. SR20, 4G63, B-Series — you respect all four-cylinder warriors. Grassroots drift days, parking lot meets, and a car that's never truly 'finished.' You need DS gear that can handle wrenching sessions and still look fresh at the meet.",
+    styleTags: ["meet", "sr20", "4g63", "bseries", "turbo", "grassroots", "oem-plus", "lofi"],
+    recommendedCategories: ["apparel", "accessories"],
+    recommendedSlugs: ["2jz-legends-hoodie", "dream-star-snapback", "jdm-sticker-pack"],
   },
 ];
 
