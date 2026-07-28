@@ -179,6 +179,7 @@ export interface PrintfulSyncVariant {
   external_id: string;
   sync_product_id: number;
   name: string;
+  variant_id: number;
   size: string;
   color: string;
   retail_price: string;
