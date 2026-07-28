@@ -76,6 +76,7 @@ export default async function AllProductsPage({
     });
 
     mappedProducts = products.map((p) => ({
+      id: p.id,
       slug: p.slug,
       name: p.name,
       price: parseFloat(p.price.toString()),
@@ -100,6 +101,7 @@ export default async function AllProductsPage({
         );
       }
       printfulProducts = pfProducts.map((p) => ({
+        id: p.id,
         slug: p.slug,
         name: p.name,
         price: p.price,

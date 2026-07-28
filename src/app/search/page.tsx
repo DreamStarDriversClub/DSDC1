@@ -24,6 +24,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const query = searchParams.q?.trim() || "";
 
   let products: Array<{
+    id?: string;
     slug: string;
     name: string;
     price: number | { toString(): string };
@@ -51,6 +52,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     });
 
     products = results.map((p) => ({
+      id: p.id,
       slug: p.slug,
       name: p.name,
       price: p.price,

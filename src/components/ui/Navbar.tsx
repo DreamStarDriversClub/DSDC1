@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { NAV_LINKS } from "@/lib/constants";
 import { useCart } from "@/lib/cart-context";
+import { useWishlist } from "@/lib/wishlist-context";
 import { logoutAction } from "@/lib/auth-actions";
 import { CartDrawer } from "./CartDrawer";
 import { MobileNav } from "./MobileNav";
@@ -26,6 +27,7 @@ export function Navbar({ session }: { session: SessionUser }) {
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { itemCount: cartCount } = useCart();
+  const { itemCount: wishlistCount } = useWishlist();
   const router = useRouter();
 
   useEffect(() => {
@@ -159,6 +161,32 @@ export function Navbar({ session }: { session: SessionUser }) {
                 />
               </svg>
             </button>
+
+            {/* Wishlist / My Garage */}
+            <Link
+              href="/wishlist"
+              className="relative rounded-lg p-2 text-ds-gray-300 transition-colors hover:bg-ds-white/5 hover:text-ds-white"
+              aria-label="My Garage"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                />
+              </svg>
+              {wishlistCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-ds-red px-1 text-[10px] font-bold text-white">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
 
             {/* Cart */}
             <button

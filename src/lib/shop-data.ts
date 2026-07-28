@@ -45,6 +45,7 @@ export interface ShopProduct {
 }
 
 export interface ShopProductCard {
+  id: string;
   slug: string;
   name: string;
   price: number;
@@ -131,6 +132,7 @@ export async function getRelatedProducts(
     });
 
     return products.map((p) => ({
+      id: p.id,
       slug: p.slug,
       name: p.name,
       price: parseFloat(p.price.toString()),
@@ -207,6 +209,7 @@ export async function getAllPrintfulProducts(): Promise<ShopProductCard[]> {
     const priceMap = await getMinPricesByPrintfulId(ids);
 
     return products.map((p) => ({
+      id: `printful-${p.printfulId}`,
       slug: `printful-${p.printfulId}`,
       name: p.name,
       price: priceMap[p.printfulId] ?? 29.99,
@@ -235,6 +238,7 @@ export async function getPrintfulProductsByCategory(
 
     return products
       .map((p) => ({
+        id: `printful-${p.printfulId}`,
         slug: `printful-${p.printfulId}`,
         name: p.name,
         price: priceMap[p.printfulId] ?? 29.99,
@@ -322,6 +326,7 @@ export async function getPrintfulFeaturedProducts(): Promise<ShopProductCard[]> 
     const priceMap = await getMinPricesByPrintfulId(ids);
 
     return products.map((p) => ({
+      id: `printful-${p.printfulId}`,
       slug: `printful-${p.printfulId}`,
       name: p.name,
       price: priceMap[p.printfulId] ?? 29.99,

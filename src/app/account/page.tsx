@@ -8,7 +8,8 @@ export default async function AccountPage() {
 
   const [orderCount, wishlistCount, recentOrders] = await Promise.all([
     prisma.order.count({ where: { userId: user.id } }),
-    prisma.wishlistItem.count({ where: { userId: user.id } }),
+    // Wishlist count now uses session-based model — set to 0 for account page
+    prisma.wishlistItem.count({ where: { sessionId: user.id } }),
     prisma.order.findMany({
       where: { userId: user.id },
       orderBy: { createdAt: "desc" },

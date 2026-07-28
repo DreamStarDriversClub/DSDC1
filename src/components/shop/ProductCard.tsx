@@ -2,10 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
+import { WishlistHeart } from "@/components/shop/WishlistHeart";
 import { formatPrice, productGradient } from "@/lib/utils";
 import { toWebpPath } from "@/lib/images";
 
 interface ProductCardData {
+  id?: string;
   slug: string;
   name: string;
   price: number | { toString(): string };
@@ -107,6 +109,20 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
           {salePrice && (
             <div className="absolute left-3 top-3">
               <Badge variant="red" size="sm">Sale</Badge>
+            </div>
+          )}
+          {/* Wishlist heart */}
+          {product.id && (
+            <div className="absolute right-2 top-2 z-20">
+              <WishlistHeart
+                productId={product.id}
+                productName={product.name}
+                productImage={productImage}
+                productPrice={Math.round(price * 100)}
+                productCategory={product.category?.name ?? "Apparel"}
+                size="sm"
+                className="bg-ds-black/60 backdrop-blur-sm rounded-full"
+              />
             </div>
           )}
         </div>

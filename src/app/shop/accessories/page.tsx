@@ -73,6 +73,7 @@ export default async function AccessoriesPage({
       });
 
       mappedProducts = products.map((p) => ({
+        id: p.id,
         slug: p.slug,
         name: p.name,
         price: parseFloat(p.price.toString()),
@@ -93,6 +94,7 @@ export default async function AccessoriesPage({
     if (hasPrintful) {
       const pfProducts = await getPrintfulProductsByCategory("accessories");
       printfulProducts = pfProducts.map((p) => ({
+        id: p.id,
         slug: p.slug,
         name: p.name,
         price: p.price,

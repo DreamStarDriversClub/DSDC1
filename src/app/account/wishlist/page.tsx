@@ -1,8 +1,7 @@
-import { getAuthenticatedUser } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import WishlistClient from "./WishlistClient";
 import type { Metadata } from "next";
-import { BRAND_NAME } from "@/lib/constants";
+import Link from "next/link";
+import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
 
 export const metadata: Metadata = {
   title: "Wishlist",
@@ -11,31 +10,16 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function WishlistPage() {
-  const user = await getAuthenticatedUser();
-  if (!user) return null;
-
-  const items = await prisma.wishlistItem.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-    include: {
-      product: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-          price: true,
-          salePrice: true,
-          images: true,
-          inventory: true,
-        },
-      },
-    },
-  });
-
+export default function WishlistPage() {
   return (
-    <WishlistClient
-      items={JSON.parse(JSON.stringify(items))}
-    />
+    <Container className="py-16 text-center">
+      <h1 className="font-display text-2xl font-bold text-ds-white mb-4">My Garage</h1>
+      <p className="text-ds-gray-400 mb-8">
+        Visit the new My Garage page to see your saved items.
+      </p>
+      <Link href="/wishlist">
+        <Button>Go to My Garage</Button>
+      </Link>
+    </Container>
   );
 }

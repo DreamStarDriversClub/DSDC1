@@ -60,6 +60,7 @@ export default async function PerformancePage({
     : [];
 
   const mappedProducts = products.map((p) => ({
+    id: p.id,
     slug: p.slug,
     name: p.name,
     price: parseFloat(p.price.toString()),

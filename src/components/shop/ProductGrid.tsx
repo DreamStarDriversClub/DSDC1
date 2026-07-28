@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/shop/ProductCard";
 
 interface ProductGridProduct {
+  id?: string;
   slug: string;
   name: string;
   price: number | { toString(): string };

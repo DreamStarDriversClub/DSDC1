@@ -1,33 +1,13 @@
 "use server";
 
-import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
-import { revalidatePath } from "next/cache";
+// Wishlist server actions are now handled via the /api/wishlist routes
+// and the WishlistProvider context (client-side). This file is retained
+// as a stub for any future server-side wishlist operations.
 
-export async function removeFromWishlistAction(productId: string) {
-  const session = await getSession();
-  if (!session) return;
-
-  await prisma.wishlistItem.deleteMany({
-    where: { userId: session.userId, productId },
-  });
-
-  revalidatePath("/account/wishlist");
+export async function removeFromWishlistAction(_productId: string) {
+  // Handled client-side via WishlistContext
 }
 
-export async function addToWishlistAction(productId: string) {
-  const session = await getSession();
-  if (!session) return;
-
-  const existing = await prisma.wishlistItem.findUnique({
-    where: { userId_productId: { userId: session.userId, productId } },
-  });
-
-  if (!existing) {
-    await prisma.wishlistItem.create({
-      data: { userId: session.userId, productId },
-    });
-  }
-
-  revalidatePath("/account/wishlist");
+export async function addToWishlistAction(_productId: string) {
+  // Handled client-side via WishlistContext
 }

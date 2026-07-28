@@ -10,6 +10,7 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { ProductForm } from "@/components/shop/ProductForm";
 import { StickyAddToCart } from "@/components/shop/StickyAddToCart";
 import { ProductImageGallery } from "@/components/shop/ProductImageGallery";
+import { WishlistHeart } from "@/components/shop/WishlistHeart";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
 import { formatPrice } from "@/lib/utils";
@@ -142,11 +143,23 @@ export default async function ProductDetailPage({ params }: Props) {
 
             {/* Right: Product Info */}
             <div>
-              {/* Category badge */}
-              <div className="mb-3">
+              {/* Category badge + Wishlist */}
+              <div className="mb-3 flex items-center justify-between">
                 <Badge variant={badgeVariant} size="sm">
                   {product.category.name}
                 </Badge>
+                <WishlistHeart
+                  productId={product.id}
+                  productName={product.name}
+                  productImage={
+                    Array.isArray(product.images) && product.images.length > 0
+                      ? product.images[0]
+                      : null
+                  }
+                  productPrice={Math.round((product.salePrice ?? product.price) * 100)}
+                  productCategory={product.category.name}
+                  size="lg"
+                />
               </div>
 
               <h1 className="font-display text-3xl font-black tracking-tight text-ds-white sm:text-4xl">
@@ -365,6 +378,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 <ProductCard
                   key={p.slug}
                   product={{
+                    id: p.id,
                     slug: p.slug,
                     name: p.name,
                     price: p.price,

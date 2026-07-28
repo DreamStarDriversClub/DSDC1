@@ -32,7 +32,7 @@ export default async function ShopPage() {
   }
 
   // Fetch featured products from Product table
-  let featured: { slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean; images?: unknown }[] = [];
+  let featured: { id?: string; slug: string; name: string; price: number; salePrice: number | null; category: { name: string; slug: string }; isFeatured: boolean; images?: unknown }[] = [];
   try {
     const dbFeatured = await prisma.product.findMany({
       where: { isFeatured: true, isActive: true },
@@ -41,6 +41,7 @@ export default async function ShopPage() {
       orderBy: { createdAt: "desc" },
     });
     featured = dbFeatured.map((p) => ({
+      id: p.id,
       slug: p.slug,
       name: p.name,
       price: parseFloat(p.price.toString()),
@@ -60,6 +61,7 @@ export default async function ShopPage() {
     if (hasPrintful) {
       const pfProducts = await getAllPrintfulProducts();
       printfulProducts = pfProducts.map((p) => ({
+        id: p.id,
         slug: p.slug,
         name: p.name,
         price: p.price,
@@ -168,6 +170,7 @@ export default async function ShopPage() {
                 <ProductCard
                   key={i}
                   product={{
+                    id: product.id,
                     slug: product.slug,
                     name: product.name,
                     price: product.price,
