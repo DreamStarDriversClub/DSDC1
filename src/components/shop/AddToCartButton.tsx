@@ -12,6 +12,7 @@ interface AddToCartButtonProps {
   sku: string;
   price: number;
   variantName?: string;
+  image?: string;
   disabled?: boolean;
   className?: string;
 }
@@ -24,6 +25,7 @@ export function AddToCartButton({
   sku,
   price,
   variantName,
+  image,
   disabled = false,
   className = "",
 }: AddToCartButtonProps) {
@@ -43,6 +45,7 @@ export function AddToCartButton({
       price,
       quantity: 1,
       variantName,
+      image,
     });
 
     setAdded(true);

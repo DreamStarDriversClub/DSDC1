@@ -2,8 +2,10 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
+import { toWebpPath } from "@/lib/images";
 import { Button } from "./Button";
 
 interface CartDrawerProps {
@@ -138,11 +140,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     >
                       <div className="flex h-full items-center justify-center">
                         {item.image ? (
-                          <img
-                            src={item.image}
+                          <Image
+                            src={toWebpPath(`/images/products/${item.image}`)}
                             alt={item.name}
+                            width={80}
+                            height={80}
                             className="h-full w-full object-cover"
-                            loading="lazy"
                           />
                         ) : (
                           <svg
@@ -294,11 +297,12 @@ function EmptyCart({ onClose }: { onClose: () => void }) {
       {/* Hoshi mascot */}
       <div className="relative">
         <div className="flex h-28 w-28 items-center justify-center rounded-full border-2 border-ds-red/20 bg-ds-black">
-          <img
+          <Image
             src="/hoshi-shopping.png"
             alt="Hoshi — your cart is empty"
+            width={96}
+            height={96}
             className="h-24 w-24 object-contain"
-            loading="lazy"
           />
         </div>
         {/* Subtle glow */}
