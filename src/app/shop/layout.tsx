@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
 import { TrustBar } from "@/components/shop/TrustBar";
+import { QuickViewProvider } from "@/components/shop/QuickViewProvider";
+import { QuickViewModal } from "@/components/shop/QuickViewModal";
 
 export const metadata: Metadata = {
   title: "Shop All",
@@ -17,9 +19,10 @@ export default function ShopLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <QuickViewProvider>
       {children}
+      <QuickViewModal />
       <TrustBar />
-    </>
+    </QuickViewProvider>
   );
 }

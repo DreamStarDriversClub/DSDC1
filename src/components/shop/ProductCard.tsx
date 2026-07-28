@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
@@ -5,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { formatPrice, productGradient } from "@/lib/utils";
 import { toWebpPath } from "@/lib/images";
 import { WishlistHeart } from "@/components/shop/WishlistHeart";
+import { useQuickView } from "@/components/shop/QuickViewProvider";
 
 interface ProductCardData {
   slug: string;
@@ -23,6 +26,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, badgeVariant = "red", priority }: ProductCardProps) {
+  const { openQuickView } = useQuickView();
   const price = typeof product.price === "number" ? product.price : parseFloat(product.price.toString());
   const salePrice = product.salePrice
     ? typeof product.salePrice === "number"
@@ -49,7 +53,19 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
   const productImage = images.length > 0 ? images[0] : null;
 
   return (
-    <Link href={`/shop/${product.slug}`} className="group block">
+    <div
+      className="group block cursor-pointer"
+      onClick={() => openQuickView(product)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openQuickView(product);
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Quick view: ${product.name}`}
+    >
       <Card hover padding="none" className="overflow-hidden transition-transform duration-400 ease-out group-hover:scale-[1.02]">
         {/* Product image */}
         <div
@@ -96,14 +112,18 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
           {productImage && (
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ds-black/60 to-transparent" />
           )}
-          {/* View Details overlay */}
-          <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0">
+          {/* View Details overlay — links to full PDP */}
+          <Link
+            href={`/shop/${product.slug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0"
+          >
             <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
               <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
                 View Details
               </span>
             </div>
-          </div>
+          </Link>
           {/* Sale badge */}
           {salePrice && (
             <div className="absolute left-3 top-3">
@@ -111,7 +131,10 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
             </div>
           )}
           {/* Wishlist heart */}
-          <div className="absolute right-3 top-3 z-10">
+          <div
+            className="absolute right-3 top-3 z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
             <WishlistHeart
               productId={product.slug}
               productName={product.name}
@@ -133,9 +156,13 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
               <Badge variant="gold" size="sm">Featured</Badge>
             )}
           </div>
-          <h3 className="font-display text-sm font-bold text-ds-white transition-colors group-hover:text-ds-red">
+          <Link
+            href={`/shop/${product.slug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="font-display text-sm font-bold text-ds-white transition-colors hover:text-ds-red"
+          >
             {product.name}
-          </h3>
+          </Link>
           <div className="mt-2 flex items-center gap-2">
             {salePrice ? (
               <>
@@ -148,6 +175,6 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
           </div>
         </div>
       </Card>
-    </Link>
+    </div>
   );
 }
