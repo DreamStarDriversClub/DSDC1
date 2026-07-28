@@ -9,16 +9,11 @@ import { Button } from "@/components/ui/Button";
 type WishlistItemWithProduct = {
   id: string;
   productId: string;
+  productName: string;
+  productImage: string;
+  productPrice: number;
+  productCategory: string;
   createdAt: string;
-  product: {
-    id: string;
-    name: string;
-    slug: string;
-    price: string;
-    salePrice: string | null;
-    images: unknown;
-    inventory: number;
-  };
 };
 
 export default function WishlistClient({
@@ -39,7 +34,7 @@ export default function WishlistClient({
   const handleAddToCart = async (
     productId: string,
     productName: string,
-    price: string
+    price: number
   ) => {
     setAdding((prev) => new Set(prev).add(productId));
     try {
@@ -50,7 +45,7 @@ export default function WishlistClient({
         name: productName,
         slug: "",
         sku: `SKU-${productId}`,
-        price: parseFloat(price),
+        price: price / 100,
         quantity: 1,
       });
     } finally {
@@ -105,16 +100,9 @@ export default function WishlistClient({
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => {
-            const imageUrl =
-              item.product.images &&
-              Array.isArray(item.product.images) &&
-              typeof item.product.images[0] === "string"
-                ? item.product.images[0]
-                : null;
-            const price = item.product.salePrice
-              ? Number(item.product.salePrice)
-              : Number(item.product.price);
-            const hasSale = !!item.product.salePrice;
+            const imageUrl = item.productImage || null;
+            const price = item.productPrice;
+            const hasSale = false;
 
             return (
               <div
@@ -123,13 +111,13 @@ export default function WishlistClient({
               >
                 {/* Image */}
                 <Link
-                  href={`/shop/${item.product.slug}`}
+                  href={`/shop/${item.productId}`}
                   className="block aspect-square overflow-hidden bg-ds-black-darkgray"
                 >
                   {imageUrl ? (
                     <img
                       src={imageUrl}
-                      alt={item.product.name}
+                      alt={item.productName}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
@@ -145,18 +133,18 @@ export default function WishlistClient({
                 {/* Info */}
                 <div className="p-4">
                   <Link
-                    href={`/shop/${item.product.slug}`}
+                    href={`/shop/${item.productId}`}
                     className="text-sm font-medium text-ds-white hover:text-ds-red transition-colors line-clamp-1"
                   >
-                    {item.product.name}
+                    {item.productName}
                   </Link>
                   <div className="mt-1 flex items-center gap-2">
                     <span className="text-sm font-bold text-ds-white">
-                      ${price.toFixed(2)}
+                      ${(price / 100).toFixed(2)}
                     </span>
                     {hasSale && (
                       <span className="text-xs text-ds-gray-400 line-through">
-                        ${Number(item.product.price).toFixed(2)}
+                        ${(price / 100).toFixed(2)}
                       </span>
                     )}
                   </div>
@@ -167,22 +155,19 @@ export default function WishlistClient({
                       size="sm"
                       className="flex-1"
                       disabled={
-                        item.product.inventory === 0 ||
                         adding.has(item.productId)
                       }
                       onClick={() =>
                         handleAddToCart(
                           item.productId,
-                          item.product.name,
-                          price.toString()
+                          item.productName,
+                          price
                         )
                       }
                     >
                       {adding.has(item.productId)
                         ? "Adding..."
-                        : item.product.inventory === 0
-                          ? "Sold Out"
-                          : "Add to Cart"}
+                        : "Add to Cart"}
                     </Button>
                     <button
                       onClick={() => handleRemove(item.productId)}
