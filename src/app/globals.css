@@ -69,6 +69,70 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  /* ── Animation Delay Utilities ────────────────────── */
+  .animation-delay-0 {
+    animation-delay: 0ms;
+  }
+  .animation-delay-75 {
+    animation-delay: 75ms;
+  }
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+  .animation-delay-700 {
+    animation-delay: 700ms;
+  }
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
+
+  /* ── Animation Duration Utilities ─────────────────── */
+  .animation-duration-200 {
+    animation-duration: 200ms;
+  }
+  .animation-duration-400 {
+    animation-duration: 400ms;
+  }
+  .animation-duration-600 {
+    animation-duration: 600ms;
+  }
+
+  /* ── Animation Fill Mode ──────────────────────────── */
+  .animate-fill-forwards {
+    animation-fill-mode: forwards;
+  }
+  .animate-fill-both {
+    animation-fill-mode: both;
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Scrollbar styling */

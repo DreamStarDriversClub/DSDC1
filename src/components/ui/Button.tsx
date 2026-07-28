@@ -41,6 +41,7 @@ export function Button({
     <button
       className={cn(
         "inline-flex items-center justify-center border font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ds-red/40 disabled:cursor-not-allowed disabled:opacity-40",
+        "hover:scale-[1.02] active:scale-[0.98]",
         variantStyles[variant],
         sizeStyles[size],
         className

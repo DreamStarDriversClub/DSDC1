@@ -55,6 +55,7 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
   return (
     <div
       className="group block cursor-pointer"
+      style={{ perspective: "800px" }}
       onClick={() => openQuickView(product)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -66,7 +67,11 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
       tabIndex={0}
       aria-label={`Quick view: ${product.name}`}
     >
-      <Card hover padding="none" className="overflow-hidden transition-transform duration-400 ease-out group-hover:scale-[1.02]">
+      <Card
+        hover
+        padding="none"
+        className="overflow-hidden transition-all duration-300 ease-out group-hover:scale-[1.02] group-hover:shadow-card-hover group-hover:border-ds-red/20 group-hover:-translate-y-1"
+      >
         {/* Product image */}
         <div
           className={`relative flex h-56 items-center justify-center ${gradient} overflow-hidden`}
@@ -79,7 +84,7 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
                 alt={product.name}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.05]"
                 loading={priority ? "eager" : "lazy"}
                 priority={priority}
                 quality={85}
@@ -89,8 +94,8 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
             </>
           ) : (
             <>
-              <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
-              <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
+              <div className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-[1.05]" />
+              <div className="relative z-10 transition-transform duration-400 ease-out group-hover:scale-[1.05]">
                 {isPerformance ? (
                   <svg className="h-10 w-10 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />

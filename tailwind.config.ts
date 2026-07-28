@@ -92,6 +92,7 @@ const config: Config = {
         "pulse-glow": "pulseGlow 3s ease-in-out infinite",
         "sakura-drift": "sakuraDrift 12s ease-in-out infinite",
         "card-lift": "cardLift 0.4s ease-out forwards",
+        "scale-in": "scaleIn 0.5s ease-out forwards",
         "stagger-1": "fadeInUp 0.6s ease-out 0.1s forwards",
         "stagger-2": "fadeInUp 0.6s ease-out 0.2s forwards",
         "stagger-3": "fadeInUp 0.6s ease-out 0.3s forwards",
@@ -142,6 +143,10 @@ const config: Config = {
             transform: "translateY(-8px)",
             boxShadow: "0 12px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(220, 38, 38, 0.08)",
           },
+        },
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0.95)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
         },
       },
       backgroundImage: {

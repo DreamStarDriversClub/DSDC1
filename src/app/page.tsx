@@ -8,9 +8,11 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { NewsletterForm } from "@/components/ui/NewsletterForm";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { OrganizationSchema, WebSiteSchema } from "@/components/ui/SchemaOrg";
 import { ProductHighlights } from "@/components/home/ProductHighlights";
 import { InstagramGrid } from "@/components/home/InstagramGrid";
+import { ParallaxBackground } from "@/components/home/ParallaxBackground";
 
 export const dynamic = "force-dynamic";
 
@@ -225,62 +227,64 @@ export default async function HomePage() {
           Section 1: Hero
           ══════════════════════════════════════════════════════════════════ */}
       <section className="relative flex min-h-[95vh] items-center overflow-hidden bg-ds-black">
-        {/* RX-7 hero banner background */}
-        <div
-          className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/rx7-sakura.png')",
-            opacity: 0.35,
-          }}
-        />
-        {/* Dark overlay for text readability */}
-        <div className="pointer-events-none absolute inset-0 bg-ds-black/60" />
-        {/* Rotary 13B blueprint watermark */}
-        <div
-          className="pointer-events-none absolute inset-0 bg-center bg-no-repeat opacity-[0.10]"
-          style={{
-            backgroundImage: "url('/images/rotary-blueprint.png')",
-            backgroundSize: "cover",
-            backgroundBlendMode: "soft-light",
-          }}
-        />
-        {/* Background effects */}
-        <div className="pointer-events-none absolute inset-0 bg-hero-glow" />
-        <div className="pointer-events-none absolute inset-0 bg-grid" />
+        <ParallaxBackground>
+          {/* RX-7 hero banner background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/rx7-sakura.png')",
+              opacity: 0.35,
+            }}
+          />
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-ds-black/60" />
+          {/* Rotary 13B blueprint watermark */}
+          <div
+            className="absolute inset-0 bg-center bg-no-repeat opacity-[0.10]"
+            style={{
+              backgroundImage: "url('/images/rotary-blueprint.png')",
+              backgroundSize: "cover",
+              backgroundBlendMode: "soft-light",
+            }}
+          />
+          {/* Background effects */}
+          <div className="absolute inset-0 bg-hero-glow" />
+          <div className="absolute inset-0 bg-grid" />
 
-        {/* Sakura petals */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          {sakuraPetals.map((petal, i) => (
+          {/* Sakura petals */}
+          <div className="absolute inset-0 overflow-hidden">
+            {sakuraPetals.map((petal, i) => (
+              <div
+                key={i}
+                className="absolute animate-sakura-drift rounded-full opacity-0"
+                style={{
+                  left: petal.left,
+                  top: petal.top,
+                  width: petal.size,
+                  height: petal.size,
+                  animationDelay: petal.delay,
+                  animationDuration: petal.duration,
+                  background:
+                    "radial-gradient(circle, rgba(251, 191, 191, 0.6) 0%, rgba(220, 38, 38, 0.2) 100%)",
+                  boxShadow: "0 0 6px rgba(251, 191, 191, 0.3)",
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Star streaks */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -left-20 top-1/4 h-px w-40 animate-star-streak bg-gradient-to-r from-transparent via-ds-red/40 to-transparent" />
             <div
-              key={i}
-              className="absolute animate-sakura-drift rounded-full opacity-0"
-              style={{
-                left: petal.left,
-                top: petal.top,
-                width: petal.size,
-                height: petal.size,
-                animationDelay: petal.delay,
-                animationDuration: petal.duration,
-                background:
-                  "radial-gradient(circle, rgba(251, 191, 191, 0.6) 0%, rgba(220, 38, 38, 0.2) 100%)",
-                boxShadow: "0 0 6px rgba(251, 191, 191, 0.3)",
-              }}
+              className="absolute -left-32 top-1/2 h-px w-32 animate-star-streak bg-gradient-to-r from-transparent via-ds-gold/30 to-transparent"
+              style={{ animationDelay: "3s" }}
             />
-          ))}
-        </div>
-
-        {/* Star streaks */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -left-20 top-1/4 h-px w-40 animate-star-streak bg-gradient-to-r from-transparent via-ds-red/40 to-transparent" />
-          <div
-            className="absolute -left-32 top-1/2 h-px w-32 animate-star-streak bg-gradient-to-r from-transparent via-ds-gold/30 to-transparent"
-            style={{ animationDelay: "3s" }}
-          />
-          <div
-            className="absolute -left-24 top-3/4 h-px w-36 animate-star-streak bg-gradient-to-r from-transparent via-ds-red/25 to-transparent"
-            style={{ animationDelay: "5.5s" }}
-          />
-        </div>
+            <div
+              className="absolute -left-24 top-3/4 h-px w-36 animate-star-streak bg-gradient-to-r from-transparent via-ds-red/25 to-transparent"
+              style={{ animationDelay: "5.5s" }}
+            />
+          </div>
+        </ParallaxBackground>
 
         <Container className="relative z-10 py-20">
           <div className="mx-auto max-w-3xl text-center opacity-start animate-fade-in-up">
@@ -375,6 +379,7 @@ export default async function HomePage() {
           ══════════════════════════════════════════════════════════════════ */}
       <section className="bg-ds-black-deepest section-padding">
         <Container>
+          <ScrollReveal variant="fade-up">
           <SectionHeading
             eyebrow="Shop by Category"
             heading="Built for Enthusiasts"
@@ -382,9 +387,11 @@ export default async function HomePage() {
             align="center"
             className="mb-12"
           />
+          </ScrollReveal>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Apparel Card */}
+            <ScrollReveal variant="fade-up" delay="delay-0">
             <Link href="/shop/apparel" className="group block">
               <Card hover padding="none" className="overflow-hidden">
                 <div
@@ -409,8 +416,10 @@ export default async function HomePage() {
                 </div>
               </Card>
             </Link>
+            </ScrollReveal>
 
             {/* Accessories Card */}
+            <ScrollReveal variant="fade-up" delay="delay-100">
             <Link href="/shop/accessories" className="group block">
               <Card hover padding="none" className="overflow-hidden">
                 <div
@@ -435,8 +444,10 @@ export default async function HomePage() {
                 </div>
               </Card>
             </Link>
+            </ScrollReveal>
 
             {/* Performance Card */}
+            <ScrollReveal variant="fade-up" delay="delay-200">
             <Link href="/shop/performance" className="group block">
               <Card hover padding="none" className="overflow-hidden">
                 <div
@@ -461,6 +472,7 @@ export default async function HomePage() {
                 </div>
               </Card>
             </Link>
+            </ScrollReveal>
           </div>
         </Container>
       </section>
@@ -470,6 +482,7 @@ export default async function HomePage() {
           ══════════════════════════════════════════════════════════════════ */}
       <section className="bg-ds-black section-padding">
         <Container>
+          <ScrollReveal variant="fade-up">
           <SectionHeading
             eyebrow="Fresh Drops"
             heading="New Arrivals"
@@ -477,6 +490,7 @@ export default async function HomePage() {
             align="center"
             className="mb-12"
           />
+          </ScrollReveal>
 
           {/* Horizontal scroll row with gradient fade edges */}
           <div className="relative -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -586,6 +600,7 @@ export default async function HomePage() {
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2">
             {/* Left: Copy */}
+            <ScrollReveal variant="fade-up">
             <div>
               <span className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-ds-red">
                 Our Story
@@ -624,8 +639,10 @@ export default async function HomePage() {
                 </Link>
               </div>
             </div>
+            </ScrollReveal>
 
             {/* Right: Stylized image placeholder */}
+            <ScrollReveal variant="scale-in" delay="delay-200">
             <div className="relative flex aspect-[4/5] items-center justify-center overflow-hidden rounded-2xl border border-white/[0.06] bg-ds-black-charcoal lg:aspect-auto lg:h-full lg:min-h-[450px]">
               {/* Stylized backdrop */}
               <div className="absolute inset-0 bg-gradient-to-br from-ds-red-950/30 via-ds-black-charcoal to-ds-gold-dark/10" />
@@ -648,6 +665,7 @@ export default async function HomePage() {
               <div className="absolute bottom-4 right-4 h-8 w-[1px] bg-ds-red/30" />
               <div className="absolute bottom-4 right-4 h-[1px] w-8 bg-ds-red/30" />
             </div>
+            </ScrollReveal>
           </div>
         </Container>
       </section>
@@ -657,6 +675,7 @@ export default async function HomePage() {
           ══════════════════════════════════════════════════════════════════ */}
       <section className="bg-ds-black section-padding">
         <Container>
+          <ScrollReveal variant="fade-up">
           <SectionHeading
             eyebrow="Testimonials"
             heading="What Drivers Say"
@@ -664,10 +683,12 @@ export default async function HomePage() {
             align="center"
             className="mb-12"
           />
+          </ScrollReveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {testimonials.map((t, i) => (
-              <Card key={i} padding="lg" className="flex flex-col">
+              <ScrollReveal key={i} variant="fade-up" delay={i === 0 ? "delay-0" : i === 1 ? "delay-100" : "delay-200"}>
+              <Card padding="lg" className="flex flex-col">
                 {/* Stars */}
                 <StarRating count={t.stars} />
 
@@ -693,6 +714,7 @@ export default async function HomePage() {
                   </div>
                 </div>
               </Card>
+              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -712,6 +734,7 @@ export default async function HomePage() {
 
         <Container className="relative section-padding">
           <div className="mx-auto max-w-2xl text-center">
+            <ScrollReveal variant="fade-up">
             {/* Hoshi mascot */}
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border border-ds-red/20 bg-ds-black-charcoal shadow-brand-glow-sm">
               <img
@@ -744,6 +767,7 @@ export default async function HomePage() {
               </Link>
               .
             </p>
+            </ScrollReveal>
           </div>
         </Container>
 
