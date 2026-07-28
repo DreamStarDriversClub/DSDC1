@@ -12,6 +12,7 @@ import { StickyAddToCart } from "@/components/shop/StickyAddToCart";
 import { ProductImageGallery } from "@/components/shop/ProductImageGallery";
 import { NewsletterBanner } from "@/components/ui/NewsletterBanner";
 import { ProductSchema } from "@/components/ui/SchemaOrg";
+import { WishlistHeart } from "@/components/shop/WishlistHeart";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 
@@ -143,10 +144,23 @@ export default async function ProductDetailPage({ params }: Props) {
             {/* Right: Product Info */}
             <div>
               {/* Category badge */}
-              <div className="mb-3">
+              <div className="mb-3 flex items-center gap-3">
                 <Badge variant={badgeVariant} size="sm">
                   {product.category.name}
                 </Badge>
+                <WishlistHeart
+                  productId={product.slug}
+                  productName={product.name}
+                  productImage={
+                    Array.isArray(product.images) && product.images.length > 0
+                      ? product.images[0]
+                      : ""
+                  }
+                  productPrice={Math.round(
+                    (product.salePrice ?? product.price) * 100
+                  )}
+                  productCategory={product.category.slug}
+                />
               </div>
 
               <h1 className="font-display text-3xl font-black tracking-tight text-ds-white sm:text-4xl">

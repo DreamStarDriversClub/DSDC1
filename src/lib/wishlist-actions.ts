@@ -15,17 +15,30 @@ export async function removeFromWishlistAction(productId: string) {
   revalidatePath("/account/wishlist");
 }
 
-export async function addToWishlistAction(productId: string) {
+export async function addToWishlistAction(
+  productId: string,
+  productName: string,
+  productImage: string,
+  productPrice: number,
+  productCategory: string
+) {
   const session = await getSession();
   if (!session) return;
 
-  const existing = await prisma.wishlistItem.findUnique({
-    where: { userId_productId: { userId: session.userId, productId } },
+  const existing = await prisma.wishlistItem.findFirst({
+    where: { userId: session.userId, productId },
   });
 
   if (!existing) {
     await prisma.wishlistItem.create({
-      data: { userId: session.userId, productId },
+      data: {
+        userId: session.userId,
+        productId,
+        productName,
+        productImage,
+        productPrice,
+        productCategory,
+      },
     });
   }
 

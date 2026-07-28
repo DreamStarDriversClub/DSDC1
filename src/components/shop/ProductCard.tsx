@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { formatPrice, productGradient } from "@/lib/utils";
 import { toWebpPath } from "@/lib/images";
+import { WishlistHeart } from "@/components/shop/WishlistHeart";
 
 interface ProductCardData {
   slug: string;
@@ -109,6 +110,16 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
               <Badge variant="red" size="sm">Sale</Badge>
             </div>
           )}
+          {/* Wishlist heart */}
+          <div className="absolute right-3 top-3 z-10">
+            <WishlistHeart
+              productId={product.slug}
+              productName={product.name}
+              productImage={productImage || ""}
+              productPrice={Math.round(price * 100)}
+              productCategory={product.category?.slug || ""}
+            />
+          </div>
         </div>
 
         <div className="p-5">
