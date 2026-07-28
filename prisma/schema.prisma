@@ -383,6 +383,37 @@ model Review {
   @@index([productId, published])
 }
 
+// ── Garage Submission ────────────────────────────────────
+
+model GarageSubmission {
+  id              String    @id @default(cuid())
+  imageUrl        String
+  carMake         String
+  carModel        String
+  ownerName       String
+  ownerInstagram  String?
+  caption         String?
+  likes           Int       @default(0)
+  approved        Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+
+  garageLikes GarageLike[]
+}
+
+// ── Garage Like ─────────────────────────────────────────
+
+model GarageLike {
+  id           String   @id @default(cuid())
+  submissionId String
+  sessionId    String
+  createdAt    DateTime @default(now())
+
+  submission GarageSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, sessionId])
+  @@index([submissionId])
+}
+
 // ── Blog Post ──────────────────────────────────────────
 
 model Post {
