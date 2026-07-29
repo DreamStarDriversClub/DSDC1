@@ -104,6 +104,7 @@ export default function RegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Min 8 characters"
+              showPasswordToggle
               required
             />
 
@@ -113,6 +114,7 @@ export default function RegisterPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter password"
+              showPasswordToggle
               required
             />
 

@@ -53,6 +53,28 @@ export default async function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        {/* Preload Sprite Graffiti — display font to prevent FOUT */}
+        <link
+          rel="preload"
+          href="/Sprite%20Graffiti.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/Sprite%20Graffiti%20Extras.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/Sprite%20Graffiti%20Shadow.otf"
+          as="font"
+          type="font/otf"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-screen bg-ds-black text-ds-white font-sans antialiased">
         <CartProvider>
