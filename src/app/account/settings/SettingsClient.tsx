@@ -8,6 +8,7 @@ import {
   deleteAccountAction,
 } from "@/lib/auth-actions";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 
 type UserData = {
   firstName: string;
@@ -178,46 +179,34 @@ function PasswordForm() {
           </div>
         )}
 
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-ds-gray-300">
-            Current Password
-          </label>
-          <input
-            type="password"
-            name="currentPassword"
-            required
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
-            placeholder="Enter current password"
-          />
-        </div>
+        <Input
+          label="Current Password"
+          type="password"
+          name="currentPassword"
+          required
+          showPasswordToggle
+          placeholder="Enter current password"
+        />
 
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-ds-gray-300">
-            New Password
-          </label>
-          <input
-            type="password"
-            name="newPassword"
-            required
-            minLength={8}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
-            placeholder="Min. 8 characters"
-          />
-        </div>
+        <Input
+          label="New Password"
+          type="password"
+          name="newPassword"
+          required
+          minLength={8}
+          showPasswordToggle
+          placeholder="Min. 8 characters"
+        />
 
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-ds-gray-300">
-            Confirm New Password
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            required
-            minLength={8}
-            className="w-full rounded-xl border border-white/10 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red/50 focus:outline-none focus:ring-1 focus:ring-ds-red/30"
-            placeholder="Re-enter new password"
-          />
-        </div>
+        <Input
+          label="Confirm New Password"
+          type="password"
+          name="confirmPassword"
+          required
+          minLength={8}
+          showPasswordToggle
+          placeholder="Re-enter new password"
+        />
 
         <Button type="submit" variant="primary" disabled={submitting}>
           {submitting ? "Changing Password..." : "Change Password"}
@@ -274,11 +263,11 @@ function DangerZone({
           <p className="text-sm font-medium text-ds-white">
             Enter your password to confirm account deletion:
           </p>
-          <input
+          <Input
             type="password"
             name="password"
             required
-            className="w-full rounded-xl border border-ds-red/30 bg-ds-black-charcoal px-4 py-3 text-sm text-ds-white placeholder:text-ds-gray-400 focus:border-ds-red focus:outline-none focus:ring-1 focus:ring-ds-red/30"
+            showPasswordToggle
             placeholder="Your password"
           />
 

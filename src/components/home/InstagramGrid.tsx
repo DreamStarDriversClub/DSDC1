@@ -92,30 +92,44 @@ export function InstagramGrid() {
           </div>
         ) : (
           /* ── Fallback when Elfsight App ID is not configured ───────── */
-          <div className="mx-auto max-w-2xl rounded-2xl border border-dashed border-white/[0.08] bg-ds-black-charcoal p-10 text-center">
-            <svg
-              className="mx-auto h-12 w-12 text-ds-red/50"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={1}
-            >
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-              <circle cx="12" cy="12" r="5" />
-              <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
-            </svg>
-            <p className="mt-4 text-sm text-ds-gray-400">
-              Real Instagram posts coming soon. Follow us{" "}
-              <a
-                href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
-              >
-                {INSTAGRAM_HANDLE}
-              </a>{" "}
-              for the latest builds and drops.
-            </p>
+          <div>
+            {/* Static brand imagery grid */}
+            <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+              {[
+                { emoji: "🔥", label: "Rotary Power" },
+                { emoji: "💪", label: "2JZ Legends" },
+                { emoji: "🏔️", label: "Touge Runs" },
+                { emoji: "🌃", label: "Night Meets" },
+                { emoji: "🏁", label: "Track Days" },
+                { emoji: "⚙️", label: "DS Performance" },
+                { emoji: "👕", label: "Fresh Apparel" },
+                { emoji: "🎌", label: "JDM Culture" },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="flex flex-col items-center justify-center rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-6 text-center transition-all duration-300 hover:border-ds-red/20 hover:bg-ds-black"
+                >
+                  <span className="text-3xl">{item.emoji}</span>
+                  <span className="mt-2 text-xs font-medium text-ds-gray-400">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 text-center">
+              <p className="text-sm text-ds-gray-400">
+                Real Instagram posts coming soon. Follow us{" "}
+                <a
+                  href={SOCIAL_LINKS.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
+                >
+                  {INSTAGRAM_HANDLE}
+                </a>{" "}
+                for the latest builds and drops.
+              </p>
+            </div>
           </div>
         )}
 

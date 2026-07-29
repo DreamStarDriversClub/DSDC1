@@ -22,7 +22,7 @@ export default function WishlistPage() {
       name: item.productName,
       slug: "", // not needed for cart functionality
       sku: item.productId,
-      price: item.productPrice / 100, // convert cents to dollars for cart
+      price: Number(item.productPrice) / 100, // convert cents to dollars for cart
       quantity: 1,
       image: item.productImage,
     });
@@ -169,7 +169,7 @@ export default function WishlistPage() {
                       {item.productCategory.replace(/-/g, " ")}
                     </p>
                     <p className="mt-2 text-lg font-bold text-ds-white">
-                      {formatPrice(item.productPrice / 100)}
+                      {formatPrice(Number(item.productPrice) / 100)}
                     </p>
 
                     <button

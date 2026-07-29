@@ -138,15 +138,33 @@ export function QuizResults({ archetype, products }: QuizResultsProps) {
 
           {/* Fallback if no products */}
           {products.length === 0 && (
-            <div className="col-span-full rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-8 text-center">
-              <span className="text-3xl">🛒</span>
-              <p className="mt-3 text-sm text-ds-gray-400">
-                Check out our{" "}
-                <Link href="/shop/all" className="text-ds-red underline underline-offset-2 hover:text-ds-red-400">
-                  full catalog
-                </Link>{" "}
-                for gear that matches your build.
-              </p>
+            <div className="col-span-full space-y-4">
+              <div className="rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-6 text-center">
+                <span className="text-3xl">🏎️</span>
+                <p className="mt-3 text-sm font-medium text-ds-gray-300">
+                  We&apos;re building the perfect gear for your build.
+                </p>
+                <p className="mt-1 text-xs text-ds-gray-500">
+                  Check out these categories while we stock up:
+                </p>
+                <div className="mt-4 flex flex-wrap justify-center gap-2">
+                  {archetype.recommendedCategories.slice(0, 3).map((cat) => (
+                    <Link
+                      key={cat}
+                      href={`/shop/${cat}`}
+                      className="rounded-full border border-ds-red/20 bg-ds-red/5 px-4 py-1.5 text-xs font-semibold text-ds-red transition-colors hover:bg-ds-red/10"
+                    >
+                      {cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                    </Link>
+                  ))}
+                  <Link
+                    href="/shop/all"
+                    className="rounded-full border border-white/[0.08] bg-ds-black px-4 py-1.5 text-xs font-semibold text-ds-gray-300 transition-colors hover:bg-ds-black-darkgray"
+                  >
+                    Browse All
+                  </Link>
+                </div>
+              </div>
             </div>
           )}
         </div>

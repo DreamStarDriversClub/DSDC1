@@ -63,7 +63,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   return (
     <>
       {/* Search Hero */}
-      <section className="relative bg-ds-black-deepest py-16 sm:py-20">
+      <section className="relative bg-ds-black-deepest section-padding">
         <div className="absolute inset-0 bg-hero-glow" />
         <Container className="relative">
           <div className="mx-auto max-w-2xl text-center">

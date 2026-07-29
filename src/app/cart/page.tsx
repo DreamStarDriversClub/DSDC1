@@ -346,7 +346,7 @@ export default function CartPage() {
                         onClick={() => {
                           setCouponInput("WELCOME10");
                         }}
-                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-300"
+                        className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-300"
                       >
                         WELCOME10
                       </button>
@@ -354,7 +354,7 @@ export default function CartPage() {
                         onClick={() => {
                           setCouponInput("FREESHIP");
                         }}
-                        className="text-[10px] text-ds-gray-600 transition-colors hover:text-ds-gray-300"
+                        className="text-xs text-ds-gray-600 transition-colors hover:text-ds-gray-300"
                       >
                         FREESHIP
                       </button>

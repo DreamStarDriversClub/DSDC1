@@ -21,7 +21,7 @@ export default function GaragePage() {
         {/* Background glow */}
         <div className="absolute inset-0 bg-hero-glow" />
 
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 section-padding sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             {/* Icon */}
             <div className="mb-6 inline-flex rounded-2xl border border-ds-red/20 bg-ds-red/10 p-4">
