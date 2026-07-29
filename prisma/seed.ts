@@ -920,6 +920,276 @@ async function main() {
     console.log("  No new product variants to create");
   }
 
+  // ── Blog Posts ──────────────────────────────────────────
+  console.log("");
+
+  const blogPosts = [
+    {
+      title: "The 13B Rotary Engine: A Rebel's Guide to Maintenance & Mods",
+      slug: "13b-rotary-engine-maintenance-mods-guide",
+      excerpt:
+        "The 13B rotary isn't just an engine — it's a declaration. From apex seal failures to bridge-port screams, this is your complete guide to keeping the triangle spinning, whether you're daily-driving an FC or building an FD for the touge.",
+      content: `There are two kinds of people in the car world: those who get the rotary, and those who haven't heard one at 9,000 RPM yet.
+
+The 13B doesn't ask for your understanding. It doesn't care about your torque curve spreadsheet, your piston-count loyalty, or your friend who "knew a guy whose RX-7 blew up." It exists in its own category — a piece of engineering so stubbornly different that Mazda spent four decades refining it while the rest of the industry pretended it didn't exist.
+
+If you're reading this, you're probably already in the first camp. Or you're standing at the edge of it, rotary-shaped rabbit hole open beneath your feet. Either way: welcome. This is the guide I wish someone had handed me the first time I pulled a 13B apart in a garage that smelled like premix and bad decisions.
+
+### A Quick History — Or: Why This Engine Exists At All
+
+Felix Wankel's rotary design wasn't supposed to power sports cars. It was supposed to be a smooth, compact alternative to piston engines — quiet, refined, utterly boring. Then Mazda's engineers got hold of it.
+
+The 13B arrived in 1973, but it was the twin-turbo 13B-REW in the third-generation FD RX-7 that cemented its legend. 255 horsepower from 1.3 liters — in 1992. Sequential twin turbos. A redline that climbed past 8,000 RPM like it was offended by lower numbers. The 13B wasn't just an engine. It was a middle finger to convention, wrapped in a lightweight chassis and pointed at a mountain pass.
+
+The 13B has appeared in multiple forms: the 13B-T (single turbo, FC3S Turbo II), the 13B-REW (twin-turbo, FD3S), the 13B-MSP Renesis (naturally aspirated, RX-8), and countless hybrid builds that enthusiasts have cooked up in garages across the world. Each variant has its own quirks, but the fundamentals — the triangle, the housings, the apex seals, the need for oil metering — remain constant across every generation.
+
+### What Kills a Rotary (And What Keeps It Alive)
+
+Let's address the elephant in the garage. Rotaries have a reputation for unreliability, and like most reputations, it's equal parts truth and misunderstanding.
+
+**The real failure points:**
+
+**Apex seals.** These are the sliding seals at each tip of the triangular rotor. They're under constant friction against the housing surface, and when they fail — either from detonation, overheating, or simple wear — you lose compression and the engine stops making power. A blown apex seal is the rotary equivalent of a thrown rod. It's catastrophic, and it's the single most common cause of rotary engine failure.
+
+**Cooling.** Rotaries run hot. The combustion chamber shape and the way heat concentrates in the housing means cooling is not optional — it's existential. A single overheat event can warp housings and destroy apex seals. If you remember nothing else from this article: watch your temperature gauge like your engine's life depends on it. Because it does.
+
+**Oil.** Rotaries burn oil by design. The oil metering pump injects a small amount of oil into the combustion chamber to lubricate the apex seals. This is not a flaw — it's how the engine works. But it means you must check your oil. Every fill-up. Without exception. Run a rotary low on oil and you're grinding apex seals against dry housings. There's no coming back from that.
+
+**Carbon buildup.** If you drive a rotary gently — short trips, low RPM, never letting it stretch its legs — carbon deposits accumulate on the rotor faces and housings. A rotary that never sees redline is a rotary slowly choking itself to death. The cure? Drive it. Hard. An Italian tune-up isn't just fun in a rotary — it's maintenance.
+
+### The Maintenance Schedule That Actually Matters
+
+Forget what the owner's manual says. Here's what the community has learned through decades of trial, error, and blown engines:
+
+**Every fill-up:** Check oil level. Top off as needed. Use quality conventional or synthetic blend — full synthetic is divisive in rotary circles; many builders recommend against it for street-driven engines because it doesn't burn as cleanly.
+
+**Every 3,000 miles:** Oil change. No exceptions. The rotary's oil system works harder than a piston engine's, and the oil is constantly being consumed. Fresh oil, fresh filter, every 3K. Consider premixing — adding two-stroke oil to your fuel tank at roughly 1 oz per gallon. It provides additional apex seal lubrication independent of the OMP and is cheap insurance.
+
+**Every 15,000 miles:** Spark plugs. Rotaries are hard on plugs. The leading and trailing plugs each see different conditions, and a fouled plug can cause misfires that lead to detonation. NGK is the standard. Don't cheap out on plugs.
+
+**Every 30,000 miles:** Coolant flush. Remember what I said about cooling. Fresh coolant, proper burping procedure (rotaries trap air like nothing else), and visually inspect every hose. A burst coolant hose on a mountain run isn't a roadside inconvenience — it's an engine rebuild.
+
+**Compression test — annually or before any major mod:** A rotary compression test is different from a piston engine test. You need a specialized tester that measures compression in three distinct pulses per rotor face. Anything below 85 PSI across all faces is cause for concern. Uneven numbers between rotor faces suggest a failing apex seal. Catch it early and you're looking at a seal replacement. Catch it late and you're looking at a housing.
+
+### Performance Mod Tiers: Street, Sport, Race
+
+Building a rotary isn't like building a piston engine. The upgrade path is narrower, the tolerances are tighter, and the consequences of getting it wrong are louder and more expensive. Here's how to approach it.
+
+#### Tier 1: Street — Reliability First (250–350 whp)
+
+Before you add power, you make sure the engine can survive it. This tier is about building a foundation.
+
+- **Upgraded cooling:** A larger aluminum radiator, an oil cooler upgrade, and an efficient intercooler. The stock FD cooling system is adequate for stock power. It is not adequate for anything more. Start here.
+- **Ignition upgrade:** The IGN-1A smart coil kit replaces the factory coils with units that produce a stronger, more consistent spark. Better ignition means more complete combustion, which means less carbon buildup and more power from the same fuel.
+- **Fuel pump:** The Walbro 450LPH in-tank pump flows enough for 700+ whp and is E85 compatible. Even if you're not chasing big numbers yet, a healthy fuel system prevents the lean conditions that cause detonation.
+- **Engine management:** A Haltech Elite 1500 standalone ECU gives you full control over fuel, ignition, boost, and safety parameters. The factory ECU was brilliant in 1992. It is not brilliant anymore. A modern ECU with a proper tune is the single best investment you can make in rotary reliability.
+
+#### Tier 2: Sport — The Sweet Spot (350–500 whp)
+
+Now you're building something that can genuinely scare Porsches on a back road. This is the tier where the 13B truly shines — responsive, rev-happy, and capable of sustained hard driving.
+
+- **Street port:** A mild port job widens the intake and exhaust ports, improving airflow without sacrificing drivability. The FC3S Street Port Template Kit gives you everything you need if you're doing it yourself — templates, carbide burrs, and a detailed guide. A street-ported rotary still idles cleanly, still starts easily, and still pulls smoothly from low RPM. It just pulls harder everywhere.
+- **Apex seal upgrade:** Cryo-treated steel apex seals handle more heat and more RPM than stock. For dedicated track builds, Goopy ceramic apex seals offer lower friction and can sustain operation beyond 10,000 RPM. Choose based on your use case — steel for mixed street/track duty, ceramic for dedicated race cars.
+- **Single turbo conversion:** The FD's sequential twin setup is charming when it works and infuriating when it doesn't. The FD3S Single Turbo Conversion Kit replaces the complexity with a BorgWarner EFR 8374, a tubular manifold, and a TiAL wastegate. Simplified plumbing, broader powerband, and linear boost delivery. It transforms the car.
+
+#### Tier 3: Race — Full Send (500+ whp)
+
+Beyond 500 horsepower, you are operating in territory where every component is stressed to its limit. This is not a street car anymore. This is a weapon.
+
+- **Bridge port or peripheral port:** Aggressive porting that pushes the powerband higher and sacrifices low-end manners for top-end fury. A bridge-ported 13B at full song is one of the most intoxicating sounds in motorsport. It's also loud, thirsty, and demands race fuel or E85.
+- **Full rotor seal kit:** The Goopy Full Rotor Seal Kit replaces every seal in the engine — apex, side, corner, and springs. At this power level, stock seals are a liability.
+- **Fuel system overhaul:** ID 1050x injectors, upgraded fuel rails, an external pressure regulator, and a surge tank. E85 is essentially mandatory at this tier — the cooling properties of ethanol help control combustion temperatures that would destroy a pump-gas tune.
+- **Drivetrain:** An OS Giken twin-plate clutch holds the torque. Stock axles and differential may need upgrades depending on how hard you launch.
+
+### The Rotary Community: Knowledge Is Your Best Mod
+
+One thing the rotary community has in spades that no parts catalog can sell you: hard-won knowledge. The forums may be quieter than they were in 2005, but the RX-7 Club archives contain decades of build threads, troubleshooting, and hard-won wisdom. Facebook groups connect owners across continents. And at every Cars & Coffee, every track day, every late-night parking lot meet, you'll find someone who's been where you are and is happy to talk about it.
+
+The rotary was never supposed to last this long. It was too different, too demanding, too unwilling to compromise. But here we are, decades later, still premixing, still watching temperature gauges, still chasing that rising, spinning wail that no piston engine can replicate.
+
+The 13B wasn't designed for everyone. It was designed for the people who understand that the best things in life require a little extra attention, a little extra care, and a willingness to accept that sometimes, things break.
+
+And you fix them. And you drive.
+
+**Chase the Horizon.**`,
+      tag: "rotary",
+    },
+    {
+      title: "2JZ-GTE: Why the Legend Still Rules JDM Culture",
+      slug: "2jz-gte-legend-jdm-culture-build-guide",
+      excerpt:
+        "Three decades later, the Toyota 2JZ-GTE still sets the standard for inline-six performance. From stock twin-turbo sophistication to 1,000-horsepower monsters, here's why this engine earned its crown — and what it takes to build one right.",
+      content: `Some engines earn their reputation on paper. Others earn it in magazine features, quarter-mile time slips, and the collective memory of an entire generation of enthusiasts.
+
+The 2JZ-GTE earned it by surviving everything anyone threw at it and asking for more.
+
+When Toyota dropped the 2JZ-GTE into the fourth-generation Supra in 1993, they weren't trying to build a legend. They were building a grand tourer with a sophisticated twin-turbo inline-six — smooth, powerful, refined. 276 horsepower on paper, though anyone who's ever put one on a dyno knows that number was a gentleman's agreement, not a measurement. The real figure was closer to 320. And the engine itself? Capable of double that without opening the block.
+
+Three decades later, the 2JZ hasn't just survived — it's thrived. It's been swapped into everything from IS300s to 240SXs to boats (really). It's powered drift cars, drag cars, time attack cars, and street cars that blur the line between all three. And it's still, somehow, raising the bar.
+
+### The Architecture of Over-Engineering
+
+What makes the 2JZ special isn't any single feature — it's the combination of decisions Toyota made that, in hindsight, look less like engineering and more like a gift to the aftermarket.
+
+**The iron block.** In an era when manufacturers were chasing weight savings with aluminum, Toyota cast the 2JZ block in iron. It's heavy. It's also virtually indestructible. The block has been proven to handle north of 1,500 horsepower without reinforcement. The main bearing caps, the cylinder walls, the deck surface — all were built to tolerances that anticipate abuse the factory never intended.
+
+**The closed-deck design.** The cylinders are fully supported at the top by the deck surface, unlike open-deck designs where cylinders float in the cooling jacket. This means the cylinder bores stay round under extreme cylinder pressure. It's why 2JZ engines don't crack cylinder walls the way lesser blocks do.
+
+**The head and valvetrain.** The 24-valve DOHC head flows remarkably well from the factory. The stock cams are mild enough for smooth idle and strong mid-range, and the valvetrain is stable past 8,000 RPM with nothing more than upgraded springs. Combine that with the factory oiling system — which includes piston oil squirters that spray the underside of the pistons with cooling oil — and you have an engine that was designed with thermal management that most aftermarket builds can't improve on.
+
+**The sequential twin-turbo system.** The stock CT12B twin-turbo setup was ahead of its time in 1993. A small turbo spools instantly for low-end response; a second joins in at higher RPM for top-end flow. The transition point is seamless when everything is working correctly. The system's complexity is its Achilles' heel — vacuum lines, actuators, and check valves that degrade with age — but the concept was brilliant.
+
+### Stock Limitations (Where Even Legends Have Ceilings)
+
+The 2JZ isn't perfect. It's just closer to perfect than almost anything else from its era. Here's what holds it back in stock form:
+
+**The turbochargers.** The CT12B twins are the first bottleneck. They run out of efficiency around 16-18 PSI and produce significant exhaust backpressure beyond that. The ceramic turbine wheels — yes, Toyota used ceramic — are fragile and can fail catastrophically if overspun. If your 2JZ is still on stock twins, keep the boost conservative. Really conservative.
+
+**The fuel system.** Stock 440cc injectors run out of headroom around 400-420 horsepower at the crank. The factory fuel pump is adequate for stock power and not one horsepower more. Any serious build starts with fuel.
+
+**The intercooler.** The factory side-mount intercooler is small and heat-soaks quickly. On a warm day, after a single pull, intake air temperatures climb into territory where the ECU starts pulling timing. An upgraded front-mount intercooler is one of the first mods anyone should make, even on an otherwise stock engine.
+
+**The ECU.** The factory ECU was sophisticated for 1993. It is not sophisticated anymore. It cannot be tuned without a piggyback or standalone. It cannot compensate for larger injectors. It has no flex-fuel capability. It is, effectively, the single biggest constraint on any 2JZ build.
+
+### Build Stages: From Stock to Skyline Material
+
+#### Stage 1: "BPU" — Basic Performance Upgrades (380–430 whp)
+
+BPU is 2JZ shorthand for "Basic Performance Upgrades," and it's the most proven recipe in the platform's history. The formula is simple, repeatable, and has been validated by thousands of owners:
+
+- **Downpipe:** A 3-inch catless or high-flow catted downpipe removes the biggest exhaust restriction. This alone is worth 20-30 horsepower on stock boost.
+- **Cat-back exhaust:** 3-inch or larger, mandrel-bent. The 2JZ has a voice — let it speak.
+- **Front-mount intercooler:** Ditch the side-mount. A quality bar-and-plate intercooler keeps intake temps in check through repeated pulls.
+- **Boost controller:** Raise boost to 16-18 PSI on the stock twins. This is the ceiling for the ceramic turbines. Do not exceed it unless you're prepared to replace a turbo.
+- **Fuel pump:** A Walbro 450LPH in-tank pump flows enough for any future build stage. Install it once, never think about it again.
+- **Wideband O2 sensor:** An AEM wideband gauge lets you monitor air/fuel ratios in real time. This is not optional. A lean condition kills engines. A wideband is the difference between catching it and rebuilding it.
+
+At BPU levels, the 2JZ is genuinely fast — not by vintage standards, but by modern standards. It'll walk away from a new Mustang GT on the highway. It'll make passengers grab the door handle. And it'll do it with the kind of effortless, turbine-smooth power delivery that turbo four-cylinders can only dream of.
+
+#### Stage 2: Single Turbo Conversion (500–800 whp)
+
+This is where the 2JZ separates itself from everything else on the road. A single turbo conversion simplifies the engine bay, removes the sequential twin complexity, and unlocks the power band the engine was always capable of.
+
+- **Turbo selection:** A BorgWarner EFR or Garrett T04Z in the 62-72mm compressor range hits the sweet spot for a responsive street car. Expect full boost by 3,500-4,000 RPM and power that pulls hard to redline. A 67mm turbo on a built 2JZ makes 600-700 whp on pump gas and 800+ on E85.
+- **Fuel system overhaul:** ID 1050x injectors (1050cc) provide enough headroom for E85 at 700+ whp. Upgraded fuel rails, an adjustable pressure regulator, and a surge tank round out the system.
+- **ECU:** A Haltech Elite 1500 or equivalent standalone gives you full control over fuel, ignition, boost-by-gear, flex-fuel blending, traction control, and every safety parameter. A good tune on a standalone ECU is worth more horsepower than any bolt-on part.
+- **Clutch:** The stock clutch surrenders around 400 lb-ft. An OS Giken twin-plate holds 600+ and remains streetable.
+- **Head studs and head gasket:** The stock head gasket is reliable to about 700 whp with proper tuning. ARP head studs are cheap insurance. For 800+, a metal head gasket is mandatory.
+
+At Stage 2, the car is a legitimate supercar killer. 600 whp in a 3,400-pound chassis produces a power-to-weight ratio that rivals modern Ferraris. The difference is that when the Ferrari breaks, you're calling a flatbed to Maranello. When the 2JZ breaks — which it probably won't — you're calling your buddy with an engine hoist.
+
+#### Stage 3: Built Motor (800–1,200+ whp)
+
+Beyond 800 horsepower, you're building the engine. Not modifying it — building it.
+
+- **Forged pistons and rods:** The stock bottom end is legendary, but it has limits. Forged internals with lower compression (9.0:1 or 9.5:1) allow for more boost, more timing, and more safety margin on pump gas or E85.
+- **Billet main caps:** The stock main caps can walk under extreme cylinder pressure. Billet caps keep the crankshaft where it belongs.
+- **Port and polish:** The 2JZ head flows well stock, but at this level every CFM matters. A quality port job with oversized valves unlocks top-end flow.
+- **Cams:** 264° or 272° duration cams shift the powerband higher without destroying idle quality. Choose based on your turbo — larger turbos want more cam to breathe at high RPM.
+- **Fuel system:** At 1,000+ whp, you're looking at 2,000cc+ injectors, multiple fuel pumps, and possibly a mechanical fuel pump. E85 is non-negotiable. Pump gas can't support this power level safely.
+- **Drivetrain:** The Getrag V160/V161 six-speed is strong, but at this level, even it needs attention. The differential, axles, and driveshaft all become consumables.
+
+Stage 3 cars are not street cars in the traditional sense. They're statements. They're rolling proof that an inline-six designed in the early 1990s can compete with — and beat — modern hypercars in a straight line.
+
+### What the 2JZ Means Beyond the Numbers
+
+Here's the thing about the 2JZ that spec sheets don't capture: it's a cultural artifact as much as an engine. It's the sound of a Supra spooling through a tunnel in a YouTube video you watched at 2 AM. It's the poster on your friend's bedroom wall in 1999. It's the reason a clean MK4 Supra costs more than a new GR Supra.
+
+The 2JZ earned its legend the hard way — not through marketing, but through proving grounds. Drag strips. Highway pulls. Dyno sessions that ended with numbers that made the tuner call his friends. It's an engine that rewards ambition and punishes shortcuts. Every corner cut in a 2JZ build will eventually find you. Every quality part installed correctly will reward you with reliability that shouldn't be possible at this power level.
+
+Toyota doesn't make the 2JZ anymore. The supply of clean blocks is finite. The knowledge is scattered across aging forums and the memories of builders who've been doing this for decades. But the engine itself — the iron block, the closed deck, the over-engineered valvetrain — is as relevant today as it was in 1993. More relevant, arguably, because we now know exactly what it can do.
+
+The 2JZ doesn't need defending. It doesn't need hype. It just needs good parts, good tuning, and an owner who respects what they're working with.
+
+Do that, and you're not driving a 30-year-old Toyota. You're driving a legend that's still writing its story.
+
+**Chase the Horizon.**`,
+      tag: "2jz",
+    },
+    {
+      title: "Essential Gear for Your Next Cars & Coffee",
+      slug: "essential-gear-cars-and-coffee-guide",
+      excerpt:
+        "Cars & Coffee isn't just a meet — it's a ritual. From the 6 AM detail session to the parking lot conversations that outlast the coffee, here's what to wear, what to bring, and how to show up right.",
+      content: `There's a moment at every Cars & Coffee that has nothing to do with cars.
+
+It's 7:15 AM. The sun is still low, still that golden angle that makes every paint color look like a factory brochure photo. The parking lot is half-full. Someone's idling a bridge-ported 13B in the back corner — that distinctive, choppy lope that says *I woke up earlier than you and I've already checked my oil*. Coffee cups are out. Hoods are starting to open. And for the next three hours, nobody's in a hurry.
+
+This is the ritual. And like any ritual, how you show up matters.
+
+### What to Wear: The Unspoken Dress Code
+
+Nobody at Cars & Coffee is going to hand you a dress code. That's not how this works. But there are languages spoken in parking lots, and what you wear is one of them.
+
+**The tee.** Not any tee. A heavyweight tee. 220 GSM cotton. Something that feels substantial when you pull it on at 5:45 AM and the garage is still cold. The Dream Star Hoshi crew neck is the move — bold graphic, premium cotton, no branding that screams at people. It says *I'm here for the cars, but I didn't roll out of bed five minutes ago*. If you prefer clean and understated, the classic DS crew neck in black or charcoal does the same job with less noise.
+
+**The layer.** Even in summer, mornings are cold. And half the meet takes place before the sun clears the buildings. A windbreaker is practical in a way that hoodies aren't — it packs down, it doesn't add bulk, and it comes off in two seconds when the temperature climbs. The Dream Star windbreaker in black with the logo across the back is water-resistant and light enough to forget you're wearing it. Keep one behind the passenger seat year-round. You'll use it more than you think.
+
+**The accessory nobody talks about.** A lanyard. Hanging from your rearview mirror, catching the morning light at every corner. It's small. It's subtle. But the Dream Star black-and-red lanyard is a signal — a tiny flag that says *I'm part of something*. Park next to someone with the same lanyard and you've already got a conversation starter.
+
+### What to Bring: The Kit
+
+Walk through any Cars & Coffee and you'll notice a pattern. The people who look relaxed? They brought things. The people who look stressed? They're asking to borrow things.
+
+**A real keychain.** Not the free one from the dealership. Something with weight. The DS metal key chain — zinc alloy, gunmetal finish, laser-etched logo — has enough heft to actually find your keys in a jacket pocket. More importantly, it jingles against the steering column when you're running through gears. Small thing. Big difference.
+
+**Stickers.** Bring extras. Not for your car — for someone else's. A kid is going to be staring at your FC with eyes the size of brake rotors. Hand them a Hoshi die-cut sticker and you've just made a future enthusiast. This is how the culture continues. A five-inch vinyl sticker costs less than a coffee and lasts longer than any Instagram post.
+
+**An air freshener.** Not the tree-shaped kind that assaults your nose. The Hoshi air freshener three-pack — Cherry Blossom, New Car, Midnight Forest — hangs from the rearview without screaming for attention. And if someone leans in to check out your interior and catches a hint of cherry blossom instead of last week's track day, that's a win.
+
+**A phone charger.** Your phone will die. You'll be taking photos of engine bays, posting to Instagram, texting your friend who's "five minutes away" for the last forty minutes. Bring a cable. Bring a battery pack. The one morning you don't is the morning a R34 GT-R shows up unannounced and you're stuck describing it with words.
+
+### How to Prep Your Car
+
+The car people who show up at 6:45 AM with a spotless car didn't wash it that morning. They washed it the night before, spent 45 minutes on the wheels, and did a quick detail spray in the parking lot. This is the way.
+
+**The night before:** Wash, dry, and do the wheels properly. Wheel faces, barrels, lug nuts — everything. Wheels are what people notice first. If your wheels are clean, the rest of the car reads as intentional. If they're not, nothing else matters.
+
+**The morning of:** Quick detail spray on the front bumper — that's where the bugs from the drive over will collect. Microfiber on the glass. Check tire pressures. Check oil (especially if you're rotary — you already know).
+
+**The decal that matters:** A Dream Star rear window decal — 18 inches wide, matte black, precision-cut — is visible from across a parking lot. It doesn't shout. It doesn't need to. It's the kind of detail that someone notices, nods at, and mentally files away.
+
+### The Unspoken Rules
+
+Every Cars & Coffee has a culture. The specific crowd changes by city, by season, by which cars happen to show up. But the rules are universal:
+
+**Respect the exit.** When someone is leaving, clear a path. Don't stand in the lane filming. Don't encourage them to rev. They're trying to navigate a crowd of pedestrians in a car with a clutch that cost more than your first car. Let them leave clean.
+
+**Don't touch.** Unless someone explicitly invites you to sit in their car, hands stay in pockets. This applies to paint, interior, engine bay, and especially the carbon fiber. You know this. But it bears repeating.
+
+**The rev is earned.** Revving in the parking lot is not a right — it's a request. And it's only granted when the crowd is right, the exit is clear, and someone credible asks. Unsolicited revving is the fastest way to become the person everyone avoids.
+
+**The coffee is secondary.** Nobody is here for the coffee. The coffee is an excuse. What we're really here for is the conversations — the stranger who knows more about your engine than you do, the kid who's never seen a rotary in person, the builder who tells you exactly which vacuum line is causing your idle surge. These conversations can't be scheduled. They happen because a parking lot full of enthusiasts creates a gravity that pulls the right people together.
+
+### The Drop That Fits the Vibe
+
+The best gear for Cars & Coffee isn't the loudest. It's the stuff that fits the ritual — quality materials, clean design, details that reward a second look.
+
+The Dream Star rear window decal signals the club. The metal keychain jingles against the wheel at every corner. The lanyard hangs from the rearview catching the sunrise. The Hoshi sticker pack goes to the kid who's going to go home, put it on his laptop, and start saving for his own project car.
+
+None of it is loud. None of it needs to be. Cars & Coffee is a culture of signals — small things that say *I belong here*. The gear is just the language.
+
+**Chase the Horizon.**`,
+      tag: "lifestyle",
+    },
+  ];
+
+  for (const post of blogPosts) {
+    const existing = await prisma.post.findUnique({ where: { slug: post.slug } });
+    if (existing) {
+      console.log(`  Blog post already exists: ${post.slug} — skipping`);
+    } else {
+      await prisma.post.create({
+        data: {
+          ...post,
+          published: true,
+          publishedAt: new Date(),
+        },
+      });
+      console.log(`✔ Blog post created: ${post.slug}`);
+    }
+  }
+
   // ── Coupons ─────────────────────────────────────────────
   console.log("");
   const couponW10 = await prisma.coupon.findUnique({ where: { code: "WELCOME10" } });
