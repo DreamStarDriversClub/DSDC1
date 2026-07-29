@@ -339,7 +339,42 @@ export default async function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          Section 1.5: Product Highlights Carousel
+          Section 1.5: Brand Intro — SEO-rich body text for crawlers
+          ══════════════════════════════════════════════════════════════════ */}
+      <section className="relative bg-ds-black-deepest">
+        {/* Subtle top gradient separator */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-ds-red/15 to-transparent" />
+        <Container className="py-16 sm:py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <ScrollReveal variant="fade-up">
+              <p className="font-display text-base leading-relaxed text-ds-gray-300 sm:text-lg">
+                Dream Star Drivers Club is built by rotary devotees and 2JZ
+                loyalists — a premium Japanese automotive lifestyle brand where
+                heavyweight fabrics meet cinematic design. Every stitch, every
+                print, every apex seal carries the weight of midnight garage
+                sessions and mountain road dawns. We don&apos;t just sell
+                apparel and performance parts. We document the culture. Apparel
+                for the meet. Accessories for the daily. Performance parts built
+                for the redline. This is Japanese car culture — worn, driven,
+                lived.
+              </p>
+              <p className="mt-5 text-sm leading-relaxed text-ds-gray-500">
+                From heavyweight 220 GSM tees and premium hoodies to
+                rotary-specific rebuild components, 2JZ timing kits, and RX-7 FD
+                street port kits — every product is designed by enthusiasts who
+                wrench on their own cars. Whether you&apos;re building a
+                bridge-ported 13B, maintaining a twin-turbo Supra, or just
+                looking for JDM-inspired streetwear that speaks the language,
+                you&apos;ve found your crew. Join the club. Chase the horizon.
+              </p>
+            </ScrollReveal>
+          </div>
+        </Container>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-ds-red/15 to-transparent" />
+      </section>
+
+      {/* ══════════════════════════════════════════════════════════════════
+          Section 1.6: Product Highlights Carousel
           ══════════════════════════════════════════════════════════════════ */}
       <ProductHighlights products={featuredProducts} />
 

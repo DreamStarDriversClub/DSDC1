@@ -80,6 +80,7 @@ export default async function AccessoriesPage({
         category: p.category,
         images: (p.images as unknown as string[]) || [],
         isFeatured: p.isFeatured,
+        description: p.description,
       }));
     } catch (error) {
       console.error("Failed to fetch accessories products:", error);

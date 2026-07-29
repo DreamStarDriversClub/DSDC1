@@ -326,6 +326,23 @@ export default async function CommunityPage() {
               </a>{" "}
               for real-time updates on all events.
             </p>
+            <div className="mt-6 pt-6 border-t border-white/[0.06]">
+              <Link
+                href="/shop/performance"
+                className="group inline-flex items-center gap-2 rounded-full border border-ds-red/20 bg-ds-red/5 px-5 py-2.5 text-sm font-semibold text-ds-red-400 transition-all duration-300 hover:bg-ds-red/10 hover:border-ds-red/30"
+              >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
+                </svg>
+                Build Your Car —{" "}
+                <span className="text-ds-red transition-colors group-hover:text-ds-red-300">
+                  DS Performance Parts
+                </span>
+                <svg className="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </Container>
       </section>

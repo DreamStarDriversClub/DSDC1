@@ -76,6 +76,7 @@ export default async function PerformancePage({
     category: p.category,
     images: (p.images as unknown as string[]) || [],
     isFeatured: p.isFeatured,
+    description: p.description as string,
   }));
 
   const sortedProducts = sortProducts(mappedProducts, sort);

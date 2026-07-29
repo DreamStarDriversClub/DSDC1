@@ -1,7 +1,9 @@
 import { getProductBySlug, getPrintfulProductBySlug, getRelatedProducts } from "@/lib/shop-data";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { BRAND_NAME } from "@/lib/constants";
+import { prisma } from "@/lib/prisma";
 import { Container } from "@/components/ui/Container";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
 import { Badge } from "@/components/ui/Badge";
@@ -86,6 +88,14 @@ export default async function ProductDetailPage({ params }: Props) {
     product.source,
     4,
   );
+
+  // Blog post count — for conditional "Build Resources" cross-link
+  let blogPostCount = 0;
+  try {
+    blogPostCount = await prisma.post.count({ where: { published: true } });
+  } catch {
+    // Silently fail — cross-link is non-critical
+  }
 
   // Category badge variant
   const badgeVariant = product.category.slug.startsWith("acc")
@@ -274,6 +284,50 @@ export default async function ProductDetailPage({ params }: Props) {
               </h2>
               <div className="h-[3px] w-8 rounded-full bg-ds-red mb-6" />
               <ReviewsSection productId={product.id} />
+            </div>
+
+            {/* Build Resources — cross-link to blog */}
+            <div className="mb-12">
+              <h2 className="font-display text-2xl font-bold text-ds-white mb-4">
+                Build Resources
+              </h2>
+              <div className="h-[3px] w-8 rounded-full bg-ds-red mb-6" />
+              {blogPostCount > 0 ? (
+                <div className="rounded-xl border border-white/[0.06] bg-ds-black-charcoal p-6">
+                  <p className="text-sm leading-relaxed text-ds-gray-400">
+                    Looking for build guides, maintenance walkthroughs, and deep
+                    dives into the parts that make these machines legendary? Our
+                    blog is packed with rotary rebuild diaries, 2JZ tuning
+                    guides, event coverage, and stories from the garage.
+                  </p>
+                  <div className="mt-4">
+                    <Link
+                      href="/blog"
+                      className="inline-flex items-center gap-2 rounded-lg border border-ds-red/20 bg-ds-red/10 px-4 py-2 text-sm font-semibold text-ds-red-400 transition-all duration-300 hover:bg-ds-red/20 hover:text-ds-red-300"
+                    >
+                      Explore the Blog
+                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="rounded-xl border border-ds-gold/10 bg-ds-gold/5 p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-2 w-2 rounded-full bg-ds-gold/60" />
+                    <p className="text-sm font-semibold text-ds-gold/70">
+                      Build guides and technical deep dives — coming soon.
+                    </p>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-ds-gray-500">
+                    Our team is putting together the definitive resource library
+                    for rotary and 2JZ enthusiasts. Check back for step-by-step
+                    build diaries, maintenance walkthroughs, and tuning guides
+                    written by people who actually turn wrenches.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </Container>

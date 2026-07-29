@@ -554,6 +554,14 @@ export default function AboutPage() {
                   </svg>
                 </Button>
               </Link>
+              <Link href="/community">
+                <Button variant="outline" size="lg">
+                  Find Your Next Run
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Button>
+              </Link>
               <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" size="lg">
                   Follow on Instagram
