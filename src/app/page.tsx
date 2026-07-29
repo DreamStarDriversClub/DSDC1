@@ -23,88 +23,67 @@ const fallbackFeaturedProducts = [
     id: "rotary-spirit-tee",
     name: "Rotary Spirit Tee",
     price: 34.99,
+    slug: "rotary-spirit-tee-hvw",
     description: "The rotary engine isn't just a powerplant. It's a philosophy — lightweight, high-revving, and unlike anything else on the road. The Rotary Spirit Tee pays tribute to that legacy. Printed on heavyweight 220 GSM ring-spun cotton, this tee features a subtle rotary triangle motif across the chest — clean enough to wear anywhere, detailed enough that real enthusiasts will stop you at the pump to ask about it. The fit is modern and slightly relaxed, cut for shoulder room without looking boxy. Pre-shrunk so your medium stays a medium after the first wash. Whether you're wrenching on a 13B rebuild or just repping the culture, this is the shirt that says you understand something most people never will. Because the triangle isn't just a shape. It's a heartbeat.",
     category: "Apparel",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/40 to-ds-red-950/20",
-    icon: (
-      <svg className="h-8 w-8 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-      </svg>
-    ),
+    image: "/images/products/ds-m-crw-front.jpg",
   },
   {
     id: "touge-runner-hoodie",
     name: "Touge Runner Hoodie",
     price: 74.99,
+    slug: "touge-runner-hoodie-hvw",
     description: "Named for the mountain passes where legends are made, the Touge Runner Hoodie is built for cold starts and late-night runs. This is the layer you reach for when the garage door is open at 2 AM and the temperature's dropping. We started with a 400 GSM heavyweight French terry fleece — substantial enough to block the wind, soft enough to live in. The hood is double-lined with a structured drawcord. Kangaroo pocket with hidden media channel keeps your phone secure through every corner. Across the back, a stylized touge elevation graphic runs shoulder to shoulder like the mountain roads that inspired it. Oversized fit with dropped shoulders — layer it over a tee or wear it solo. The Touge Runner doesn't just keep you warm. It reminds you why you fell in love with driving in the first place.",
     category: "Apparel",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-950/50 to-ds-black-charcoal",
-    icon: (
-      <svg className="h-8 w-8 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M4 4h16v16H4V4zm4 4h8v8H8V8z" />
-      </svg>
-    ),
+    image: "/images/products/ds-m-hcw-front.jpg",
   },
   {
     id: "13b-heartbeat-decal",
     name: "13B Heartbeat Decal",
     price: 8.99,
+    slug: "13b-heartbeat-decal-rvg",
     description: "The sound of a 13B at full chat is unmistakable — a rising, spinning crescendo that no piston engine can replicate. The 13B Heartbeat Decal captures that rhythm in a single, clean graphic: a rotary-shaped heartbeat pulse that reads instantly to anyone who knows. Die-cut from premium 3M automotive-grade vinyl, this decal is rated for exterior use — rain, sun, and highway speeds won't fade or peel it. Available in gloss white, matte black, and Dream Star red. Sized at 6 inches wide, it fits perfectly on a quarter window, rear windshield, or toolbox lid. One decal, infinite conversations. Because when another rotary guy sees that heartbeat, they'll know exactly what's up.",
     category: "Accessories",
     categoryBadge: "gold" as const,
     gradient: "from-ds-gold-dark/30 to-ds-gold-muted/10",
-    icon: (
-      <svg className="h-8 w-8 text-ds-gold/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6z" />
-      </svg>
-    ),
+    image: "/images/products/acc-rotary-stickers.jpg",
   },
   {
     id: "dream-star-lanyard",
     name: "Dream Star Lanyard",
     price: 14.99,
+    slug: "dream-star-lanyard-fbw",
     description: "Your keys are sacred. They unlock the machine you've poured your soul into. The Dream Star Lanyard treats them with the respect they deserve. Woven from heavyweight polyester with reinforced stitching at every stress point, this lanyard is built to outlast the cheap promo gear. The Dream Star wordmark runs the full length in a subtle tonal jacquard weave — visible but never loud. A machined metal clip (not plastic) secures your keys with confidence, and the detachable quick-release buckle lets you separate your car key in seconds. Black with red accent stitching. Hang it from your mirror. Clip it to your belt loop. Carry the club wherever you go.",
     category: "Accessories",
     categoryBadge: "gold" as const,
     gradient: "from-ds-gold-dark/30 to-ds-gold-muted/10",
-    icon: (
-      <svg className="h-8 w-8 text-ds-gold/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
-      </svg>
-    ),
+    image: "/images/products/acc-lanyard.jpg",
   },
   {
     id: "rx7-fd-street-port-kit",
     name: "RX-7 FD Street Port Kit",
     price: 2499.99,
+    slug: "rx7-fd-street-port-kit",
     description: "The FD RX-7 is a masterpiece of engineering — and with the right port work, it becomes something transcendent. The DS Performance RX-7 FD Street Port Kit is designed for the enthusiast who wants more power without sacrificing the street manners that make the FD drivable every day. This comprehensive kit includes ported intake and exhaust housings machined to our club-spec template — developed and tested on actual touge runs, not just flow benches. You get a matched set of apex seals (two-piece, high-carbon), all required gaskets and O-rings, solid corner seals, and upgraded tension bolts. Every component is inspected before it leaves our hands. Expect 320–380 WHP on a properly tuned setup with supporting mods. The idle has that unmistakable rotary lope — choppy enough to turn heads, smooth enough to live with. This is the kit we run. Now it's yours.",
     category: "DS Performance",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/50 to-ds-black-charcoal",
-    icon: (
-      <svg className="h-8 w-8 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
-      </svg>
-    ),
+    image: "/images/products/perf-fd-port.jpg",
   },
   {
     id: "2jz-timing-belt-kit",
     name: "2JZ-GTE Timing Belt Kit",
     price: 189.99,
+    slug: "2jz-timing-belt-kit",
     description: "The 2JZ-GTE is legendary for a reason — but even legends need maintenance. The DS Performance 2JZ-GTE Timing Belt Kit gives you everything required for a complete timing system refresh, sourced to the same standards we demand for our own cars. Kit includes a high-strength timing belt (Kevlar-reinforced), OEM-spec hydraulic tensioner, idler pulley, and tensioner pulley — all pre-inspected and kitted for a straightforward install. We don't cut corners on bearings or belt compounds because we know what's at stake when your 2JZ is singing at full boost. Whether you're doing preventive maintenance at 60K or building a fresh long block, this kit ensures your timing stays dead-on through every pull. Because when the turbo spools and the horizon opens up, the last thing you should be thinking about is your belt.",
     category: "DS Performance",
     categoryBadge: "red" as const,
     gradient: "from-ds-red-900/40 to-ds-red-950/20",
-    icon: (
-      <svg className="h-8 w-8 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.39.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527a1.125 1.125 0 01-1.45-.12l-.773-.774c-.39-.39-.44-1.002-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738c-.32-.447-.269-1.06.12-1.45l.774-.773a1.125 1.125 0 011.449-.12l.738.527c.35.25.806.272 1.203.107.397-.165.71-.505.781-.929l.149-.894z" />
-        <circle cx="12" cy="12" r="3" />
-      </svg>
-    ),
+    image: "/images/products/perf-haltech.jpg",
   },
 ];
 
@@ -194,22 +173,12 @@ export default async function HomePage() {
           id: p.slug,
           name: p.name,
           price: p.price,
+          slug: p.slug,
           description: p.name,
           category: typeof p.category === "string" ? p.category : p.category?.name || "Apparel",
           categoryBadge: "red" as const,
           gradient: "from-ds-red-900/40 to-ds-red-950/20",
-          icon: (p.images && p.images[0]) ? (
-            <img
-              src={p.images[0]}
-              alt={p.name}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <svg className="h-8 w-8 text-ds-red/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-            </svg>
-          ),
+          image: (p.images && p.images[0]) ? p.images[0] : "/images/products/ds-m-crw-front.jpg",
         }));
         // Prepend Printful products before fallback samples
         featuredProducts = [...normalizedPf, ...fallbackFeaturedProducts];
@@ -507,18 +476,31 @@ export default async function HomePage() {
                   className="w-[280px] shrink-0 snap-start sm:w-[320px]"
                 >
                   <Link
-                    href={`/shop/${((product as any).category?.name || (product as any).category || '').toLowerCase().replace(/\s+/g, "-")}`}
+                    href={`/shop/${(product as any).slug || ((product as any).category?.name || (product as any).category || '').toLowerCase().replace(/\s+/g, "-")}`}
                     className="group block"
                   >
                     <Card hover padding="none" className="overflow-hidden">
-                      {/* Product image placeholder */}
+                      {/* Product image */}
                       <div
                         className={`relative flex h-56 items-center justify-center bg-gradient-to-br ${product.gradient} overflow-hidden`}
                       >
-                        <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
-                        <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                          {product.icon}
-                        </div>
+                        {(product as any).image ? (
+                          <img
+                            src={(product as any).image}
+                            alt={product.name}
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
+                            {/* Fallback SVG icon */}
+                            <svg className="h-12 w-12 text-ds-red/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={0.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                            </svg>
+                          </div>
+                        )}
+                        {/* Dark overlay for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-ds-black/60 via-transparent to-transparent" />
                         {/* View Details overlay */}
                         <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
                           <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">

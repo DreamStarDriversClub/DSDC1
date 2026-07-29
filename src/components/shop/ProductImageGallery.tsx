@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
 import { productGradient } from "@/lib/utils";
@@ -33,7 +33,11 @@ export function ProductImageGallery({
   const [activeIndex, setActiveIndex] = useState(0);
   const [zoomed, setZoomed] = useState(false);
   const [origin, setOrigin] = useState({ x: 50, y: 50 });
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxZoom, setLightboxZoom] = useState(false);
+  const [lightboxOrigin, setLightboxOrigin] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
 
   const gradient = productGradient(productSlug);
 
@@ -50,7 +54,6 @@ export function ProductImageGallery({
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      // Percentage position of cursor within the container
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
       setOrigin({ x, y });
@@ -71,12 +74,53 @@ export function ProductImageGallery({
     if (!hasImages) return;
     setZoomed((prev) => {
       if (!prev) {
-        // Center the zoom on first tap
         setOrigin({ x: 50, y: 50 });
       }
       return !prev;
     });
   }, [hasImages]);
+
+  /* ── Lightbox ─────────────────────────────────────────── */
+  const openLightbox = useCallback(() => {
+    if (!activeImage) return;
+    setLightboxOpen(true);
+    setLightboxZoom(false);
+    document.body.style.overflow = "hidden";
+  }, [activeImage]);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxOpen(false);
+    setLightboxZoom(false);
+    document.body.style.overflow = "";
+  }, []);
+
+  const handleLightboxMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!lightboxRef.current) return;
+      const rect = lightboxRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      setLightboxOrigin({ x, y });
+    },
+    [],
+  );
+
+  const toggleLightboxZoom = useCallback(() => {
+    setLightboxZoom((prev) => {
+      if (!prev) setLightboxOrigin({ x: 50, y: 50 });
+      return !prev;
+    });
+  }, []);
+
+  // Close lightbox on Escape key
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen, closeLightbox]);
 
   return (
     <div className="space-y-4">
@@ -118,6 +162,21 @@ export function ProductImageGallery({
                 </span>
               </div>
             )}
+
+            {/* Expand to fullscreen button — visible on all screens but most useful on mobile */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                openLightbox();
+              }}
+              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white/80 opacity-0 backdrop-blur-sm transition-all duration-300 hover:bg-black/70 hover:text-white group-hover:opacity-100 sm:opacity-0"
+              aria-label="View fullscreen"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 8.25M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 8.25M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15.75M20.25 20.25h-4.5m4.5 0v-4.5m0 4.5L15 15.75" />
+              </svg>
+            </button>
 
             {/* Zoom indicator on mobile — subtle hint */}
             {!zoomed && (
@@ -214,6 +273,103 @@ export function ProductImageGallery({
               />
             </button>
           ))}
+        </div>
+      )}
+
+      {/* ═══════ Fullscreen Lightbox ═══════ */}
+      {lightboxOpen && activeImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          {/* Close button */}
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur-sm transition-all hover:bg-white/20 hover:text-white"
+            aria-label="Close fullscreen view"
+          >
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Zoom toggle button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLightboxZoom();
+            }}
+            className="absolute left-4 top-4 z-10 hidden rounded-full bg-white/10 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur-sm transition-all hover:bg-white/20 hover:text-white sm:block"
+            aria-label={lightboxZoom ? "Zoom out" : "Zoom in"}
+          >
+            {lightboxZoom ? "Zoom Out" : "Zoom In"}
+          </button>
+
+          {/* Image count indicator */}
+          {images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full bg-black/50 px-4 py-1.5 text-xs font-medium text-white/70 backdrop-blur-sm">
+              {activeIndex + 1} / {images.length}
+            </div>
+          )}
+
+          {/* Lightbox image */}
+          <div
+            ref={lightboxRef}
+            onMouseMove={handleLightboxMouseMove}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLightboxZoom();
+            }}
+            className={`relative flex h-full w-full items-center justify-center overflow-hidden ${
+              lightboxZoom ? "cursor-zoom-out" : "cursor-zoom-in"
+            }`}
+          >
+            <Image
+              src={toWebpPath(activeImage)}
+              alt={`${productName} — fullscreen view ${activeIndex + 1}`}
+              fill
+              sizes="100vw"
+              className={`object-contain transition-transform duration-200 ease-out ${
+                lightboxZoom ? "scale-[2]" : "scale-100"
+              }`}
+              style={{
+                transformOrigin: `${lightboxOrigin.x}% ${lightboxOrigin.y}%`,
+              }}
+              priority
+              quality={95}
+              draggable={false}
+            />
+          </div>
+
+          {/* Mobile-only tap hint */}
+          <div className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 rounded-full bg-black/40 px-4 py-1.5 text-xs text-white/50 backdrop-blur-sm sm:hidden">
+            Tap to zoom • Tap outside to close
+          </div>
+
+          {/* Thumbnail navigation in lightbox */}
+          {images.length > 1 && (
+            <div className="absolute bottom-16 left-1/2 z-10 hidden -translate-x-1/2 gap-2 sm:flex">
+              {images.map((img, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveIndex(i);
+                    setLightboxZoom(false);
+                  }}
+                  className={`h-2 w-2 rounded-full transition-all ${
+                    i === activeIndex
+                      ? "bg-ds-red w-6"
+                      : "bg-white/30 hover:bg-white/50"
+                  }`}
+                  aria-label={`View image ${i + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
