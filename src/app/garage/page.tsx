@@ -15,7 +15,7 @@ export default function GaragePage() {
   }
 
   return (
-    <main className="min-h-screen bg-ds-black">
+    <div className="min-h-screen bg-ds-black">
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-white/[0.06] bg-ds-black-charcoal">
         {/* Background glow */}
@@ -120,6 +120,6 @@ export default function GaragePage() {
         onClose={() => setSubmitOpen(false)}
         onSuccess={handleSuccess}
       />
-    </main>
+    </div>
   );
 }

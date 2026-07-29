@@ -13,7 +13,8 @@ export interface FeaturedProduct {
   category: string;
   categoryBadge: "red" | "gold";
   gradient: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
+  image?: string;
 }
 
 interface ProductHighlightsProps {
@@ -206,10 +207,21 @@ export function ProductHighlights({ products }: ProductHighlightsProps) {
                     <div
                       className={`relative flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br ${product.gradient} sm:h-56`}
                     >
-                      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
-                      <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
-                        {product.icon}
-                      </div>
+                      {product.image ? (
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <>
+                          <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-110" />
+                          <div className="relative z-10 transition-transform duration-500 group-hover:scale-110">
+                            {product.icon}
+                          </div>
+                        </>
+                      )}
                       {/* Quick View overlay */}
                       <div className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
                         <div className="flex items-center justify-center bg-ds-black/80 py-3 backdrop-blur-sm">
