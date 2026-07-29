@@ -13,6 +13,7 @@ interface ProductGridProduct {
   category?: { name: string; slug: string } | null;
   images?: unknown;
   isFeatured?: boolean;
+  description?: string;
 }
 
 interface ProductGridProps {

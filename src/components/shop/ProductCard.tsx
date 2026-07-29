@@ -17,6 +17,7 @@ interface ProductCardData {
   category?: { name: string; slug: string } | null;
   images?: unknown;
   isFeatured?: boolean;
+  description?: string;
 }
 
 interface ProductCardProps {
@@ -162,6 +163,13 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
           >
             {product.name}
           </Link>
+          {product.description && (
+            <p className="mt-1 line-clamp-1 text-xs leading-relaxed text-ds-gray-500">
+              {product.description.length > 80
+                ? product.description.slice(0, 80).replace(/\s+\S*$/, "") + "…"
+                : product.description}
+            </p>
+          )}
           <div className="mt-2 flex items-center gap-2">
             {salePrice ? (
               <>
