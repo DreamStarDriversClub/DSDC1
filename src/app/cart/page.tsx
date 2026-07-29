@@ -2,10 +2,12 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/lib/cart-context";
 import { validateCouponAction } from "@/lib/cart-actions";
 import { formatPrice } from "@/lib/utils";
 import { SHIPPING_RATES, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
+import { toWebpPath } from "@/lib/images";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Breadcrumbs } from "@/components/shop/Breadcrumbs";
@@ -70,11 +72,12 @@ export default function CartPage() {
             <div className="mx-auto max-w-lg text-center">
               <div className="flex justify-center">
                 <div className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-ds-red/20 bg-ds-black">
-                  <img
+                  <Image
                     src="/hoshi-shopping.png"
                     alt="Hoshi — your cart is empty"
+                    width={112}
+                    height={112}
                     className="h-28 w-28 object-contain"
-                    loading="lazy"
                   />
                 </div>
               </div>
@@ -176,21 +179,31 @@ export default function CartPage() {
                       href={`/shop/${item.slug}`}
                       className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-white/[0.06] bg-ds-black sm:h-28 sm:w-28"
                     >
-                      <div className="flex h-full items-center justify-center">
-                        <svg
-                          className="h-8 w-8 text-ds-gray-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={1.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                          />
-                        </svg>
-                      </div>
+                      {item.image ? (
+                        <Image
+                          src={toWebpPath(`/images/products/${item.image}`)}
+                          alt={item.name}
+                          width={112}
+                          height={112}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <svg
+                            className="h-8 w-8 text-ds-gray-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={1.5}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                            />
+                          </svg>
+                        </div>
+                      )}
                     </Link>
 
                     {/* Details */}

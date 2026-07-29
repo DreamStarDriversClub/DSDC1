@@ -32,20 +32,25 @@ export default async function PerformancePage({
 }) {
   const sort = (searchParams.sort as SortValue) || "featured";
 
-  const category = await prisma.category.findUnique({
-    where: { slug: "ds-performance" },
-  });
+  let category = null;
+  let subcategories: { name: string; slug: string }[] = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let products: any[] = [];
+  let fetchError: string | null = null;
 
-  const subcategories = category
-    ? await prisma.category.findMany({
+  try {
+    category = await prisma.category.findUnique({
+      where: { slug: "ds-performance" },
+    });
+
+    if (category) {
+      subcategories = await prisma.category.findMany({
         where: { parentId: category.id },
         orderBy: { name: "asc" },
         select: { name: true, slug: true },
-      })
-    : [];
+      });
 
-  const products = category
-    ? await prisma.product.findMany({
+      products = await prisma.product.findMany({
         where: {
           isActive: true,
           category: {
@@ -56,8 +61,12 @@ export default async function PerformancePage({
           category: { select: { name: true, slug: true } },
         },
         orderBy: { createdAt: "desc" },
-      })
-    : [];
+      });
+    }
+  } catch (error) {
+    console.error("DS Performance page: failed to fetch products", error);
+    fetchError = "Failed to load performance parts. Please try again later.";
+  }
 
   const mappedProducts = products.map((p) => ({
     slug: p.slug,
@@ -98,16 +107,37 @@ export default async function PerformancePage({
           className="mb-8"
         />
 
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <SubcategoryFilter subcategories={subcategories} />
-          <SortDropdown />
-        </div>
+        {fetchError ? (
+          <div className="rounded-2xl border border-ds-red/20 bg-ds-red/5 p-12 text-center">
+            <svg
+              className="mx-auto mb-4 h-12 w-12 text-ds-red/40"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+              />
+            </svg>
+            <p className="text-ds-gray-300">{fetchError}</p>
+          </div>
+        ) : (
+          <>
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <SubcategoryFilter subcategories={subcategories} />
+              <SortDropdown />
+            </div>
 
-        <ProductGrid
-          products={sortedProducts}
-          badgeVariant="red"
-          emptyMessage="No performance parts available right now. Check back soon!"
-        />
+            <ProductGrid
+              products={sortedProducts}
+              badgeVariant="red"
+              emptyMessage="No performance parts available right now. Check back soon!"
+            />
+          </>
+        )}
       </Container>
 
       {/* Why DS Performance — editorial credibility section */}
