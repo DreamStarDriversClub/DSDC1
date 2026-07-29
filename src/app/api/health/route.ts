@@ -3,7 +3,9 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const isCron = request.headers.get("x-vercel-cron") === "1";
+
   const checks: Record<string, "ok" | "degraded" | "down"> = {
     uptime: "ok",
     database: "ok",
@@ -32,6 +34,15 @@ export async function GET() {
     status = "down";
   } else if (values.includes("degraded")) {
     status = "degraded";
+  }
+
+  // Log cron invocations for Vercel deployment logs
+  if (isCron) {
+    if (status === "ok") {
+      console.log(`[cron] health check passed — status: ${status}`);
+    } else {
+      console.warn(`[cron] health check ${status} — checks: ${JSON.stringify(checks)}`);
+    }
   }
 
   return NextResponse.json(

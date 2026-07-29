@@ -2,5 +2,11 @@
   "framework": "nextjs",
   "buildCommand": "npx prisma generate && next build",
   "installCommand": "bun install",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/health",
+      "schedule": "0 */8 * * *"
+    }
+  ]
 }
