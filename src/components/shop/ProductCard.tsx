@@ -54,27 +54,18 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
 
   return (
     <div
-      className="group block cursor-pointer"
+      className="group block"
       style={{ perspective: "800px" }}
-      onClick={() => openQuickView(product)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openQuickView(product);
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      aria-label={`Quick view: ${product.name}`}
     >
       <Card
         hover
         padding="none"
         className="overflow-hidden transition-all duration-300 ease-out group-hover:scale-[1.02] group-hover:shadow-card-hover group-hover:border-ds-red/20 group-hover:-translate-y-1"
       >
-        {/* Product image */}
-        <div
-          className={`relative flex h-56 items-center justify-center ${gradient} overflow-hidden`}
+        {/* Product image — links to PDP */}
+        <Link
+          href={`/shop/${product.slug}`}
+          className={`relative flex h-56 items-center justify-center ${gradient} overflow-hidden block`}
         >
           {/* Actual product image or fallback SVG icon */}
           {productImage ? (
@@ -117,18 +108,21 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
           {productImage && (
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ds-black/60 to-transparent" />
           )}
-          {/* View Details overlay — links to full PDP */}
-          <Link
-            href={`/shop/${product.slug}`}
-            onClick={(e) => e.stopPropagation()}
+          {/* Quick View button — appears on hover */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              openQuickView(product);
+            }}
             className="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-400 ease-out group-hover:translate-y-0"
           >
             <div className="flex items-center justify-center bg-ds-black/80 backdrop-blur-sm py-3">
               <span className="text-xs font-semibold uppercase tracking-wider text-ds-white">
-                View Details
+                Quick View
               </span>
             </div>
-          </Link>
+          </button>
           {/* Sale badge */}
           {salePrice && (
             <div className="absolute left-3 top-3">
@@ -148,7 +142,7 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
               productCategory={product.category?.slug || ""}
             />
           </div>
-        </div>
+        </Link>
 
         <div className="p-5">
           <div className="mb-2 flex items-center justify-between">
