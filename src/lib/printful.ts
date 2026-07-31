@@ -1,202 +1,81 @@
-/**
- * Printful REST API helpers — no SDK dependency.
- * Uses raw fetch() to Printful's API.
- */
+import { prisma } from "@/lib/prisma";
 
 const PRINTFUL_API = "https://api.printful.com";
 
-function authHeaders(): Record<string, string> {
-  return {
-    Authorization: `Bearer ${process.env.PRINTFUL_API_KEY || ""}`,
-    "Content-Type": "application/json",
-  };
+type PrintfulProductSummary = { id: number; name: string; thumbnail_url?: string | null };
+type PrintfulVariantResponse = {
+  id: number;
+  variant_id?: number;
+  name: string;
+  retail_price?: string | number;
+  price?: string | number;
+  currency?: string;
+  options?: Array<{ name: string; value: string }>;
+};
+type PrintfulDetail = {
+  sync_product: PrintfulProductSummary;
+  sync_variants: PrintfulVariantResponse[];
+};
+
+async function printfulFetch<T>(path: string): Promise<T> {
+  const key = process.env.PRINTFUL_API_KEY;
+  if (!key) throw new Error("PRINTFUL_API_KEY is not configured");
+  const response = await fetch(`${PRINTFUL_API}${path}`, {
+    headers: { Authorization: `Bearer ${key}`, Accept: "application/json" },
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`Printful API returned ${response.status}`);
+  const body = (await response.json()) as { result: T; error?: { message?: string } };
+  if (body.error) throw new Error(body.error.message || "Printful API error");
+  return body.result;
 }
 
-async function printfulFetch<T>(
-  path: string,
-  options: { method?: string; body?: unknown } = {},
-): Promise<T> {
-  const url = `${PRINTFUL_API}${path}`;
-  const res = await fetch(url, {
-    method: options.method || "GET",
-    headers: authHeaders(),
-    body: options.body ? JSON.stringify(options.body) : undefined,
+async function stripeProductForVariant(variant: PrintfulVariantResponse, product: PrintfulProductSummary) {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return null;
+  const metadata = { printful_variant_id: String(variant.id), printful_product_id: String(product.id) };
+  const search = await fetch(`https://api.stripe.com/v1/products/search?query=${encodeURIComponent(`metadata['printful_variant_id']:'${variant.id}'`)}`, {
+    headers: { Authorization: `Bearer ${key}` }, cache: "no-store",
   });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(
-      `Printful API error ${res.status}: ${JSON.stringify(data)}`,
-    );
+  if (search.ok) {
+    const found = (await search.json()) as { data?: Array<{ id: string }> };
+    if (found.data?.[0]) return found.data[0].id;
   }
-
-  return data as T;
-}
-
-export interface PrintfulOrderResult {
-  code: number;
-  result: {
-    id: number;
-    external_id: string;
-    status: string;
-  };
-}
-
-export interface PrintfulOrderStatusResult {
-  code: number;
-  result: {
-    id: number;
-    status: string;
-    shipments?: Array<{
-      tracking_number?: string;
-      tracking_url?: string;
-      carrier?: string;
-    }>;
-  };
-}
-
-export async function createPrintfulOrder(params: {
-  externalId: string;
-  shippingAddress: {
-    name: string;
-    line1: string;
-    line2?: string;
-    city: string;
-    state: string;
-    zip: string;
-    country: string;
-    phone?: string;
-    email: string;
-  };
-  items: Array<{
-    printfulVariantId: string;
-    quantity: number;
-    retailPrice: number;
-    name: string;
-  }>;
-  retailCosts: {
-    subtotal: number;
-    shipping: number;
-    tax: number;
-    discount: number;
-    total: number;
-  };
-  shippingMethod: string;
-}): Promise<{ printfulOrderId: number; status: string }> {
-  const body = {
-    external_id: params.externalId,
-    shipping: shippingMethodToPrintful(params.shippingMethod),
-    recipient: {
-      name: params.shippingAddress.name,
-      address1: params.shippingAddress.line1,
-      address2: params.shippingAddress.line2 || "",
-      city: params.shippingAddress.city,
-      state_code: params.shippingAddress.state,
-      country_code: params.shippingAddress.country || "US",
-      zip: params.shippingAddress.zip,
-      phone: params.shippingAddress.phone || "",
-      email: params.shippingAddress.email,
-    },
-    items: params.items.map((item) => ({
-      sync_variant_id: item.printfulVariantId,
-      quantity: item.quantity,
-      retail_price: String(item.retailPrice.toFixed(2)),
-      name: item.name,
-    })),
-    retail_costs: {
-      subtotal: String(params.retailCosts.subtotal.toFixed(2)),
-      shipping: String(params.retailCosts.shipping.toFixed(2)),
-      tax: String(params.retailCosts.tax.toFixed(2)),
-      discount: String(params.retailCosts.discount.toFixed(2)),
-      total: String(params.retailCosts.total.toFixed(2)),
-    },
-  };
-
-  const data = await printfulFetch<PrintfulOrderResult>("/orders", {
-    method: "POST",
-    body,
+  const body = new URLSearchParams({
+    name: `${product.name} — ${variant.name}`,
+    "metadata[printful_variant_id]": metadata.printful_variant_id,
+    "metadata[printful_product_id]": metadata.printful_product_id,
   });
-
-  return {
-    printfulOrderId: data.result.id,
-    status: data.result.status,
-  };
+  const created = await fetch("https://api.stripe.com/v1/products", {
+    method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/x-www-form-urlencoded" }, body,
+  });
+  if (!created.ok) throw new Error(`Stripe product creation failed (${created.status})`);
+  return ((await created.json()) as { id: string }).id;
 }
 
-export async function getPrintfulOrder(
-  printfulOrderId: number,
-): Promise<{ status: string; trackingNumber?: string; trackingUrl?: string }> {
-  const data = await printfulFetch<PrintfulOrderStatusResult>(
-    `/orders/${printfulOrderId}`,
-  );
-
-  const shipment = data.result.shipments?.[0];
-  return {
-    status: data.result.status,
-    trackingNumber: shipment?.tracking_number,
-    trackingUrl: shipment?.tracking_url,
-  };
-}
-
-function shippingMethodToPrintful(method: string): string {
-  const map: Record<string, string> = {
-    standard: "STANDARD",
-    express: "EXPRESS",
-    overnight: "OVERNIGHT",
-  };
-  return map[method.toLowerCase()] || "STANDARD";
-}
-
-// ── Admin sync functions ─────────────────────────────────
-
-export interface PrintfulStoreProduct {
-  id: number;
-  external_id: string;
-  name: string;
-  variants: number;
-  synced: number;
-  thumbnail_url: string;
-  is_ignored: boolean;
-}
-
-export interface PrintfulPagedResult<T> {
-  code: number;
-  result: T[];
-  paging: { total: number; offset: number; limit: number };
-}
-
-export interface PrintfulProductDetail {
-  code: number;
-  result: {
-    sync_product: PrintfulStoreProduct;
-    sync_variants: PrintfulSyncVariant[];
-  };
-}
-
-export interface PrintfulSyncVariant {
-  id: number;
-  external_id: string;
-  sync_product_id: number;
-  name: string;
-  variant_id: number;
-  size: string;
-  color: string;
-  retail_price: string;
-  currency: string;
-  sku: string;
-}
-
-export async function getStoreProducts(
-  offset = 0,
-  limit = 50,
-): Promise<PrintfulPagedResult<PrintfulStoreProduct>> {
-  const params = new URLSearchParams({ offset: String(offset), limit: String(limit) });
-  return printfulFetch(`/store/products?${params}`);
-}
-
-export async function getProductVariants(
-  productId: number,
-): Promise<PrintfulProductDetail> {
-  return printfulFetch(`/store/products/${productId}`);
+export async function syncPrintfulProducts() {
+  const summaries = await printfulFetch<PrintfulProductSummary[]>('/store/products');
+  let variantCount = 0;
+  let stripeCount = 0;
+  for (const summary of summaries) {
+    const detail = await printfulFetch<PrintfulDetail>(`/store/products/${summary.id}`);
+    const variants = detail.sync_variants || [];
+    await prisma.printfulProduct.upsert({
+      where: { printfulId: String(summary.id) },
+      create: { id: summary.id, printfulId: String(summary.id), name: summary.name, thumbnailUrl: summary.thumbnail_url ?? null, variantCount: variants.length, syncedAt: new Date() },
+      update: { name: summary.name, thumbnailUrl: summary.thumbnail_url ?? null, variantCount: variants.length, syncedAt: new Date() },
+    });
+    for (const variant of variants) {
+      const options = Object.fromEntries((variant.options || []).map((option) => [option.name.toLowerCase(), option.value]));
+      const stripeId = await stripeProductForVariant(variant, summary);
+      await prisma.printfulVariant.upsert({
+        where: { printfulId: String(variant.id) },
+        create: { printfulId: String(variant.id), catalogVariantId: variant.variant_id ?? null, productId: String(summary.id), name: variant.name, size: options.size ?? null, color: options.color ?? null, price: Number(variant.retail_price ?? variant.price ?? 0), currency: variant.currency ?? "USD" },
+        update: { catalogVariantId: variant.variant_id ?? null, productId: String(summary.id), name: variant.name, size: options.size ?? null, color: options.color ?? null, price: Number(variant.retail_price ?? variant.price ?? 0), currency: variant.currency ?? "USD", syncedAt: new Date() },
+      });
+      variantCount++;
+      if (stripeId) stripeCount++;
+    }
+  }
+  return { productCount: summaries.length, variantCount, stripeCount, syncedAt: new Date() };
 }
