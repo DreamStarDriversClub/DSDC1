@@ -34,9 +34,12 @@ export const SOCIAL_LINKS = {
 
 export const NEWSLETTER = {
   title: "Join the Club",
-  description: "Get exclusive drops, build tips, and event invites.",
+  description:
+    "No spam — just drops, builds, and the occasional rotary symphony.",
   placeholder: "Enter your email",
   buttonText: "Sign Up",
+  successMessage: "You're in. Welcome to the club.",
+  alreadySubscribed: "You're already part of the club.",
 } as const;
 
 export const NAV_LINKS = [
