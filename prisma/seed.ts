@@ -1379,6 +1379,77 @@ None of it is loud. None of it needs to be. Cars & Coffee is a culture of signal
 **Chase the Horizon.**`,
       tag: "lifestyle",
     },
+    {
+      slug: "rotary-revival-13b-still-matters",
+      excerpt:
+        "The rotary engine was declared dead more times than anyone can count. But in garages across the world — late at night, with premix in the air and a timing light in hand — the 13B refused to quit. Here's why it still matters, and why it always will.",
+      content: `The first time you hear a bridge-ported 13B clear its throat at 4,000 RPM, something rewires in your brain.
+
+It's not the sound of a piston engine waking up — that familiar, predictable churn of reciprocating mass. This is different. This is a rising, spinning wail that builds like a turbine and screams like nothing else on pavement. By 8,500 RPM, you're not listening to an engine anymore. You're listening to a declaration.
+
+And if you've been around rotaries long enough, you've also heard the other sound. The one that comes after. The silence of a popped motor. An apex seal that let go at the worst possible moment. Steam rising from a hood that won't close on a night that was supposed to be about canyon runs, not tow trucks.
+
+We've all heard it. Some of us have caused it.
+
+But here's the thing: the 13B is still here. Against every prediction, every forum post declaring the rotary dead, every "just LS swap it" comment from someone who never turned a wrench on a Dorito — the 13B is still spinning. And in 2026, it matters more than ever.
+
+## The Dark Days
+
+There was a stretch where it genuinely felt like the end. Mazda had stopped producing rotary engines. Rebuild parts were drying up. The knowledge base was aging out — old-timers retiring, forums going dark, Facebook groups fragmenting into noise. You couldn't just walk into a dealership and order rotor housings anymore. If you blew a motor, you were at the mercy of whatever was left on the shelves.
+
+People started talking about the rotary in past tense. Legacy engine. Historical footnote. A fascinating dead end.
+
+But they underestimated something. They underestimated the people who'd spent their weekends in garages that smelled like premix and ambition. The ones who'd ported their own housings with a die grinder and a prayer. The ones who understood that the rotary wasn't just an engine — it was an obsession.
+
+The community didn't let the 13B die. It couldn't. Because once that sound gets in your head, there's no going back to pistons.
+
+## The Modern Rotary Landscape
+
+Here's what the obituary writers missed.
+
+Aftermarket support for the 13B is better right now than it's been in a decade. Not just surviving — improving. Companies are producing new apex seals with metallurgy that wasn't available in the 90s. CNC-ported housings with tolerances that make hand-porting look like cave drawings. Standalone ECUs that give tuners control Mazda's factory engineers could only dream about. E85 conversions that let you push timing further while keeping EGTs in check. Ceramic-coated rotors. Billet oil pump gears. The list goes on.
+
+A properly built 13B today — street-ported, tuned on a Haltech or Link, fed good premix and treated with respect — is more reliable than the internet mythology would have you believe. The engine didn't change. The support around it did. We stopped guessing and started measuring. We stopped treating rebuilds like dark art and started treating them like precision engineering.
+
+The bridge port that was radical in 2003 is a known quantity now. The peripheral port that was "race only" has been tamed for the street by people smarter than me. The turbo setups that used to grenade motors because of bad wastegate placement and worse tuning now make reliable power with modern boost control and ethanol.
+
+The 13B isn't a dinosaur. It's a platform that the aftermarket finally caught up to.
+
+## It's Not Rational. That's the Point.
+
+You can build a K-series that makes more power per dollar. You can LS swap anything with an engine bay and a dream. These are facts. Nobody's arguing them.
+
+But nobody ever loved a rotary because it was rational.
+
+You love it because of what it does to you at 9,000 RPM. You love it because it weighs nothing and sits behind the front axle like Mazda's engineers understood something about physics that everyone else forgot. You love it because pulling the motor out of an FC takes four bolts, some choice words, and an afternoon. You love it because the first cold start after a rebuild — when the oil pressure climbs and the idle settles into that unmistakable lope — is one of the most satisfying moments you'll ever experience in a garage.
+
+You love it because nothing else sounds like it. Nothing else revs like it. Nothing else feels like it.
+
+That's not a spec sheet argument. That's an emotional one. And it's the only one that matters.
+
+## Where Dream Star Fits
+
+We didn't build Dream Star Drivers Club because we wanted to sell T-shirts. We built it because we believe in this engine. We believe in the community that refused to let it die. We believe in the guy at 2 AM in a single-bay garage, premix in the air, drop cord swinging, apex seals laid out on a clean towel because this time — this time — everything is going to be perfect.
+
+Our DS Performance line exists because we've been that guy. We know what it's like to need a part that doesn't exist in a catalog. We know what it's like to machine your own solution because the aftermarket let you down. We're here to make sure the next builder doesn't have to fight that fight alone.
+
+The apparel? The accessories? That's for the culture. That's so when you're walking through a parking lot and someone sees the rotary triangle on your chest, they know. No explanation needed.
+
+## Keep It Spinning
+
+The 13B isn't a museum piece. It's not a chapter in a history book. It's alive right now — in FCs and FDs howling through canyon passes, in RX-8s surprising people at track days, in garage builds that are three years behind schedule and absolutely worth the wait.
+
+The rotary community is small. It always has been. But small doesn't mean weak. Small means tight. Small means when someone in your area posts that their motor popped, you show up with tools and takeout because you've been there and someone showed up for you.
+
+So keep premixing. Keep porting. Keep explaining to your passengers that no, the engine isn't broken, it's just bridge-ported. Keep proving the obituary writers wrong.
+
+The 13B still matters. Not because it's efficient. Not because it's practical. Not because it makes sense on a spreadsheet.
+
+Because when the tach hits 8,500 and the exhaust note bounces off the canyon walls and everything in the world narrows down to the machine beneath you and the road ahead — there is nothing else like it. There never was. And as long as there are people willing to wrench late into the night to chase that feeling, there never will be.
+
+**Dream Star Drivers Club is here for it. Are you?**`,
+      tag: "Rotary",
+    },
   ];
 
   for (const post of blogPosts) {
