@@ -1381,6 +1381,7 @@ None of it is loud. None of it needs to be. Cars & Coffee is a culture of signal
     },
     {
       slug: "rotary-revival-13b-still-matters",
+      title: "Rotary Revival — Why the 13B Still Matters",
       excerpt:
         "The rotary engine was declared dead more times than anyone can count. But in garages across the world — late at night, with premix in the air and a timing light in hand — the 13B refused to quit. Here's why it still matters, and why it always will.",
       content: `The first time you hear a bridge-ported 13B clear its throat at 4,000 RPM, something rewires in your brain.
