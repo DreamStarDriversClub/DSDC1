@@ -23,7 +23,7 @@ export const CATEGORIES = {
   PERFORMANCE: "ds-performance",
 } as const;
 
-export const TAGLINE = "Drive the Dream";
+export const TAGLINE = "Chase the Horizon";
 
 export const SOCIAL_LINKS = {
   instagram: "https://instagram.com/dreamstardc",
