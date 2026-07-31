@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/Badge";
@@ -8,6 +9,7 @@ import { formatPrice, productGradient } from "@/lib/utils";
 import { toWebpPath } from "@/lib/images";
 import { WishlistHeart } from "@/components/shop/WishlistHeart";
 import { useQuickView } from "@/components/shop/QuickViewProvider";
+import { useCart } from "@/lib/cart-context";
 
 interface ProductCardData {
   slug: string;
@@ -28,6 +30,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product, badgeVariant = "red", priority }: ProductCardProps) {
   const { openQuickView } = useQuickView();
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
   const price = typeof product.price === "number" ? product.price : parseFloat(product.price.toString());
   const salePrice = product.salePrice
     ? typeof product.salePrice === "number"
@@ -52,6 +56,31 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
     try { images = JSON.parse(rawImages); } catch { /* keep empty */ }
   }
   const productImage = images.length > 0 ? images[0] : null;
+
+  const handleQuickAdd = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const displayPrice = salePrice ?? price;
+      const sku = product.slug.startsWith("printful-")
+        ? product.slug.slice("printful-".length)
+        : product.slug;
+      addItem({
+        id: `${product.slug}-quick-${Date.now()}`,
+        productId: product.slug,
+        variantId: undefined,
+        name: product.name,
+        slug: product.slug,
+        sku,
+        price: displayPrice,
+        quantity: 1,
+        image: productImage || undefined,
+      });
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    },
+    [addItem, product, price, salePrice, productImage]
+  );
 
   return (
     <div
@@ -170,15 +199,42 @@ export function ProductCard({ product, badgeVariant = "red", priority }: Product
                 : product.description}
             </p>
           )}
-          <div className="mt-2 flex items-center gap-2">
-            {salePrice ? (
-              <>
-                <p className="text-lg font-bold text-ds-red">{formatPrice(salePrice)}</p>
-                <p className="text-sm text-ds-gray-400 line-through">{formatPrice(price)}</p>
-              </>
-            ) : (
-              <p className="text-lg font-bold text-ds-white">{formatPrice(price)}</p>
-            )}
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              {salePrice ? (
+                <>
+                  <p className="text-lg font-bold text-ds-red">{formatPrice(salePrice)}</p>
+                  <p className="text-sm text-ds-gray-400 line-through">{formatPrice(price)}</p>
+                </>
+              ) : (
+                <p className="text-lg font-bold text-ds-white">{formatPrice(price)}</p>
+              )}
+            </div>
+            <button
+              onClick={handleQuickAdd}
+              className={`flex shrink-0 items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                added
+                  ? "bg-ds-gold/20 text-ds-gold border border-ds-gold/30"
+                  : "bg-ds-red/10 text-ds-red-400 border border-ds-red/20 hover:bg-ds-red/20 hover:border-ds-red/40"
+              }`}
+              aria-label={`Add ${product.name} to cart`}
+            >
+              {added ? (
+                <>
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Added
+                </>
+              ) : (
+                <>
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                  </svg>
+                  Add
+                </>
+              )}
+            </button>
           </div>
         </div>
       </Card>
