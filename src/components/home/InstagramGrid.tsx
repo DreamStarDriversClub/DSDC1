@@ -8,7 +8,7 @@ import { SOCIAL_LINKS } from "@/lib/constants";
 
 /* ── Constants ─────────────────────────────────────────────────────────────── */
 
-const INSTAGRAM_HANDLE = "@dreamstardriversclub";
+const INSTAGRAM_HANDLE = "@dreamstardc";
 const INSTAGRAM_HASHTAG = "#DreamStarDriversClub";
 
 /**
@@ -18,7 +18,7 @@ const INSTAGRAM_HASHTAG = "#DreamStarDriversClub";
  * 1. Go to https://elfsight.com/instagram-feed/
  * 2. Click "Create Widget for Free" — no credit card needed
  * 3. Sign up using the team email (or Continue with Google)
- * 4. Connect @dreamstardriversclub Instagram account
+ * 4. Connect @dreamstardc Instagram account
  * 5. Customize the widget:
  *    - Layout: Grid
  *    - Posts to show: 6–8

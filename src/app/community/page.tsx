@@ -317,12 +317,12 @@ export default async function CommunityPage() {
             <p className="text-sm text-ds-gray-500">
               Dates and locations are subject to change. Follow{" "}
               <a
-                href="https://www.instagram.com/dreamstardriversclub/"
+                href="https://www.instagram.com/dreamstardc/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-ds-red underline underline-offset-2 transition-colors hover:text-ds-red-400"
               >
-                @dreamstardriversclub
+                @dreamstardc
               </a>{" "}
               for real-time updates on all events.
             </p>
@@ -509,7 +509,7 @@ export default async function CommunityPage() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a
-                href="https://www.instagram.com/dreamstardriversclub/"
+                href="https://www.instagram.com/dreamstardc/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
