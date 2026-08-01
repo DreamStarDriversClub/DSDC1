@@ -32,7 +32,10 @@ import sharp from "sharp";
 const SOURCE_URL =
   process.argv[2] ??
   "https://files.cdn.printful.com/files/5d8/5d80fb4c596a556a050f36a4365d4cca_preview.png";
+// NOTE: the site's image pipeline (src/lib/images.ts toWebpPath) rewrites
+// .png product images to their .webp twin, so BOTH files must exist.
 const OUT_PATH = "public/images/products/ds-v0-vneck-black-mockup.png";
+const OUT_WEBP = "public/images/products/ds-v0-vneck-black-mockup.webp";
 
 const res = await fetch(SOURCE_URL);
 if (!res.ok) throw new Error(`Failed to download source image: ${res.status}`);
@@ -96,7 +99,8 @@ for (let i = 0; i < data.length; i += channels) {
 }
 
 await sharp(out, { raw: { width, height, channels } }).png().toFile(OUT_PATH);
-console.log(`Wrote ${OUT_PATH} (${width}x${height})`);
+await sharp(out, { raw: { width, height, channels } }).webp().toFile(OUT_WEBP);
+console.log(`Wrote ${OUT_PATH} and ${OUT_WEBP} (${width}x${height})`);
 console.log(
   `Pixels -> shirt: ${shirtPx}, design: ${designPx}, background: ${bgPx}`
 );
