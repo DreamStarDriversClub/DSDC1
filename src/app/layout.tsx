@@ -3,8 +3,7 @@ import { BRAND_NAME, SITE_URL } from "@/lib/constants";
 import { CartProvider } from "@/lib/cart-context";
 import { WishlistProvider } from "@/lib/wishlist-context";
 import { getSession } from "@/lib/auth";
-import { Navbar } from "@/components/ui/Navbar";
-import { Footer } from "@/components/ui/Footer";
+import SiteChrome from "@/components/ui/SiteChrome";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { PageViewTracker } from "@/components/analytics/PageViewTracker";
 import "@/app/globals.css";
@@ -79,12 +78,8 @@ export default async function RootLayout({
       <body className="min-h-screen bg-ds-black text-ds-white font-sans antialiased">
         <CartProvider>
           <WishlistProvider>
-            <Navbar session={session} />
-            {/* Spacer for fixed navbar */}
-            <div className="h-[73px]" />
+            <SiteChrome session={session}>{children}</SiteChrome>
             <PageViewTracker />
-            <main>{children}</main>
-            <Footer />
             <ScrollToTop />
           </WishlistProvider>
         </CartProvider>
