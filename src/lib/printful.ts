@@ -165,7 +165,10 @@ export async function syncPrintfulProducts() {
       update: { name: summary.name, thumbnailUrl: summary.thumbnail_url ?? null, variantCount: variants.length, syncedAt: new Date() },
     });
     for (const variant of variants) {
-      const options = Object.fromEntries((variant.options || []).map((option) => [option.name.toLowerCase(), option.value]));
+      const opts = Array.isArray(variant.options)
+        ? variant.options.filter((o) => o && o.name != null && o.value != null)
+        : [];
+      const options = Object.fromEntries(opts.map((o) => [String(o.name).toLowerCase(), o.value]));
       const stripeId = await stripeProductForVariant(variant, summary);
       await prisma.printfulVariant.upsert({
         where: { printfulId: String(variant.id) },
