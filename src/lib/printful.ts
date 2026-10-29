@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 
 const PRINTFUL_API = "https://api.printful.com";
-const PRINTFUL_API_V2 = "https://api.printful.com/v2";
 
 type PrintfulProductSummary = { id: number; name: string; thumbnail_url?: string | null };
 type PrintfulVariantResponse = {
@@ -123,7 +122,7 @@ export async function createPrintfulOrder(
 
   let response: Response;
   try {
-    response = await fetch(`${PRINTFUL_API_V2}/orders`, {
+    response = await fetch(`${PRINTFUL_API}/orders`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${key}`,
