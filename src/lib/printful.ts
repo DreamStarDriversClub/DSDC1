@@ -97,7 +97,8 @@ export async function createPrintfulOrder(
 
   const payload = {
     external_id: input.externalId,
-    shipping: input.shippingMethod,
+    confirm: true,
+    shipping: input.shippingMethod?.toUpperCase() === "EXPRESS" ? "EXPRESS" : "STANDARD",
     recipient: {
       name: input.shippingAddress.name,
       address1: input.shippingAddress.line1,
